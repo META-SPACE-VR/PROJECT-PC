@@ -15,12 +15,26 @@ public class NPCInteraction : MonoBehaviour
     private bool playerNearby = false;
     private bool isInteracting = false;
     private int dialogueStep = 0;
+    public Animator npcAnimator;
 
-    private string[] dialogueLines = new string[]
+
+    private string[] initialDialogueLines = new string[]
     {
-        "Help!",
-        "I don't think I can move. Please, find something to carry me."
+        "도와주세요..!",
+        "폭발물에 다리가 맞아서 움직일 수가 없어요.. 혹시 탈 것 좀 가져다주실수 있나요..?"
     };
+
+    private string[] wheelchairFoundDialogue = new string[]
+    {
+        "휠체어를 가지고 오셨네요..! 감사합니다 .."
+    };
+
+    private string[] wheelchairNotFoundDialogue = new string[]
+    {
+        "옆에 의무실에 휠체어가 있었던것 같아요.."
+    };
+
+    private bool initialDialogueComplete = false;
 
     void Start()
     {
@@ -59,31 +73,77 @@ public class NPCInteraction : MonoBehaviour
         isInteracting = true;
         dialogueStep = 0;
         dialoguePanel.SetActive(true);
-        dialogueText.text = dialogueLines[dialogueStep];
+
+        if (!initialDialogueComplete)
+        {
+            dialogueText.text = initialDialogueLines[dialogueStep];
+        }
+        else
+        {
+            if (IsWheelchairNearby())
+            {
+                dialogueText.text = wheelchairFoundDialogue[dialogueStep];
+                SitInWheelchair();
+            }
+            else
+            {
+                dialogueText.text = wheelchairNotFoundDialogue[dialogueStep];
+            }
+        }
     }
 
     private void AdvanceDialogue()
     {
-        dialogueStep++;
-        if (dialogueStep < dialogueLines.Length)
+        if (!initialDialogueComplete)
         {
-            dialogueText.text = dialogueLines[dialogueStep];
+            dialogueStep++;
+            if (dialogueStep < initialDialogueLines.Length)
+            {
+                dialogueText.text = initialDialogueLines[dialogueStep];
+            }
+            else
+            {
+                EndInitialDialogue();
+            }
+        }
+        else if (IsWheelchairNearby())
+        {
+            dialogueStep++;
+            if (dialogueStep < wheelchairFoundDialogue.Length)
+            {
+                dialogueText.text = wheelchairFoundDialogue[dialogueStep];
+            }
+            else
+            {
+                EndDialogue();
+            }
         }
         else
         {
-            EndDialogue();
+            dialogueStep++;
+            if (dialogueStep < wheelchairNotFoundDialogue.Length)
+            {
+                dialogueText.text = wheelchairNotFoundDialogue[dialogueStep];
+            }
+            else
+            {
+                EndDialogue();
+            }
         }
+    }
+
+    private void EndInitialDialogue()
+    {
+        initialDialogueComplete = true;
+        isInteracting = false;
+        dialoguePanel.SetActive(false);
+        Debug.Log("First dialogue complete. Now find something to carry the NPC.");
     }
 
     private void EndDialogue()
     {
         isInteracting = false;
         dialoguePanel.SetActive(false);
-        Debug.Log("Find something to carry the NPC.");
-        if (wheelchair != null && IsWheelchairNearby())
-        {
-            SitInWheelchair();
-        }
     }
 
     private bool IsWheelchairNearby()
@@ -98,6 +158,7 @@ public class NPCInteraction : MonoBehaviour
         transform.rotation = sitArea.rotation;
         transform.SetParent(wheelchair.transform);
         isSittingInWheelchair = true;
+        npcAnimator.SetBool("Laying", false);
         Debug.Log("NPC is now in the wheelchair.");
     }
 
@@ -108,6 +169,7 @@ public class NPCInteraction : MonoBehaviour
         transform.position = bedTransform.position;
         transform.rotation = bedTransform.rotation;
         isSittingInWheelchair = false;
+        npcAnimator.SetBool("Laying", true);
         Debug.Log("NPC is now on the bed.");
     }
 

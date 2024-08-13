@@ -9,15 +9,28 @@ public class MachineStart : MonoBehaviour
     public float wheelDistance;
     public GameObject wheelchair;
     public Animator machineAnimator;
-    public OVRInput.Button interactionButton = OVRInput.Button.Three;
+    public KeyCode interactionKey = KeyCode.E; // E 키를 상호작용 키로 설정
+    public GameObject interactionPrompt; // Interaction prompt 참조
 
     // Update is called once per frame
     void Update()
     {
-        // 'e' 키를 눌렀을 때 onMachineStart 메서드 호출
-        if (OVRInput.GetDown(interactionButton))
+        // NPC와 휠체어가 가까이 있는지 확인
+        if (IsNearby())
         {
-            onMachineStart();
+            // 가까이 있으면 상호작용 프롬프트 활성화
+            interactionPrompt.SetActive(true);
+
+            // E 키를 눌렀을 때 onMachineStart 메서드 호출
+            if (Input.GetKeyDown(interactionKey))
+            {
+                onMachineStart();
+            }
+        }
+        else
+        {
+            // 멀어지면 상호작용 프롬프트 비활성화
+            interactionPrompt.SetActive(false);
         }
     }
 
@@ -33,9 +46,11 @@ public class MachineStart : MonoBehaviour
         {
             machineAnimator.SetTrigger("Machine_Start");
 
-            // Move the patient to the bed
+            // NPC를 침대 위치로 이동
             npcInteraction.LayOnBed(bedTransform);
 
+            // 상호작용 프롬프트 비활성화
+            interactionPrompt.SetActive(false);
         }
         else
         {
