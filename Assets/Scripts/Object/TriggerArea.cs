@@ -46,6 +46,8 @@ public class TriggerArea : MonoBehaviour
         }
     }
 
+    public bool IsInteracting() { return isInteracting; }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
