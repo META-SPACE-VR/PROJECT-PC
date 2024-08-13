@@ -14,14 +14,14 @@ public class Goods : MonoBehaviour
     GameObject interactionPrompt; // Interaction prompt
 
     [SerializeField]
-    OVRInput.Button interactionButton;
+    KeyCode interactionKey;
 
     void Awake() {
         interactionPrompt.SetActive(false);
     }
 
     private void Update() {
-        if(playerInRange && OVRInput.GetDown(interactionButton)) {
+        if(playerInRange && Input.GetKeyDown(interactionKey)) {
             SpawnFood();
         }
     }
