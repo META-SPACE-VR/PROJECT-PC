@@ -64,6 +64,8 @@ public class RobotArm : MonoBehaviour
         }
     }
 
+    public float GetUnitLength() { return unitLength; }
+
     // 현재 위치와 목표 위치에 따라 새로운 위치 계산 후 그 위치로 설정
     void UpdatePosition(Vector3 curPos, Vector3 newPos, bool isBackWard) {
         // 다음 movePercentage 계산
@@ -181,6 +183,7 @@ public class RobotArm : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other) {
+        // 퍼즐 경계의 가상의 벽에 닿으면 이동 초기화
         if(other.CompareTag("Wall")) {
             ResetMove();
         }
