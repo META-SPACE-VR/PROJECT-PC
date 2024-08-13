@@ -89,6 +89,7 @@ public class PasswordEntry : MonoBehaviour
             if (doorAnimator != null)
             {
                 doorAnimator.SetTrigger("OpenDoor"); // 정답을 맞추면 애니메이션 트리거 호출
+                doorAnimator.SetTrigger("character_nearby");
             }
         }
         else
