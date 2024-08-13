@@ -42,6 +42,9 @@ public class RobotArm : MonoBehaviour
     [SerializeField]
     Transform containerPuzzle; // 컨테이너 퍼즐
 
+    [SerializeField]
+    TriggerArea triggerArea; // Trigger Area
+
     readonly float epsilon = 0.0001f;
 
     public MoveEvent moveStarted; // 이동 시작 시 발생하는 이벤트
@@ -58,11 +61,13 @@ public class RobotArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if(Input.GetKeyDown(KeyCode.W)) { Move(MoveType.Up); }
-        if(Input.GetKeyDown(KeyCode.A)) { Move(MoveType.Left); }
-        if(Input.GetKeyDown(KeyCode.S)) { Move(MoveType.Down); }
-        if(Input.GetKeyDown(KeyCode.D)) { Move(MoveType.Right); }
-        if(Input.GetKeyDown(KeyCode.Space)) { Move(MoveType.Attach); }
+        if(triggerArea.IsInteracting()) {
+            if(Input.GetKeyDown(KeyCode.W)) { Move(MoveType.Up); }
+            if(Input.GetKeyDown(KeyCode.A)) { Move(MoveType.Left); }
+            if(Input.GetKeyDown(KeyCode.S)) { Move(MoveType.Down); }
+            if(Input.GetKeyDown(KeyCode.D)) { Move(MoveType.Right); }
+            if(Input.GetKeyDown(KeyCode.Space)) { Move(MoveType.Attach); }
+        }
 
         // isMoving이 true면 로봇팔 이동 시도
         if(isMoving) {
