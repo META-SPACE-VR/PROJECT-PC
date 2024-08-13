@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3258408925108741269
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_Name
+      value: Stalagmite4 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12.241251
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.76893497
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 81.02293
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.00000014106499
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 64f69f1df7e2cab499fb7f2f2b5ea659, type: 3}
