@@ -42,6 +42,8 @@ public class RobotArm : MonoBehaviour
     [SerializeField]
     Transform containerPuzzle; // 컨테이너 퍼즐
 
+    readonly float epsilon = 0.0001f;
+
     public MoveEvent moveStarted; // 이동 시작 시 발생하는 이벤트
     public UnityEvent moveFinished; // 이동 종료 시 발생하는 이벤트
 
@@ -130,7 +132,7 @@ public class RobotArm : MonoBehaviour
                             offset2 = hit.collider.transform.localPosition - transform.localPosition;
                             offset2.y = 0;
 
-                            if(offset2 == Vector3.zero) {
+                            if((offset2 - Vector3.zero).magnitude <= epsilon) {
                                 AttachContainer(selectedContainer);
                             }
                         }
