@@ -58,6 +58,12 @@ public class RobotArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        if(Input.GetKeyDown(KeyCode.W)) { Move(MoveType.Up); }
+        if(Input.GetKeyDown(KeyCode.A)) { Move(MoveType.Left); }
+        if(Input.GetKeyDown(KeyCode.S)) { Move(MoveType.Down); }
+        if(Input.GetKeyDown(KeyCode.D)) { Move(MoveType.Right); }
+        if(Input.GetKeyDown(KeyCode.Space)) { Move(MoveType.Attach); }
+
         // isMoving이 true면 로봇팔 이동 시도
         if(isMoving) {
             Vector3 curPos = new Vector3(unitLength * (curPosInPuzzle.x - 2.5f), transform.localPosition.y, unitLength * (curPosInPuzzle.y - 2.5f)) + offset1;
