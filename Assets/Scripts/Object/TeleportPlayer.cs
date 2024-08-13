@@ -5,7 +5,7 @@ using System.Collections; // IEnumerator를 사용하기 위한 네임스페이�
 public class TeleportPlayer : MonoBehaviour
 {
     public GameObject player; // 플레이어 오브젝트 (OVRCameraRig 포함)
-    public OVRInput.Button interactionButton = OVRInput.Button.Two; // 텔레포트 키 설정
+    public KeyCode interactionKey = KeyCode.E; // 텔레포트 키 설정 // 텔레포트 키 설정
     public GameObject interactionPrompt; // Interaction prompt 참조
     private bool canTeleport = false; // 텔레포트 가능 여부
     public Animator spaceshipAnimator; // 애니메이터
@@ -51,7 +51,7 @@ public class TeleportPlayer : MonoBehaviour
 
     void Update()
     {
-        if (canTeleport && OVRInput.GetDown(interactionButton))
+        if (canTeleport && Input.GetKeyDown(interactionKey))
         {
             Debug.Log("텔레포트!!!");
             StartCoroutine(TeleportCoroutine());
