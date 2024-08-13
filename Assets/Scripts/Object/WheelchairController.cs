@@ -8,7 +8,7 @@ public class WheelchairController : MonoBehaviour
     public GameObject player;
     public GameObject wheelchair;
     public TMP_Text interactionText; // 상호작용 텍스트 UI
-    public float offsetZ = 1f; // 휠체어를 플레이어의 앞에 배치할 오프셋
+    public float offsetZ = 0.5f; // 휠체어를 플레이어의 앞에 배치할 오프셋
 
     private bool isInteracting = false;
     private bool isPlayerInRange = false;
@@ -16,7 +16,6 @@ public class WheelchairController : MonoBehaviour
     private Transform originalParent;
 
     private float originalPlayerMoveSpeed;
-    public OVRInput.Button interactionButton = OVRInput.Button.Two;
 
     void Start()
     {
@@ -48,7 +47,7 @@ public class WheelchairController : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerInRange && OVRInput.GetDown(interactionButton))
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.R))
         {
             if (isInteracting)
             {
