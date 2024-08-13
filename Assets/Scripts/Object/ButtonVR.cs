@@ -1,22 +1,19 @@
-// ButtonVR.cs
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;  // Canvas Text 관리를 위해 필요
 
 public class ButtonVR : MonoBehaviour
-{
-    public GameObject button;
+{ 
+    public GameObject LeftButton;
+    public GameObject RightButton;
     public float rotationDuration = 1.0f;
-    public UnityEvent onPress;
-    public UnityEvent onRelease;
+    public Canvas canvas;
 
-    private GameObject presser;
     private GameObject wheel1, wheel2, wheel3, wheel4;
-    private bool isPressed;
 
     void Start()
     {
-        isPressed = false;
 
         wheel1 = GameObject.Find("Wheel_FBX1");
         wheel2 = GameObject.Find("Wheel_FBX2");
@@ -29,33 +26,31 @@ public class ButtonVR : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            StartRotateObjectLeft();
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartRotateObjectRight();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Enter: " + other.gameObject.name);
-        if (!isPressed && !RotationManager.isRotating)
+        if (canvas != null)
         {
-            button.transform.localPosition = new Vector3(-0.008f, -1.07f, 0.062f);
-            presser = other.gameObject;
-            isPressed = true;
-
-            if (onPress != null)
-            {
-                onPress.Invoke();
-            }
+            canvas.gameObject.SetActive(true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Trigger Exit: " + other.gameObject.name);
-        if (other.gameObject == presser)
+        if (canvas != null)
         {
-            button.transform.localPosition = new Vector3(0, 0, 0);
-            if (onRelease != null)
-            {
-                onRelease.Invoke();
-            }
-            isPressed = false;
+            canvas.gameObject.SetActive(false);
         }
     }
 
@@ -63,6 +58,7 @@ public class ButtonVR : MonoBehaviour
     {
         if (!RotationManager.isRotating)
         {
+            StartCoroutine(AnimateButtonPress(RightButton, new Vector3(-0.008f, -1.07f, 0.062f), new Vector3(0, 0, 0)));
             StartCoroutine(RotateObject(1));
         }
     }
@@ -71,6 +67,7 @@ public class ButtonVR : MonoBehaviour
     {
         if (!RotationManager.isRotating)
         {
+            StartCoroutine(AnimateButtonPress(LeftButton, new Vector3(-0.008f, -1.07f, 0.062f), new Vector3(0, 0, 0)));
             StartCoroutine(RotateObject(-1));
         }
     }
@@ -106,5 +103,32 @@ public class ButtonVR : MonoBehaviour
         wheel4.transform.rotation = endRotation4;
 
         RotationManager.isRotating = false;
+    }
+
+    private IEnumerator AnimateButtonPress(GameObject button, Vector3 pressedPosition, Vector3 releasedPosition)
+    {
+        float animationDuration = 0.2f; // 버튼 이동 애니메이션 지속 시간
+        float elapsedTime = 0f;
+
+        // 버튼이 눌리는 애니메이션
+        while (elapsedTime < animationDuration)
+        {
+            button.transform.localPosition = Vector3.Lerp(button.transform.localPosition, pressedPosition, elapsedTime / animationDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        button.transform.localPosition = pressedPosition;
+
+        // 버튼이 원래 위치로 돌아가는 애니메이션
+        elapsedTime = 0f;
+        while (elapsedTime < animationDuration)
+        {
+            button.transform.localPosition = Vector3.Lerp(button.transform.localPosition, releasedPosition, elapsedTime / animationDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        button.transform.localPosition = releasedPosition;
     }
 }
