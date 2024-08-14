@@ -36,7 +36,10 @@ public class Collectable : MonoBehaviour
 
     public void Collect()
     {
-        InventoryManager.AddItem(this, gameObject);
-        guideText.gameObject.SetActive(false);
+        if (InventoryManager.pickedItemIndex == -1)
+        {
+            InventoryManager.AddItem(this, gameObject);
+            guideText.gameObject.SetActive(false);
+        }
     }
 }
