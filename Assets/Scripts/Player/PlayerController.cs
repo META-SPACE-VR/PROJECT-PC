@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,9 +32,9 @@ public class PlayerController : MonoBehaviour
 
     // 앉았을때, 얼마나 앉을지 결정하는 변수
     [SerializeField]
-    private float sitPosY;
     private float originPosY;
-    private float applySitPosY;
+    private float originalHeight;
+    private float targetHeight;
 
     // 땅 착지 여부
     private CapsuleCollider capsuleCollider;
@@ -46,25 +45,16 @@ public class PlayerController : MonoBehaviour
 
     // 카메라 
     [SerializeField]
-    private float cameraRotationLimit;
+    private float cameraRotationLimit = 85f;
     private float currentCameraRotationX = 0f;
 
     // 필요한 컴포넌트
     [SerializeField]
     private Camera theCamera;
-    [SerializeField] private ActionBasedController leftController;
-    [SerializeField] private ActionBasedController rightController;
     private Rigidbody myRigid;
 
     // 애니메이터 컴포넌트
     private Animator animator;
-
-    // RiggingManager 참조 추가
-    private RiggingManager riggingManager;
-
-    // 머리 회전을 동기화할 트랜스폼 추가
-    [SerializeField]
-    private Transform headTransform;
 
     void Start()
     {
@@ -72,9 +62,8 @@ public class PlayerController : MonoBehaviour
         myRigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         applySpeed = walkSpeed;
-        riggingManager = GetComponent<RiggingManager>();
         originPosY = theCamera.transform.localPosition.y;
-        applySitPosY = originPosY;
+        targetHeight = originalHeight;
     }
 
     void Update()
@@ -84,71 +73,11 @@ public class PlayerController : MonoBehaviour
             IsGround();
             TryJump();
             TryRun();
-            TrySit();
             Move();
             CharacterRotation();
             CameraRotation();
             UpdateAnimator();
         }
-
-        // RiggingManager 업데이트
-        if (riggingManager != null)
-        {
-            riggingManager.UpdateRigging();
-        }
-
-        // 머리 회전 동기화
-        SyncHeadRotation();
-    }
-
-    private void SyncHeadRotation()
-    {
-        if (headTransform != null && theCamera != null)
-        {
-            headTransform.position = theCamera.transform.position; // 머리 위치 동기화
-            headTransform.rotation = theCamera.transform.rotation; // 머리 회전 동기화
-        }
-    }
-
-    private void TrySit()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            Sit();
-        }
-    }
-
-    private void Sit()
-    {
-        isSit = !isSit;
-
-        if (isSit)
-        {
-            applySpeed = sitSpeed;
-            applySitPosY = sitPosY;
-        }
-        else
-        {
-            applySpeed = walkSpeed;
-            applySitPosY = originPosY;
-        }
-        StartCoroutine(SitCoroutine());
-    }
-
-    IEnumerator SitCoroutine()
-    {
-        float startY = theCamera.transform.localPosition.y;
-        float elapsedTime = 0f;
-        float duration = 0.3f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float newY = Mathf.Lerp(startY, applySitPosY, elapsedTime / duration);
-            theCamera.transform.localPosition = new Vector3(theCamera.transform.localPosition.x, newY, theCamera.transform.localPosition.z);
-            yield return null;
-        }
-        theCamera.transform.localPosition = new Vector3(theCamera.transform.localPosition.x, applySitPosY, theCamera.transform.localPosition.z);
     }
 
     private void IsGround()
@@ -166,19 +95,18 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (isSit)
-            Sit();
+
         myRigid.velocity = transform.up * jumpForce;
         animator.SetTrigger("Jump");
     }
 
     private void TryRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxisRaw("Vertical") > 0)
         {
             Running();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        else
         {
             RunningCancel();
         }
@@ -186,8 +114,6 @@ public class PlayerController : MonoBehaviour
 
     private void Running()
     {
-        if (isSit)
-            Sit();
         isRun = true;
         applySpeed = runSpeed;
     }

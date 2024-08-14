@@ -27,11 +27,7 @@ public class MachineStart : MonoBehaviour
                 onMachineStart();
             }
         }
-        else
-        {
-            // 멀어지면 상호작용 프롬프트 비활성화
-            interactionPrompt.SetActive(false);
-        }
+
     }
 
     private bool IsNearby()
