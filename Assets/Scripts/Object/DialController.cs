@@ -10,6 +10,25 @@ public class DialController : MonoBehaviour
     public int endNumber = 7;
     public float rotationAngle = 45.0f;
 
+    private float range = 5f;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, range))
+            {
+                if (hit.transform == transform)
+                {
+                    RotateDial();
+                }
+            }
+        }
+    }
+
     public void RotateDial()
     {
         currentNumber += 1;

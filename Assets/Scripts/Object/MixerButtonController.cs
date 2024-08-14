@@ -13,6 +13,25 @@ public class MixerButtonController : MonoBehaviour
     public MixerCoverController cover;
     public Renderer Alert;
 
+    private float range = 5f;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, range))
+            {
+                if (hit.transform == transform)
+                {
+                    CheckValidate();
+                }
+            }
+        }
+    }
+
     public void CheckValidate()
     {
         if (cover.isClosed)
