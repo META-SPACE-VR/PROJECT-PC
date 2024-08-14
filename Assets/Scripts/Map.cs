@@ -44,26 +44,26 @@ public class Map : NetworkBehaviour
 		// 	return;
 		// }
 		// Debug.Log($"플레이어 {player.Username} 스폰 시도");
-		// var index = RoomPlayer.Players.IndexOf(player);
+		var index = RoomPlayer.Players.IndexOf(player);
 		// if (index < 0 || index >= spawnpoints.Length)
 		// {
 		// 	Debug.LogError($"유효하지 않은 스폰 포인트 인덱스: {index}");
 		// 	return;
 		// }
 
-		// var point = spawnpoints[index];
-        Vector3 pos = new(0,0,130);
+		var point = spawnpoints[index];
+        // Vector3 pos = new(0,0,130);
 
         // var playerObject = runner.Spawn(prefab, Vector3.zero, Quaternion.identity, player.Object.InputAuthority);
-        var playerObject = runner.Spawn(playerPrefab, pos, Quaternion.identity, player.Object.InputAuthority);
+        // var playerObject = runner.Spawn(playerPrefab, pos, Quaternion.identity, player.Object.InputAuthority);
 
 
-		// var playerObject = runner.Spawn(
-		// 	prefab,
-		// 	point.position,
-		// 	point.rotation,
-		// 	player.Object.InputAuthority
-		// );
+		var playerObject = runner.Spawn(
+			playerPrefab,
+			point.position,
+			point.rotation,
+			player.Object.InputAuthority
+		);
 
 		if (playerObject != null)
 		{
