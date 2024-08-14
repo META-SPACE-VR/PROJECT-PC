@@ -64,6 +64,9 @@ public class PlayerController : MonoBehaviour
         applySpeed = walkSpeed;
         originPosY = theCamera.transform.localPosition.y;
         targetHeight = originalHeight;
+        applySitPosY = originPosY;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
