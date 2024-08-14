@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
         riggingManager = GetComponent<RiggingManager>();
         originPosY = theCamera.transform.localPosition.y;
         applySitPosY = originPosY;
+
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()

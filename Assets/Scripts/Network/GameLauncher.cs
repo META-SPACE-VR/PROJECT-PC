@@ -20,8 +20,10 @@ public enum ConnectionStatus
 public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
 {
 	// [SerializeField] private MapData mapData; 
+	public Transform[] spawnpoints;
 	[SerializeField] private GameManager _gameManagerPrefab;
 	[SerializeField] private RoomPlayer _roomPlayerPrefab;
+	[SerializeField] private NetworkObject _playerPrefab;
 	[SerializeField] private DisconnectUI _disconnectUI;
 
 	public static ConnectionStatus ConnectionStatus = ConnectionStatus.Disconnected;
@@ -159,6 +161,15 @@ public class GameLauncher : MonoBehaviour, INetworkRunnerCallbacks
 				runner.Spawn(_gameManagerPrefab, Vector3.zero, Quaternion.identity);
 			var roomPlayer = runner.Spawn(_roomPlayerPrefab, pos, Quaternion.identity, player);
 			roomPlayer.GameState = RoomPlayer.EGameState.Lobby;
+
+			var index = RoomPlayer.Players.IndexOf(roomPlayer);
+			var point = spawnpoints[index];
+			var playerObject = runner.Spawn(
+				_playerPrefab,
+				point.position,
+				point.rotation,
+				player
+			);
 		}
 		SetConnectionStatus(ConnectionStatus.Connected);
 	}
