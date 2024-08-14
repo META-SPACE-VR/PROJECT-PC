@@ -14322,7 +14322,7 @@ MonoBehaviour:
   _gameManagerPrefab: {fileID: 8191488350400452051, guid: 711bef811d77f9441bc6114f520b3c37, type: 3}
   _roomPlayerPrefab: {fileID: 3295496192561113520, guid: 7d0dfce0a06a2a54e82669c18295b1a2, type: 3}
   _disconnectUI: {fileID: 1111256009}
-  Camera: {fileID: 0}
+  Camera: {fileID: 1276143024}
   OVR: {fileID: 0}
 --- !u!114 &1673438465
 MonoBehaviour:
