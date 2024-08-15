@@ -19,6 +19,9 @@ public class DestructibleRock : MonoBehaviour
     [SerializeField]
     AudioSource crumbleSound;
 
+    [SerializeField]
+    float cellDestroyTime = 3f;
+
     private void Start() {
         // 원래 돌은 활성화
         gameObject.SetActive(true);
@@ -41,6 +44,7 @@ public class DestructibleRock : MonoBehaviour
         // 조각들은 활성화
         foreach(GameObject cell in cells) {
             cell.SetActive(true);
+            Destroy(cell, cellDestroyTime);
         }
 
         // 조각들 폭발
