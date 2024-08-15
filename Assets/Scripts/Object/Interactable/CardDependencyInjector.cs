@@ -13,30 +13,30 @@ public class CardDependencyInjector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            PlayerData playerData = other.GetComponent<PlayerData>();
+        // if (other.CompareTag("Player"))
+        // {
+        //     PlayerData playerData = other.GetComponent<PlayerData>();
 
-            if (playerData.currentJob != playerJob)
-            {
-                return;
-            }
+        //     if (playerData.currentJob != playerJob)
+        //     {
+        //         return;
+        //     }
 
-            Transform player = other.transform;
+        //     Transform player = other.transform;
 
-            Transform inventroy = player.Find("[BuildingBlock] Camera Rig/TrackingSpace/CenterEyeAnchor/MainCanvas/Inventory");
-            Transform guideText = player.Find("[BuildingBlock] Camera Rig/TrackingSpace/CenterEyeAnchor/MainCanvas/ShowText");
+        //     Transform inventroy = player.Find("[BuildingBlock] Camera Rig/TrackingSpace/CenterEyeAnchor/MainCanvas/Inventory");
+        //     Transform guideText = player.Find("[BuildingBlock] Camera Rig/TrackingSpace/CenterEyeAnchor/MainCanvas/ShowText");
 
-            if (inventroy != null)
-            {
-                inventoryManager = inventroy.GetComponent<InventoryManager>();
-                collectable.InjectInventoryManager(inventoryManager);
-            }
-            if (guideText != null)
-            {
-                textMesh = guideText.GetComponent<TextMeshProUGUI>();
-                collectable.InjectGuideText(textMesh);
-            }
-        }
+        //     if (inventroy != null)
+        //     {
+        //         inventoryManager = inventroy.GetComponent<InventoryManager>();
+        //         collectable.InjectInventoryManager(inventoryManager);
+        //     }
+        //     if (guideText != null)
+        //     {
+        //         textMesh = guideText.GetComponent<TextMeshProUGUI>();
+        //         collectable.InjectGuideText(textMesh);
+        //     }
+        // }
     }
 }
