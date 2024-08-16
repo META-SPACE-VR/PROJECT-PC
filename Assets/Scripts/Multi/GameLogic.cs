@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameLogic : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] private NetworkPrefabRef playerPrefab;
-    [Networked, Capacity(12)] private NetworkDictionary<PlayerRef, Player> Players => default;
+    [Networked, Capacity(4)] private NetworkDictionary<PlayerRef, Player> Players => default;
     
 
     public void PlayerJoined(PlayerRef player)
