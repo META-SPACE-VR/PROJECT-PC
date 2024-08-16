@@ -284,6 +284,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8669816830556551529}
     m_Modifications:
+    - target: {fileID: 3544919350361911499, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627272335589081358, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5232660033367828059, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5918351641181578870, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6239918330384693157, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: m_Name
       value: animation_rigged
