@@ -8,10 +8,14 @@ public class Player : NetworkBehaviour
     [SerializeField] private SimpleKCC kcc;
     [SerializeField] private Transform camTarget;
     [SerializeField] private float lookSensitivity = 0.15f;
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float runSpeed = 8f;
     [SerializeField] private float jumpImpulse = 10f;
 
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private Animator animator;  // Animator 추가
+
+    private float currentSpeed;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -26,18 +30,15 @@ public class Player : NetworkBehaviour
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
             }
 
-            // 본인만의 카메라 할당
             playerCamera = Camera.main;
             playerCamera.transform.SetParent(camTarget);
             playerCamera.transform.localPosition = Vector3.zero;
             playerCamera.transform.localRotation = Quaternion.identity;
 
-            // CameraFollow 싱글톤으로 본인 카메라 타겟 설정
             CameraFollow.Singleton.SetTarget(camTarget);
         }
         else
         {
-            // 본인이 아닌 다른 플레이어의 카메라는 비활성화
             if (playerCamera != null)
             {
                 playerCamera.enabled = false;
@@ -49,17 +50,15 @@ public class Player : NetworkBehaviour
     {
         if (GetInput(out NetInput input))
         {
+            // 회전 처리 추가 (마우스 움직임 또는 입력)
             kcc.AddLookRotation(input.LookDelta * lookSensitivity);
+
+            // KCC의 움직임 업데이트
+            UpdateMovement(input);
+
+            // 카메라 타겟 업데이트
             UpdateCamTarget();
-            Vector3 worldDirection = kcc.TransformRotation * new Vector3(input.Direction.x, 0f, input.Direction.y);
-            float jump = 0f;
 
-            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Jump) && kcc.IsGrounded)
-            {
-                jump = jumpImpulse;
-            }
-
-            kcc.Move(worldDirection.normalized * speed, jump);
             PreviousButtons = input.Buttons;
         }
     }
@@ -67,6 +66,38 @@ public class Player : NetworkBehaviour
     public override void Render()
     {
         UpdateCamTarget();
+
+        // NetInput 타입을 명시적으로 지정
+        if (GetInput<NetInput>(out var input))
+        {
+            UpdateAnimation(input);
+        }
+    }
+
+    private void UpdateMovement(NetInput input)
+    {
+        // 달리기와 걷기 속도 설정
+        currentSpeed = input.Buttons.IsSet(InputButton.Run) ? runSpeed : walkSpeed;
+
+        Vector3 worldDirection = kcc.TransformRotation * new Vector3(input.Direction.x, 0f, input.Direction.y);
+        float jump = 0f;
+
+        // 점프 입력 감지
+        if (input.Buttons.WasPressed(PreviousButtons, InputButton.Jump) && kcc.IsGrounded)
+        {
+            jump = jumpImpulse;
+        }
+
+        kcc.Move(worldDirection.normalized * currentSpeed, jump);
+    }
+
+    private void UpdateAnimation(NetInput input)
+    {
+        bool isWalking = input.Direction.magnitude > 0;
+        bool isRunning = input.Buttons.IsSet(InputButton.Run);
+        
+        animator.SetBool("Walk", isWalking && !isRunning);
+        animator.SetBool("Run", isRunning);
     }
 
     private void UpdateCamTarget()
