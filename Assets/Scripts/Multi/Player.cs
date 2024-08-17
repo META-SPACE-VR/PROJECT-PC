@@ -14,6 +14,8 @@ public class Player : NetworkBehaviour
 
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Animator animator;  // Animator 추가
+    private bool isInputEnabled = true; // Default to true
+
 
     private float currentSpeed;
 
@@ -103,5 +105,10 @@ public class Player : NetworkBehaviour
     private void UpdateCamTarget()
     {
         camTarget.localRotation = Quaternion.Euler(kcc.GetLookRotation().x, 0f, 0f);
+    }
+
+     public void SetInputEnabled(bool enabled)
+    {
+        isInputEnabled = enabled;
     }
 }
