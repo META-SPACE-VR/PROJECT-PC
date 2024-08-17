@@ -1426,6 +1426,7 @@ GameObject:
   - component: {fileID: 1674243069456783647}
   - component: {fileID: 4121051539378732595}
   - component: {fileID: 5033451430443433999}
+  - component: {fileID: 8049202106988471231}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1518,9 +1519,11 @@ MonoBehaviour:
   kcc: {fileID: 4121051539378732595}
   camTarget: {fileID: 3559117495271750627}
   lookSensitivity: 0.15
-  speed: 5
+  walkSpeed: 5
+  runSpeed: 8
   jumpImpulse: 10
   playerCamera: {fileID: 5542594237261943205}
+  animator: {fileID: 8049202106988471231}
 --- !u!114 &4121051539378732595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1580,6 +1583,27 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 1.06, z: 0.09}
+--- !u!95 &8049202106988471231
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690234683535358372}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 35ce5b15827454286ab150d75fad9bb5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2880616880526894496
 GameObject:
   m_ObjectHideFlags: 0
