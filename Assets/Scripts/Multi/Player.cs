@@ -16,6 +16,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private Animator animator;  // Animator 추가
     private bool isInputEnabled = true; // Default to true
 
+    public int CoinCount; 
+
 
     private float currentSpeed;
 
