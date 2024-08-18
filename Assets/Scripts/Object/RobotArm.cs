@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
+using Fusion;
 
 [System.Serializable]
 public class MoveEvent : UnityEvent<MoveType> {}
 
-public class RobotArm : MonoBehaviour
+public class RobotArm : NetworkBehaviour
 {
     [SerializeField]
     Vector2 initPosInPuzzle; // 로봇 팔의 초기 위치 (퍼즐판 기준)
