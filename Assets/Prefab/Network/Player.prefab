@@ -620,7 +620,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3559117495271750627}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CamTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -654,7 +654,7 @@ GameObject:
   - component: {fileID: 2067898338175722801}
   - component: {fileID: 6970770072791029722}
   - component: {fileID: 5056846070654046060}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1427,9 +1427,9 @@ GameObject:
   - component: {fileID: 4121051539378732595}
   - component: {fileID: 5033451430443433999}
   - component: {fileID: 8049202106988471231}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1524,6 +1524,7 @@ MonoBehaviour:
   jumpImpulse: 10
   playerCamera: {fileID: 5542594237261943205}
   animator: {fileID: 8049202106988471231}
+  CoinCount: 0
 --- !u!114 &4121051539378732595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1936,7 +1937,7 @@ GameObject:
   - component: {fileID: 3333129883437200960}
   - component: {fileID: 2065235513182655261}
   - component: {fileID: 8618500019123997151}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PickedItemPosition (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2368,7 +2369,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6553774368910276830}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ZoomedItemPosition (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
