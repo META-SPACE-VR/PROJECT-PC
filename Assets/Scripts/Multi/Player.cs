@@ -1,6 +1,7 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
 {
@@ -63,9 +64,16 @@ public class Player : NetworkBehaviour
             // 카메라 타겟 업데이트
             UpdateCamTarget();
 
+            // 클릭 상호작용 처리
+            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
+            {
+                HandleInteraction();
+            }
+
             PreviousButtons = input.Buttons;
         }
     }
+
 
     public override void Render()
     {
@@ -78,6 +86,24 @@ public class Player : NetworkBehaviour
         }
     }
 
+
+    private void HandleInteraction()
+    {
+        Ray ray = playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 5f))
+        {
+            Debug.Log("Raycast hit: " + hit.transform.name);
+
+            // 예: 문과 상호작용하는 로직 추가
+            var glassDoor = hit.transform.GetComponent<GlassDoor>();
+            if (glassDoor != null)
+            {
+                glassDoor.ToggleDoor();  // 문 열기/닫기 처리
+            }
+        }
+    }
     private void UpdateMovement(NetInput input)
     {
         // 달리기와 걷기 속도 설정

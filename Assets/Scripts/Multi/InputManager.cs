@@ -12,6 +12,7 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
     private NetInput accumulatedInput;
     private bool resetInput;
 
+
     void IBeforeUpdate.BeforeUpdate()
     {
         if (resetInput)
@@ -47,6 +48,12 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             Vector2 mouseDelta = mouse.delta.ReadValue();
             Vector2 lookRotationDelta = new(-mouseDelta.y, mouseDelta.x);
             accumulatedInput.LookDelta += lookRotationDelta;
+
+            // 추가된 부분: 마우스 클릭 감지
+            if (mouse.leftButton.wasPressedThisFrame)
+            {
+                buttons.Set(InputButton.Interact, true);  // 상호작용 버튼 처리
+            }
         }
 
         if (keyboard != null)
@@ -65,11 +72,11 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             accumulatedInput.Direction += moveDirection;
             buttons.Set(InputButton.Jump, keyboard.spaceKey.isPressed);
             buttons.Set(InputButton.Run, keyboard.leftShiftKey.isPressed);  // 달리기 버튼 추가
-
         }
 
         accumulatedInput.Buttons = new NetworkButtons(accumulatedInput.Buttons.Bits | buttons.Bits);
     }
+
 
     void INetworkRunnerCallbacks.OnConnectedToServer(NetworkRunner runner) { }
 

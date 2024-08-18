@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - Corridor
   - Medicine
+  - Floor
+  - SamplesInfoPanel
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - Destructible
   - Holdables
   - Grabbable
-  - 
+  - interactableLayerMask
   - 
   - 
   - 
