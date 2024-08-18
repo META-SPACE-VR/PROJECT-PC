@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
 public class StairsEvent : MonoBehaviour
 {
-    [SerializeField]
     Camera mainCamera; // 메인 카메라
-
+    
     [SerializeField]
     Camera targetCamera; // 목표 카메라
+
+    [SerializeField]
+    TriggerArea triggerArea; // Trigger Area
 
     [SerializeField]
     FadePanel fadePanel; // 페이드 판넬
@@ -19,7 +22,8 @@ public class StairsEvent : MonoBehaviour
     bool isPlaying = false; // 이벤트 재생 상태
 
     public void PlayEvent() {
-        if(!isPlaying) {
+        mainCamera = triggerArea.GetInteractingPlayer()?.GetComponentInChildren<Camera>();
+        if(mainCamera && !isPlaying) {
             StartCoroutine(PlayEventFlow());
         }
     }

@@ -111,6 +111,7 @@ public class TriggerArea : MonoBehaviour
             // You could disable player movement or camera control here if needed
             playerController.SetInputEnabled(false); // Disable player input
         }
+
         Cursor.lockState = CursorLockMode.None; // Unlock the cursor for UI interaction
     }
 
@@ -129,5 +130,10 @@ public class TriggerArea : MonoBehaviour
     public bool IsInteracting()
     {
         return isInteracting;
+    }
+
+    // give player who interacting
+    public Player GetInteractingPlayer() {
+        return isInteracting ? playerController : null;
     }
 }

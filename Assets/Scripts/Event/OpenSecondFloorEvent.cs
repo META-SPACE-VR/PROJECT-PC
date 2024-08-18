@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class OpenSecondFloorEvent : MonoBehaviour
 {
-    [SerializeField]
     Camera mainCamera; // 메인 카메라
 
     [SerializeField]
     Camera targetCamera; // 목표 카메라
+
+    [SerializeField]
+    TriggerArea triggerArea; // Trigger Area
 
     [SerializeField]
     FadePanel fadePanel; // 페이드 판넬
@@ -44,7 +46,8 @@ public class OpenSecondFloorEvent : MonoBehaviour
     }
 
     public void PlayEvent() {
-        if(!isPlaying) {
+        mainCamera = triggerArea.GetInteractingPlayer()?.GetComponentInChildren<Camera>();
+        if(mainCamera && !isPlaying) {
             StartCoroutine(PlayEventFlow());
         }
     }
