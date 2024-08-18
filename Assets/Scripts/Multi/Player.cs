@@ -14,13 +14,14 @@ public class Player : NetworkBehaviour
     [SerializeField] private float jumpImpulse = 10f;
 
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private Animator animator;  // Animator 추가
+
+    // Replace Animator with NetworkMecanimAnimator
+    [SerializeField] private NetworkMecanimAnimator networkAnimator;
+
     private bool isInputEnabled = true; // Default to true
-
-    public int CoinCount; 
-
-
     private float currentSpeed;
+
+    private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -53,39 +54,41 @@ public class Player : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (GetInput(out NetInput input))
+        // Apply animation parameters only when input is available and it is a forward tick
+        if (GetInput(out NetInput input) && Runner.IsForward)
         {
-            // 회전 처리 추가 (마우스 움직임 또는 입력)
+            // Rotate based on input
             kcc.AddLookRotation(input.LookDelta * lookSensitivity);
 
-            // KCC의 움직임 업데이트
+            // Update movement
             UpdateMovement(input);
 
-            // 카메라 타겟 업데이트
+            // Update camera target
             UpdateCamTarget();
 
-            // 클릭 상호작용 처리
+            // Handle interaction for mouse click
             if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
             {
-                HandleInteraction();
+                HandleInteraction(); // Example: Handle object interaction
             }
+
+            // Handle interaction for E key (Trigger)
+            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+            {
+                HandleTriggerInteraction(); // Example: Handle trigger interaction (E key)
+            }
+
+            // Update animation parameters based on input
+            UpdateAnimation(input);
 
             PreviousButtons = input.Buttons;
         }
     }
 
-
     public override void Render()
     {
         UpdateCamTarget();
-
-        // NetInput 타입을 명시적으로 지정
-        if (GetInput<NetInput>(out var input))
-        {
-            UpdateAnimation(input);
-        }
     }
-
 
     private void HandleInteraction()
     {
@@ -96,23 +99,41 @@ public class Player : NetworkBehaviour
         {
             Debug.Log("Raycast hit: " + hit.transform.name);
 
-            // 예: 문과 상호작용하는 로직 추가
             var glassDoor = hit.transform.GetComponent<GlassDoor>();
             if (glassDoor != null)
             {
-                glassDoor.ToggleDoor();  // 문 열기/닫기 처리
+                glassDoor.ToggleDoor();  // Handle door interaction
             }
         }
     }
+
+    // New method to handle Trigger (E key) interactions
+    private void HandleTriggerInteraction()
+    {
+        if (currentTriggerArea != null)
+        {
+            if (currentTriggerArea.IsInteracting())
+            {
+                currentTriggerArea.ExitInteraction();
+            }
+            else
+            {
+                currentTriggerArea.EnterInteraction();
+            }
+        }
+        else
+        {
+            Debug.Log("No TriggerArea in range.");
+        }
+    }
+
     private void UpdateMovement(NetInput input)
     {
-        // 달리기와 걷기 속도 설정
         currentSpeed = input.Buttons.IsSet(InputButton.Run) ? runSpeed : walkSpeed;
-
         Vector3 worldDirection = kcc.TransformRotation * new Vector3(input.Direction.x, 0f, input.Direction.y);
         float jump = 0f;
 
-        // 점프 입력 감지
+        // Detect jump
         if (input.Buttons.WasPressed(PreviousButtons, InputButton.Jump) && kcc.IsGrounded)
         {
             jump = jumpImpulse;
@@ -125,9 +146,10 @@ public class Player : NetworkBehaviour
     {
         bool isWalking = input.Direction.magnitude > 0;
         bool isRunning = input.Buttons.IsSet(InputButton.Run);
-        
-        animator.SetBool("Walk", isWalking && !isRunning);
-        animator.SetBool("Run", isRunning);
+
+        // Set parameters using the NetworkMecanimAnimator component
+        networkAnimator.Animator.SetBool("Walk", isWalking && !isRunning);
+        networkAnimator.Animator.SetBool("Run", isRunning);
     }
 
     private void UpdateCamTarget()
@@ -135,8 +157,20 @@ public class Player : NetworkBehaviour
         camTarget.localRotation = Quaternion.Euler(kcc.GetLookRotation().x, 0f, 0f);
     }
 
-     public void SetInputEnabled(bool enabled)
+    public void SetInputEnabled(bool enabled)
     {
         isInputEnabled = enabled;
+    }
+
+    // This method is called by the TriggerArea when the player enters
+    public void SetCurrentTriggerArea(TriggerArea triggerArea)
+    {
+        currentTriggerArea = triggerArea;
+    }
+
+    // This method is called by the TriggerArea when the player exits
+    public void ClearCurrentTriggerArea()
+    {
+        currentTriggerArea = null;
     }
 }

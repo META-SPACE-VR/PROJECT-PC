@@ -68,7 +68,12 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
                 moveDirection += Vector2.left;
             if (keyboard.dKey.isPressed)
                 moveDirection += Vector2.right;
-
+            // if (keyboard.eKey.isPressed)
+            // {
+            //     buttons.Set(InputButton.Trigger, true);  // E key triggers interaction
+            // }
+            buttons.Set(InputButton.Trigger, keyboard.eKey.isPressed);
+            
             accumulatedInput.Direction += moveDirection;
             buttons.Set(InputButton.Jump, keyboard.spaceKey.isPressed);
             buttons.Set(InputButton.Run, keyboard.leftShiftKey.isPressed);  // 달리기 버튼 추가

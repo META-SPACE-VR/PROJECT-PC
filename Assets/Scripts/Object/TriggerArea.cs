@@ -33,18 +33,7 @@ public class TriggerArea : MonoBehaviour
             return;
         }
 
-        // Toggle interaction mode on key press
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            if (isInteracting)
-            {
-                ExitInteraction();
-            }
-            else
-            {
-                EnterInteraction();
-            }
-        }
+        // The interaction logic is now handled by the Player's HandleTriggerInteraction method.
     }
 
     void OnTriggerEnter(Collider other)
@@ -59,8 +48,17 @@ public class TriggerArea : MonoBehaviour
             if (playerController != null && playerController.HasInputAuthority)
             {
                 mainCamera = playerController.GetComponentInChildren<Camera>(); // Get the camera from the player
+
+                originalViewTransform = playerController.transform.Find("Camera Offset");
+
+                if (originalViewTransform == null)
+                {
+                    Debug.LogError("OriginalViewTransform (Camera Offset) not found in player hierarchy.");
+                }
+
                 interactionPrompt.SetActive(true); // Show the interaction prompt
                 isPlayerInRange = true;
+                playerController.SetCurrentTriggerArea(this);  // Inform the player that they are in range
             }
         }
     }
@@ -72,6 +70,7 @@ public class TriggerArea : MonoBehaviour
         {
             isPlayerInRange = false;
             interactionPrompt.SetActive(false); // Hide the interaction prompt
+            playerController.ClearCurrentTriggerArea();  // Inform the player that they are out of range
         }
     }
 
