@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using Fusion;
 
 [Serializable]
 public class UIData {
@@ -14,9 +13,9 @@ public class UIData {
     }
 }
 
-public class DisplayUIManager : MonoBehaviour
+public class DisplayUIManager : NetworkBehaviour
 {
-    DisplayUIType currentType = DisplayUIType.Main; // 현재 UI 타입
+    [Networked] DisplayUIType CurrentType { get; set; } = DisplayUIType.Main; // 현재 UI 타입
     
     [SerializeField]
     List<UIData> uiDatas; // UI 목록 (List)
@@ -24,30 +23,32 @@ public class DisplayUIManager : MonoBehaviour
     readonly Dictionary<DisplayUIType, GameObject> uiDict = new(); // UI 목록 (Dictionary)
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {   
         foreach (UIData uiData in uiDatas) {
             uiDict.Add(uiData.uiType, uiData.ui);
         }
+    }
 
-        ChangeUI(DisplayUIType.Main);
+    public override void Spawned() {
+        ChangeUI(CurrentType);
     }
     
     // UI 변경
     void ChangeUI(DisplayUIType nextType) {
         // 변경하려는 타입이 현재 타입이랑 같다면 종료
-        if(currentType == nextType) return;
+        if(CurrentType == nextType) return;
 
         // 기존 UI 비활성화
-        uiDict[currentType].SetActive(false);
+        uiDict[CurrentType].SetActive(false);
 
         // currentType에 새로운 타입 반영
-        currentType = nextType;
+        CurrentType = nextType;
 
         // 새 UI 활성화
-        uiDict[currentType].SetActive(true);
+        uiDict[CurrentType].SetActive(true);
 
-        Debug.Log("Change UI : " + currentType);
+        Debug.Log("Change UI : " + CurrentType);
     }
 
     public void NavigateMainUI() { ChangeUI(DisplayUIType.Main); }
@@ -57,18 +58,18 @@ public class DisplayUIManager : MonoBehaviour
 
     // 현재 페이지의 활성화된 InputField에 문자 추가
     public void AddCharacter(string character) {
-        uiDict[currentType].GetComponent<PageUI>().AddCharacter(character);
+        uiDict[CurrentType].GetComponent<PageUI>().AddCharacter(character);
     }
 
     // 현재 페이지의 활성화된 InputField의 맨 뒤 문자 제거
     public void RemoveCharacter()
     {
-        uiDict[currentType].GetComponent<PageUI>().RemoveCharacter();
+        uiDict[CurrentType].GetComponent<PageUI>().RemoveCharacter();
     }
 
     // 답 확인
     public void CheckAnswer()
     {
-        uiDict[currentType].GetComponent<PageUI>().CheckAnswer();
+        uiDict[CurrentType].GetComponent<PageUI>().CheckAnswer();
     }
 }
