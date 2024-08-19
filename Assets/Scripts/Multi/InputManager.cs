@@ -12,7 +12,6 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
     private NetInput accumulatedInput;
     private bool resetInput;
 
-
     void IBeforeUpdate.BeforeUpdate()
     {
         if (resetInput)

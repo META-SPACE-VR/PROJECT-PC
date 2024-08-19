@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 76051553361542126}
   - component: {fileID: 4182133620934529169}
   - component: {fileID: 4573428365190184087}
+  - component: {fileID: 6735032491861150065}
   m_Layer: 0
   m_Name: glass_panel_1_door
   m_TagString: Untagged
@@ -119,7 +120,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46fe713d03b9a8c44a01ccbf74228b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isClosed: 1
+--- !u!114 &6735032491861150065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234968166487095393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 0
+  ObjectInterest: 1
+  Flags: 0
+  NestedObjects: []
+  NetworkedBehaviours: []
 --- !u!1 &5996347290827694343
 GameObject:
   m_ObjectHideFlags: 0

@@ -29460,8 +29460,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4198504541492903096}
   - component: {fileID: 5306269440915959757}
-  - component: {fileID: 6793944268751315271}
-  - component: {fileID: 2472336534590925509}
   m_Layer: 0
   m_Name: lab (2)
   m_TagString: Untagged
@@ -29512,34 +29510,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 25.238218, y: 5.906612, z: 30.280388}
   m_Center: {x: 5.5575113, y: -3.978068, z: -36.046597}
---- !u!114 &6793944268751315271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6801328785501805088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a19bf77249fb20045885367e44831c13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectables: []
-  putables: []
---- !u!114 &2472336534590925509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6801328785501805088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a1f84eee81edc4493680969cbae71a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectables: []
-  putables: []
 --- !u!1 &6853440749140019369
 GameObject:
   m_ObjectHideFlags: 0
@@ -33734,8 +33704,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 2721487681857969424}
-  player: {fileID: 0}
-  door: {fileID: 126970030993161735}
 --- !u!1 &7615099118737994818
 GameObject:
   m_ObjectHideFlags: 0
