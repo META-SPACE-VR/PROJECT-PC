@@ -25,6 +25,8 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        pickedItemPosition = GameObject.Find("PickedItemPosition");
+
         collectables = new Dictionary<int, Collectable>();
 
         for (int i = 0; i < slots.Length; i++) 

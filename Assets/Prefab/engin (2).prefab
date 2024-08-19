@@ -574,6 +574,7 @@ GameObject:
   - component: {fileID: 3514933683325370231}
   - component: {fileID: 3647982846232695475}
   - component: {fileID: 5289882629908290630}
+  - component: {fileID: 6120650422107389421}
   m_Layer: 0
   m_Name: door_outer
   m_TagString: Untagged
@@ -725,6 +726,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.079859, y: 4.0475607, z: 4.5919685}
   m_Center: {x: -0.05577651, y: 2.0237765, z: -0.6327893}
+--- !u!114 &6120650422107389421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3514933683327509885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 0
+  ObjectInterest: 1
+  Flags: 0
+  NestedObjects: []
+  NetworkedBehaviours: []
 --- !u!1 &7940027874841254701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2023,17 +2041,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7290635998131905956, guid: 4ee3484d470afc141a439a1c5fe0a5f9, type: 3}
   m_PrefabInstance: {fileID: 4431392502995792693}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6647893123752669925 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7006888065070170576, guid: 4ee3484d470afc141a439a1c5fe0a5f9, type: 3}
-  m_PrefabInstance: {fileID: 4431392502995792693}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a1b577fdd190544d8d955705097ffa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5343325941207264358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2096,17 +2103,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 46109743569952574, guid: ef828efefbd27ac46a66a687d8cb1ad2, type: 3}
   m_PrefabInstance: {fileID: 5343325941207264358}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5891837946908077798 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2009535377430708864, guid: ef828efefbd27ac46a66a687d8cb1ad2, type: 3}
-  m_PrefabInstance: {fileID: 5343325941207264358}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a1b577fdd190544d8d955705097ffa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5760927213896136549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2184,12 +2180,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3772946838360792172, guid: 3f740dcf056e75a48bac97ec8d38be86, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2788679037104018137}
-    - targetCorrespondingSourceObject: {fileID: 3772946838360792172, guid: 3f740dcf056e75a48bac97ec8d38be86, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5834800306167747384}
-    - targetCorrespondingSourceObject: {fileID: 3772946838360792172, guid: 3f740dcf056e75a48bac97ec8d38be86, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7198012235511470497}
   m_SourcePrefab: {fileID: 100100000, guid: 3f740dcf056e75a48bac97ec8d38be86, type: 3}
 --- !u!4 &410242539836747098 stripped
 Transform:
@@ -2222,35 +2212,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 36.36448, y: 8.001991, z: 42.022297}
   m_Center: {x: 9.793919, y: 0.576113, z: -20.341227}
---- !u!114 &5834800306167747384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8912306932782820105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a19bf77249fb20045885367e44831c13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectables:
-  - {fileID: 6647893123752669925}
-  - {fileID: 5891837946908077798}
-  putables: []
---- !u!114 &7198012235511470497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8912306932782820105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a1f84eee81edc4493680969cbae71a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectables:
-  - {fileID: 6647893123752669925}
-  - {fileID: 5891837946908077798}
-  putables: []

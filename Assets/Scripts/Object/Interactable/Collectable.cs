@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class Collectable : MonoBehaviour
+public class Collectable : NetworkBehaviour
 {
     public GameObject Prefab;
     public string Name;
@@ -12,16 +13,16 @@ public class Collectable : MonoBehaviour
     public TextMeshProUGUI guideText;
     public InventoryManager InventoryManager;
 
-    public void InjectInventoryManager(InventoryManager manager)
+    private void OnMouseEnter()
     {
-        InventoryManager = manager;
+        ShowText();
     }
 
-    public void InjectGuideText(TextMeshProUGUI textMesh)
+    private void OnMouseExit()
     {
-        guideText = textMesh;
+        HideText();
     }
-    
+
     public void ShowText()
     {
         guideText.text = string.Format("\"{0}\" 줍기", Name);

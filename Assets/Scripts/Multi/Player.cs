@@ -104,6 +104,12 @@ public class Player : NetworkBehaviour
             {
                 glassDoor.ToggleDoor();  // Handle door interaction
             }
+
+            var collectable = hit.transform.GetComponent<Collectable>();
+            if (collectable != null)
+            {
+                collectable.Collect();
+            }
         }
     }
 
