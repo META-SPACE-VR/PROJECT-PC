@@ -10,10 +10,10 @@ public class RobotArm : NetworkBehaviour
     [SerializeField]
     Vector2 initPosInPuzzle; // 로봇 팔의 초기 위치 (퍼즐판 기준)
 
-    Vector2 curPosInPuzzle; // 로봇 팔의 현재 위치 (퍼즐판 기준)
-    Vector2 targetPosInPuzzle; // 로봇팔의 목표 위치 (퍼즐판 기준)
-    Vector3 offset1 = Vector3.zero; // 보정 값 1
-    Vector3 offset2 = Vector3.zero; // 보정 값 2
+    [Networked] private Vector2 curPosInPuzzle { get; set; } // 로봇 팔의 현재 위치 (퍼즐판 기준)
+    [Networked] private Vector2 targetPosInPuzzle { get; set; } // 로봇팔의 목표 위치 (퍼즐판 기준)
+    [Networked] private Vector3 offset1 { get; set; } = Vector3.zero; // 보정 값 1
+    [Networked] private Vector3 offset2 { get; set; } = Vector3.zero; // 보정 값 2
 
     [SerializeField]
     float unitLength; // 한칸의 단위 길이
@@ -21,12 +21,12 @@ public class RobotArm : NetworkBehaviour
     [SerializeField]
     float moveTime; // 한칸 움직이는데 걸리는 시간
 
-    float movePercentage; // 움직인 비율
+    [Networked] private float movePercentage { get; set; } // 움직인 비율
 
-    bool isMoving = false; // 이동 상태
-    bool isMoveReset = false; // 이동 초기화 여부
-    bool isAttaching = false; // 컨테이너 부착 여부
-    GameObject selectedContainer = null; // 선택된 컨테이너
+    [Networked] NetworkBool isMoving { get; set; } = false; // 이동 상태
+    [Networked] NetworkBool isMoveReset { get; set; } = false; // 이동 초기화 여부
+    [Networked] NetworkBool isAttaching { get; set; } = false; // 컨테이너 부착 여부
+    [Networked] NetworkObject selectedContainer { get; set; } = null; // 선택된 컨테이너
 
     [SerializeField]
     Transform attachPoint; // 부착 위치
@@ -52,7 +52,7 @@ public class RobotArm : NetworkBehaviour
     public UnityEvent moveFinished; // 이동 종료 시 발생하는 이벤트
 
     // Start is called before the first frame update
-    void Start()
+    public override void Spawned()
     {
         // 로봇 팔을 초기 위치에 둔다.
         curPosInPuzzle = targetPosInPuzzle = initPosInPuzzle;
@@ -60,7 +60,7 @@ public class RobotArm : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {   
         if(triggerArea.IsInteracting()) {
             if(Input.GetKeyDown(KeyCode.W)) { Move(MoveType.Up); }
@@ -97,7 +97,7 @@ public class RobotArm : NetworkBehaviour
                 offset1 = offset2;
                 
                 if(selectedContainer && !isAttaching) {
-                    AttachContainer(selectedContainer);
+                    AttachContainer(selectedContainer.gameObject);
                 }
             }
             else { // 이동 초기화가 완료되면
@@ -112,23 +112,23 @@ public class RobotArm : NetworkBehaviour
     }
 
     // 이동 관련 입력 확인
-    void Move(MoveType moveType) {
+    public void Move(MoveType moveType) {
         if(isMoving) return;
 
         targetPosInPuzzle = curPosInPuzzle;
 
         switch(moveType) {
             case MoveType.Left:
-                targetPosInPuzzle.x -= 1;
+                targetPosInPuzzle += Vector2.left;
                 break;
             case MoveType.Right:
-                targetPosInPuzzle.x += 1;
+                targetPosInPuzzle += Vector2.right;
                 break;
             case MoveType.Up:
-                targetPosInPuzzle.y += 1;
+                targetPosInPuzzle += Vector2.up;
                 break;
             case MoveType.Down:
-                targetPosInPuzzle.y -= 1;
+                targetPosInPuzzle += Vector2.down;
                 break;
             case MoveType.Attach:
                 if(isAttaching) {
@@ -139,13 +139,13 @@ public class RobotArm : NetworkBehaviour
                 else {
                     if(Physics.Raycast(lightPoint.position, -1 * transform.up, out RaycastHit hit)) {
                         if(hit.collider.CompareTag("Container")) {
-                            selectedContainer = hit.collider.gameObject;
+                            selectedContainer = hit.collider.GetComponent<NetworkObject>();
                             
                             offset2 = hit.collider.transform.localPosition - transform.localPosition;
-                            offset2.y = 0;
+                            offset2 = new(offset2.x, 0);
 
                             if((offset2 - Vector3.zero).magnitude <= epsilon) {
-                                AttachContainer(selectedContainer);
+                                AttachContainer(selectedContainer.gameObject);
                             }
                         }
                     }
@@ -161,11 +161,11 @@ public class RobotArm : NetworkBehaviour
         }
     }
 
-    public void MoveLeft() { Move(MoveType.Left); } // 왼쪽으로 이동
-    public void MoveRight() { Move(MoveType.Right); } // 오른쪽으로 이동
-    public void MoveUp() { Move(MoveType.Up); } // 위쪽으로 이동
-    public void MoveDown() { Move(MoveType.Down); } // 아래쪽으로 이동
-    public void MoveAttach() { Move(MoveType.Attach); } // 컨테이너 부착을 위한 이동
+    // public void MoveLeft() { Move(MoveType.Left); } // 왼쪽으로 이동
+    // public void MoveRight() { Move(MoveType.Right); } // 오른쪽으로 이동
+    // public void MoveUp() { Move(MoveType.Up); } // 위쪽으로 이동
+    // public void MoveDown() { Move(MoveType.Down); } // 아래쪽으로 이동
+    // public void MoveAttach() { Move(MoveType.Attach); } // 컨테이너 부착을 위한 이동
 
     // 로봇 팔에 컨테이너 부착
     void AttachContainer(GameObject container) {
@@ -201,5 +201,9 @@ public class RobotArm : NetworkBehaviour
         if(other.CompareTag("Wall")) {
             ResetMove();
         }
+    }
+
+    public TriggerArea GetTriggerArea() {
+        return triggerArea;
     }
 }

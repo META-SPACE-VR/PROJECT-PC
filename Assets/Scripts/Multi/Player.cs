@@ -12,16 +12,19 @@ public class Player : NetworkBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 8f;
     [SerializeField] private float jumpImpulse = 10f;
-
+    private NPCInteraction currentNPC;  // 현재 상호작용 중인 NPC
+    private WheelchairController currentWheelchair;
     [SerializeField] private Camera playerCamera;
 
     // Replace Animator with NetworkMecanimAnimator
     [SerializeField] private NetworkMecanimAnimator networkAnimator;
+    private bool isInputEnabled = true; // 입력 활성화 여부
 
-    private bool isInputEnabled = true; // Default to true
+
     private float currentSpeed;
 
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
+    private ButtonController currentButton;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -55,40 +58,87 @@ public class Player : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        // Apply animation parameters only when input is available and it is a forward tick
-        if (GetInput(out NetInput input) && Runner.IsForward)
+        // 입력을 받아와야 합니다.
+        if (GetInput(out NetInput input))
         {
-            // Rotate based on input
-            kcc.AddLookRotation(input.LookDelta * lookSensitivity);
-
-            // Update movement
-            UpdateMovement(input);
-
-            // Update camera target
-            UpdateCamTarget();
-
-            // Handle interaction for mouse click
-            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
+            // 입력이 비활성화된 경우에도 PreviousButtons는 업데이트되어야 합니다.
+            if (!isInputEnabled)
             {
-                HandleInteraction(); // Example: Handle object interaction
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+                {
+                    HandleTriggerInteraction();
+                }
+
+                if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotUp)) HandleRobotArmInteraction(MoveType.Up);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotDown)) HandleRobotArmInteraction(MoveType.Down);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotLeft)) HandleRobotArmInteraction(MoveType.Left);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotRight)) HandleRobotArmInteraction(MoveType.Right);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotAttach)) HandleRobotArmInteraction(MoveType.Attach);
+
+                // 이전 버튼 상태를 항상 기록
+                PreviousButtons = input.Buttons;
+                return;  // 입력이 비활성화된 경우, 다른 입력 처리를 하지 않음
             }
 
-            // Handle interaction for E key (Trigger)
-            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+            // Apply animation parameters only when input is available and it is a forward tick
+            if (Runner.IsForward)
             {
-                HandleTriggerInteraction(); // Example: Handle trigger interaction (E key)
+                kcc.AddLookRotation(input.LookDelta * lookSensitivity);
+
+                UpdateMovement(input);
+                UpdateCamTarget();
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
+                {
+                    HandleInteraction();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+                {
+                    HandleTriggerInteraction();
+                    StartRotateObjectRight();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
+                {
+                    StartRotateObjectLeft();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Transform))
+                {
+                    HandleTransformInteraction();
+                }
+
+                UpdateAnimation(input);
             }
 
-            // Update animation parameters based on input
-            UpdateAnimation(input);
-
+            // 항상 PreviousButtons를 업데이트하여 다음 프레임에서 입력 비교 가능
             PreviousButtons = input.Buttons;
         }
     }
 
     public override void Render()
     {
-        UpdateCamTarget();
+        if (isInputEnabled) // 입력이 활성화된 경우에만 카메라 타겟 업데이트
+        {
+            UpdateCamTarget();
+        }
+    }
+
+    public void StartRotateObjectRight()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectRight();
+        }
+    }
+
+    public void StartRotateObjectLeft()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectLeft();
+        }
     }
 
     private void HandleInteraction()
@@ -128,12 +178,49 @@ public class Player : NetworkBehaviour
                 currentTriggerArea.EnterInteraction();
             }
         }
+        else if (currentNPC != null)
+        {
+            if (!currentNPC.isInteracting)
+            {
+                currentNPC.StartInteraction();
+            }
+            else
+            {
+                currentNPC.AdvanceDialogue();
+            }
+        }
         else
         {
-            Debug.Log("No TriggerArea in range.");
+            Debug.Log("No TriggerArea or NPC in range.");
         }
     }
 
+    private void HandleTransformInteraction()
+    {
+        if (currentWheelchair != null)
+        {
+            if (currentWheelchair.isInteracting)
+            {
+                currentWheelchair.ExitInteraction();
+            }
+            else
+            {
+                currentWheelchair.EnterInteraction();
+            }
+        }
+        else
+        {
+            Debug.Log("No wheelchair in range.");
+        }
+    }
+
+    private void HandleRobotArmInteraction(MoveType moveType) {
+        RobotArm robotArm = GameObject.Find("Robot Arm").GetComponent<RobotArm>();
+        if(currentTriggerArea == robotArm.GetTriggerArea() && currentTriggerArea.IsInteracting()) {
+            robotArm.Move(moveType);
+        }
+    }
+    
     private void UpdateMovement(NetInput input)
     {
         currentSpeed = input.Buttons.IsSet(InputButton.Run) ? runSpeed : walkSpeed;
@@ -164,11 +251,17 @@ public class Player : NetworkBehaviour
         camTarget.localRotation = Quaternion.Euler(kcc.GetLookRotation().x, 0f, 0f);
     }
 
-    public void SetInputEnabled(bool enabled)
+
+    public void SetCurrentWheelchair(WheelchairController wheelchair)
     {
-        isInputEnabled = enabled;
+        currentWheelchair = wheelchair;
     }
 
+    public void ClearCurrentWheelchair()
+    {
+        currentWheelchair = null;
+    }
+    
     // This method is called by the TriggerArea when the player enters
     public void SetCurrentTriggerArea(TriggerArea triggerArea)
     {
@@ -180,4 +273,31 @@ public class Player : NetworkBehaviour
     {
         currentTriggerArea = null;
     }
+
+    public void SetCurrentButton(ButtonController buttonController)
+    {
+        currentButton = buttonController;
+    }
+
+    public void ClearCurrentButton()
+    {
+        currentButton = null;
+    }
+
+    public void SetInputEnabled(bool enabled)
+    {
+        isInputEnabled = enabled;
+    }
+
+    public void SetCurrentNPC(NPCInteraction npcInteraction)
+    {
+        currentNPC = npcInteraction;
+    }
+
+    // This method is called by the NPC when the player exits its interaction area
+    public void ClearCurrentNPC()
+    {
+        currentNPC = null;
+    }
+
 }

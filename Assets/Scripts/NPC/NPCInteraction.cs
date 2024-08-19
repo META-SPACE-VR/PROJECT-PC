@@ -13,7 +13,7 @@ public class NPCInteraction : MonoBehaviour
     public float interactionDistance; // Distance to check if the wheelchair is nearby
     public bool isSittingInWheelchair = false;
     private bool playerNearby = false;
-    private bool isInteracting = false;
+    public bool isInteracting = false;
     private int dialogueStep = 0;
     public Animator npcAnimator;
 
@@ -42,33 +42,33 @@ public class NPCInteraction : MonoBehaviour
         AddEventTriggerListener(dialoguePanel, EventTriggerType.PointerClick, OnDialoguePanelClick);
     }
 
-    void Update()
+    public void OnTriggerEnter(Collider other)
     {
-        if (playerNearby && Input.GetKeyDown(KeyCode.E) && !isInteracting)
+        if (other.CompareTag("Player"))
         {
-            StartDialogue();
+            Player playerController = other.GetComponent<Player>();
+
+            if (playerController != null)
+            {
+                playerController.SetCurrentNPC(this);
+            }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == player)
+        if (other.CompareTag("Player"))
         {
-            playerNearby = true;
-            Debug.Log("Player nearby");
+            Player playerController = other.GetComponent<Player>();
+
+            if (playerController != null)
+            {
+                playerController.ClearCurrentNPC();
+            }
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == player)
-        {
-            playerNearby = false;
-            Debug.Log("Player left");
-        }
-    }
-
-    private void StartDialogue()
+    public void StartInteraction()
     {
         isInteracting = true;
         dialogueStep = 0;
@@ -92,7 +92,7 @@ public class NPCInteraction : MonoBehaviour
         }
     }
 
-    private void AdvanceDialogue()
+    public void AdvanceDialogue()
     {
         if (!initialDialogueComplete)
         {
@@ -137,7 +137,6 @@ public class NPCInteraction : MonoBehaviour
         initialDialogueComplete = true;
         isInteracting = false;
         dialoguePanel.SetActive(false);
-        Debug.Log("First dialogue complete. Now find something to carry the NPC.");
     }
 
     private void EndDialogue()

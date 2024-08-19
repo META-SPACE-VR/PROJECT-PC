@@ -2,15 +2,19 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;  // Canvas Text 관리를 위해 필요
+using Fusion;
 
-public class ButtonVR : MonoBehaviour
+public class ButtonController : MonoBehaviour
 { 
+    private Player playerController;
+
     public GameObject LeftButton;
     public GameObject RightButton;
     public float rotationDuration = 1.0f;
     public Canvas canvas;
 
     private GameObject wheel1, wheel2, wheel3, wheel4;
+    private bool isInteracting = false;
 
     void Start()
     {
@@ -24,39 +28,40 @@ public class ButtonVR : MonoBehaviour
         {
             Debug.LogWarning("Wheel_FBX 객체를 찾을 수 없습니다.");
         }
-    }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StartRotateObjectLeft();
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            StartRotateObjectRight();
+        if(canvas==null){
+            Debug.LogWarning("canvas 객체를 찾을 수 없습니다.");
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (canvas != null)
+        if (other.CompareTag("Player"))
         {
+            Debug.Log("플레이어 발견!");
             canvas.gameObject.SetActive(true);
+            isInteracting = true;
+            playerController = other.GetComponent<Player>();
+            playerController.SetCurrentButton(this);
+            
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (canvas != null)
+        if (other.CompareTag("Player") && playerController != null && other.gameObject == playerController.gameObject)
         {
+            Debug.Log("플레이어 나감!");
             canvas.gameObject.SetActive(false);
+            isInteracting = false;
+            playerController.ClearCurrentButton();
+            
         }
     }
 
     public void StartRotateObjectRight()
     {
-        if (!RotationManager.isRotating)
+        if (!RotationManager.isRotating && isInteracting)
         {
             StartCoroutine(AnimateButtonPress(RightButton, new Vector3(-0.008f, -1.07f, 0.062f), new Vector3(0, 0, 0)));
             StartCoroutine(RotateObject(1));
@@ -65,7 +70,7 @@ public class ButtonVR : MonoBehaviour
 
     public void StartRotateObjectLeft()
     {
-        if (!RotationManager.isRotating)
+        if (!RotationManager.isRotating && isInteracting)
         {
             StartCoroutine(AnimateButtonPress(LeftButton, new Vector3(-0.008f, -1.07f, 0.062f), new Vector3(0, 0, 0)));
             StartCoroutine(RotateObject(-1));
@@ -130,5 +135,14 @@ public class ButtonVR : MonoBehaviour
         }
 
         button.transform.localPosition = releasedPosition;
+    }
+
+    public bool IsInteracting()
+    {
+        return isInteracting;
+    }
+
+    public Player GetInteractingPlayer() {
+        return isInteracting ? playerController : null;
     }
 }

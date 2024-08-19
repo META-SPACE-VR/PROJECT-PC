@@ -21,7 +21,7 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
         }
 
         Keyboard keyboard = Keyboard.current;
-        if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))
+        if (keyboard != null && (keyboard.escapeKey.wasPressedThisFrame))
         {
             if (Cursor.lockState == CursorLockMode.Locked)
             {
@@ -35,9 +35,8 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             }
         }
 
-        // Accumulate input only if the cursor is locked.
-        if (Cursor.lockState != CursorLockMode.Locked)
-            return;
+        // if (Cursor.lockState != CursorLockMode.Locked)
+        //     return;
 
         NetworkButtons buttons = default;
 
@@ -49,10 +48,11 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             accumulatedInput.LookDelta += lookRotationDelta;
 
             // 추가된 부분: 마우스 클릭 감지
-            if (mouse.leftButton.wasPressedThisFrame)
-            {
-                buttons.Set(InputButton.Interact, true);  // 상호작용 버튼 처리
-            }
+            // if (mouse.leftButton.wasPressedThisFrame)
+            // {
+            //     buttons.Set(InputButton.Interact, true);  // 상호작용 버튼 처리
+            // }
+            buttons.Set(InputButton.Interact, mouse.leftButton.isPressed);
         }
 
         if (keyboard != null)
@@ -72,6 +72,15 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             //     buttons.Set(InputButton.Trigger, true);  // E key triggers interaction
             // }
             buttons.Set(InputButton.Trigger, keyboard.eKey.isPressed);
+            buttons.Set(InputButton.Qtrigger, keyboard.qKey.isPressed);
+            
+
+            buttons.Set(InputButton.RobotUp, keyboard.upArrowKey.isPressed);
+            buttons.Set(InputButton.RobotDown, keyboard.downArrowKey.isPressed);
+            buttons.Set(InputButton.RobotLeft, keyboard.leftArrowKey.isPressed);
+            buttons.Set(InputButton.RobotRight, keyboard.rightArrowKey.isPressed);
+            buttons.Set(InputButton.RobotAttach, keyboard.enterKey.isPressed);
+            buttons.Set(InputButton.Transform, keyboard.rKey.isPressed);
             
             accumulatedInput.Direction += moveDirection;
             buttons.Set(InputButton.Jump, keyboard.spaceKey.isPressed);
