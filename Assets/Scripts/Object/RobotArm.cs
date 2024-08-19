@@ -46,7 +46,7 @@ public class RobotArm : NetworkBehaviour
     [SerializeField]
     TriggerArea triggerArea; // Trigger Area
 
-    readonly float epsilon = 0.0001f;
+    readonly float epsilon = 0.01f;
 
     public MoveEvent moveStarted; // 이동 시작 시 발생하는 이벤트
     public UnityEvent moveFinished; // 이동 종료 시 발생하는 이벤트
@@ -62,14 +62,6 @@ public class RobotArm : NetworkBehaviour
     // Update is called once per frame
     public override void FixedUpdateNetwork()
     {   
-        if(triggerArea.IsInteracting()) {
-            if(Input.GetKeyDown(KeyCode.W)) { Move(MoveType.Up); }
-            if(Input.GetKeyDown(KeyCode.A)) { Move(MoveType.Left); }
-            if(Input.GetKeyDown(KeyCode.S)) { Move(MoveType.Down); }
-            if(Input.GetKeyDown(KeyCode.D)) { Move(MoveType.Right); }
-            if(Input.GetKeyDown(KeyCode.Space)) { Move(MoveType.Attach); }
-        }
-
         // isMoving이 true면 로봇팔 이동 시도
         if(isMoving) {
             Vector3 curPos = new Vector3(unitLength * (curPosInPuzzle.x - 2.5f), transform.localPosition.y, unitLength * (curPosInPuzzle.y - 2.5f)) + offset1;
@@ -142,7 +134,7 @@ public class RobotArm : NetworkBehaviour
                             selectedContainer = hit.collider.GetComponent<NetworkObject>();
                             
                             offset2 = hit.collider.transform.localPosition - transform.localPosition;
-                            offset2 = new(offset2.x, 0);
+                            offset2 = new(offset2.x, 0, offset2.z);
 
                             if((offset2 - Vector3.zero).magnitude <= epsilon) {
                                 AttachContainer(selectedContainer.gameObject);
