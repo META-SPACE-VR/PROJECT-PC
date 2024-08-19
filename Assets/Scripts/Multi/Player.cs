@@ -24,6 +24,7 @@ public class Player : NetworkBehaviour
     private float currentSpeed;
 
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
+    private Goods currentGoods;  // Reference to the current Goods
     private ButtonController currentButton;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
@@ -97,6 +98,7 @@ public class Player : NetworkBehaviour
                 {
                     HandleTriggerInteraction();
                     StartRotateObjectRight();
+                    HandleGoodsInteraction();
                 }
 
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
@@ -219,6 +221,16 @@ public class Player : NetworkBehaviour
         if(currentTriggerArea == robotArm.GetTriggerArea() && currentTriggerArea.IsInteracting()) {
             robotArm.Move(moveType);
         }
+    }
+
+    private void HandleGoodsInteraction() {
+        if(currentGoods) {
+            currentGoods.TriggerSpawnFood();
+        }
+    }
+
+    public void SetCurrentGoods(Goods goods) {
+        currentGoods = goods;
     }
     
     private void UpdateMovement(NetInput input)
