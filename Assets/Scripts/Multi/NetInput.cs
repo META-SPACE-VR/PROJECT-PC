@@ -6,7 +6,8 @@ public enum InputButton
     Jump,
     Run,  // Run 버튼 추가
     Interact,
-    Trigger
+    Trigger,
+    Qtrigger
 }
 
 public struct NetInput : INetworkInput

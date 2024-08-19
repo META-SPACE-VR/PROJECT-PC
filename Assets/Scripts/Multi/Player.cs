@@ -22,6 +22,7 @@ public class Player : NetworkBehaviour
     private float currentSpeed;
 
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
+    private ButtonController currentButton;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -76,6 +77,12 @@ public class Player : NetworkBehaviour
             if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
             {
                 HandleTriggerInteraction(); // Example: Handle trigger interaction (E key)
+                StartRotateObjectRight();
+            }
+
+            else if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
+            {
+                StartRotateObjectLeft();
             }
 
             // Update animation parameters based on input
@@ -88,6 +95,22 @@ public class Player : NetworkBehaviour
     public override void Render()
     {
         UpdateCamTarget();
+    }
+
+    public void StartRotateObjectRight()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectRight();
+        }
+    }
+
+    public void StartRotateObjectLeft()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectLeft();
+        }
     }
 
     private void HandleInteraction()
@@ -179,4 +202,15 @@ public class Player : NetworkBehaviour
     {
         currentTriggerArea = null;
     }
+
+    public void SetCurrentButton(ButtonController buttonController)
+    {
+        currentButton = buttonController;
+    }
+
+    public void ClearCurrentButton()
+    {
+        currentButton = null;
+    }
+
 }
