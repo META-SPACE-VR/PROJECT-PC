@@ -11,6 +11,8 @@ TagManager:
   - Medicine
   - Floor
   - SamplesInfoPanel
+  - MainUI
+  - MainEventSystem
   layers:
   - Default
   - TransparentFX
