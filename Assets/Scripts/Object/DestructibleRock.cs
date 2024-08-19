@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class DestructibleRock : MonoBehaviour
+public class DestructibleRock : NetworkBehaviour
 {
     [SerializeField]
     List<GameObject> cells; // 조각들
