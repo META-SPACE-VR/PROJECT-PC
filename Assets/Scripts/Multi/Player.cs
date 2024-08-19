@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
 {
+    public static Player Local;
+    
     [SerializeField] private MeshRenderer[] modelParts;
     [SerializeField] private SimpleKCC kcc;
     [SerializeField] private Transform camTarget;
@@ -12,6 +14,9 @@ public class Player : NetworkBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 8f;
     [SerializeField] private float jumpImpulse = 10f;
+
+    [Networked] public NetworkString<_16> currentJob { get; set; }
+
     private NPCInteraction currentNPC;  // 현재 상호작용 중인 NPC
     private WheelchairController currentWheelchair;
     [SerializeField] private Camera playerCamera;
@@ -34,6 +39,8 @@ public class Player : NetworkBehaviour
 
         if (HasInputAuthority)
         {
+            Local = this;
+            
             foreach (MeshRenderer renderer in modelParts)
             {
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
@@ -55,6 +62,12 @@ public class Player : NetworkBehaviour
         }
         DontDestroyOnLoad(this);
     }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+	public void Rpc_SetJob(string job)
+	{
+		currentJob = job;
+	}
 
     public override void FixedUpdateNetwork()
     {
