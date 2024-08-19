@@ -111,7 +111,7 @@ public class WheelchairController : MonoBehaviour
         wheelchair.transform.localRotation = Quaternion.Euler(-90, 0, 0);
 
         // 휠체어를 플레이어의 앞쪽으로 배치
-        wheelchair.transform.localPosition = new Vector3(1, 0, 1);
+        wheelchair.transform.localPosition = new Vector3(0, 0, 1);
 
     }
 
