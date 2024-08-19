@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class Container : MonoBehaviour
+public class Container : NetworkBehaviour
 {
     RobotArm robotArm;
 

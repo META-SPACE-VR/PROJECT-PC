@@ -6,7 +6,14 @@ public enum InputButton
     Jump,
     Run,  // Run 버튼 추가
     Interact,
-    Trigger
+    Trigger,
+    //--------------- relative robot arm ---------------
+    RobotUp,
+    RobotDown,
+    RobotLeft,
+    RobotRight,
+    RobotAttach,
+    //--------------- relative robot arm ---------------
 }
 
 public struct NetInput : INetworkInput
