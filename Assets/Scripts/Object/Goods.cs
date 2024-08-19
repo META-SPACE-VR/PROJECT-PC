@@ -5,35 +5,37 @@ using Fusion;
 
 public class Goods : NetworkBehaviour
 {
-    GameObject playerInRange = null;
-    [Networked] bool hasFood { get; set; } = true;
+    [Networked] Player playerInRange { get; set; } = null;
+    [Networked] NetworkBool hasFood { get; set; } = true;
 
     [SerializeField]
     GameObject spaceFood; // 우주식량
 
     [SerializeField]
-    GameObject interactionPrompt; // Interaction prompt
+    Transform spawnPoint; // 스폰 포인트
+
+    [Networked] NetworkBool triggerSpawn { get; set; } = false;
 
     [SerializeField]
-    KeyCode interactionKey;
+    GameObject interactionPrompt; // Interaction prompt
 
-    void Awake() {
-        interactionPrompt.SetActive(false);
-    }
-
-    private void Update() {
-        if(playerInRange && Input.GetKeyDown(interactionKey)) {
+    public override void FixedUpdateNetwork() {
+        if(triggerSpawn && hasFood) {
             SpawnFood();
         }
     }
 
+    public void TriggerSpawnFood() {
+        triggerSpawn = true;
+    }
+
     private void SpawnFood() {
-        // 우주식량 스폰 
-        spaceFood.SetActive(true);
-        Rigidbody foodRigid = spaceFood.GetComponent<Rigidbody>();
+        NetworkObject spawnedFood = Runner.Spawn(spaceFood, spawnPoint.position, Quaternion.identity);
+
+        Rigidbody foodRigid = spawnedFood.GetComponent<Rigidbody>();
 
         // 식량이 날아갈 방향 계산
-        Vector3 direction = playerInRange.transform.position - transform.position;
+        Vector3 direction = playerInRange.gameObject.transform.position - transform.position;
         direction -= Vector3.up * direction.y;
         direction.Normalize();
         
@@ -44,22 +46,27 @@ public class Goods : NetworkBehaviour
 
         playerInRange = null;
         interactionPrompt.SetActive(false);
+      
         hasFood = false;
     }
 
     private void OnTriggerEnter(Collider other) {
+        if(playerInRange != null) return;
+
         if(other.CompareTag("Player") && hasFood) {
             Player player = other.GetComponent<Player>();
 
             if(player && player.HasInputAuthority) {
-                playerInRange = player.gameObject;
+                playerInRange = player;
+                player.SetCurrentGoods(this);
                 interactionPrompt.SetActive(true);
             }
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if(other.CompareTag("Player") && hasFood && other.gameObject == playerInRange) {
+        if(other.CompareTag("Player") && hasFood && other.gameObject == playerInRange.gameObject) {
+            playerInRange.SetCurrentGoods(null);
             playerInRange = null;
             interactionPrompt.SetActive(false);
         }
