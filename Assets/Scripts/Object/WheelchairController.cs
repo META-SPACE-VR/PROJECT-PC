@@ -1,14 +1,20 @@
+using Fusion;
 using UnityEngine;
 using TMPro;
 
-public class WheelchairController : MonoBehaviour
+public class WheelchairController : NetworkBehaviour
 {
+    // [Networked] public bool isInteracting { get; set; } = false;
+    [Networked] public Vector3 Position { get; set; }
+    [Networked] public Quaternion Rotation { get; set; }
+
+
     public float moveSpeed = 5f; // 속도 조정
     // public Transform playerCamera;
     public GameObject player;
     public GameObject wheelchair;
     public TMP_Text interactionText; // 상호작용 텍스트 UI
-    public float offsetZ = 0.5f; // 휠체어를 플레이어의 앞에 배치할 오프셋
+    public float offsetZ = 1f; // 휠체어를 플레이어의 앞에 배치할 오프셋
 
     public bool isInteracting = false;
     private Rigidbody wheelchairRigidbody;
@@ -88,7 +94,6 @@ public class WheelchairController : MonoBehaviour
             if (playerController != null)
             {
                 playerController.ClearCurrentWheelchair();
-                player = null; // 플레이어 변수를 초기화
                 interactionText.gameObject.SetActive(false); // 상호작용 텍스트 비활성화
             }
         }
@@ -101,18 +106,43 @@ public class WheelchairController : MonoBehaviour
             wheelchairRigidbody.isKinematic = true; // 물리적 힘 비활성화
             wheelchairRigidbody.useGravity = true; // 중력 비활성화
         }
+        
         isInteracting = true;
         Debug.Log("상호작용 시작");
 
         // 휠체어를 플레이어의 자식으로 설정하여 함께 이동하도록 함
         wheelchair.transform.SetParent(player.transform);
 
-        // 초기 회전값을 설정
-        wheelchair.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+        UpdateWheelChairPosition();
 
-        // 휠체어를 플레이어의 앞쪽으로 배치
-        wheelchair.transform.localPosition = new Vector3(0, 0, 1);
+        // // 초기 회전값을 설정
+        // wheelchair.transform.localRotation = Quaternion.Euler(-90, 0, 0);
 
+        // // 휠체어를 플레이어의 앞쪽으로 배치
+        // wheelchair.transform.localPosition = new Vector3(0, 0, offsetZ);
+
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (isInteracting && player != null)
+        {
+        UpdateWheelChairPosition();
+        }
+    }
+
+
+    public void UpdateWheelChairPosition()
+    {
+        Vector3 playerPosition = player.transform.position;
+        Quaternion playerRotation = player.transform.rotation;
+
+        // 휠체어를 플레이어 앞쪽에 배치
+        Position = playerPosition + player.transform.forward * 2f;
+        Rotation = playerRotation * Quaternion.Euler(-90, 0, 0); // 처음에 설정했던 -90도 회전을 유지
+
+        wheelchair.transform.position = Position;
+        wheelchair.transform.rotation = Rotation;
     }
 
     public void ExitInteraction()
@@ -122,10 +152,21 @@ public class WheelchairController : MonoBehaviour
             wheelchairRigidbody.isKinematic = false; // 물리적 힘 활성화
             wheelchairRigidbody.useGravity = true; // 중력 활성화
         }
+        
+        Vector3 playerPosition = player.transform.position;
+        Quaternion playerRotation = player.transform.rotation;
+
+        // 마지막 위치와 회전 정보를 동기화된 값으로 설정
+        Position = playerPosition + player.transform.forward * 2f;
+        Rotation = playerRotation * Quaternion.Euler(-90, 0, 0); // 처음에 설정했던 -90도 회전을 유지
+
+        // 휠체어의 부모를 해제
+        wheelchair.transform.SetParent(null);
+        
+        player = null; // 플레이어 변수를 초기화
+        // 상호작용 종료 플래그 설정
         isInteracting = false;
         Debug.Log("상호작용 종료");
-
-        // 휠체어를 원래 부모 객체로 되돌림
-        wheelchair.transform.SetParent(originalParent);
     }
+
 }
