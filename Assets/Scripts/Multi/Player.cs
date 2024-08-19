@@ -23,6 +23,7 @@ public class Player : NetworkBehaviour
     private float currentSpeed;
 
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
+    private ButtonController currentButton;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -93,6 +94,12 @@ public class Player : NetworkBehaviour
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
                 {
                     HandleTriggerInteraction();
+                    StartRotateObjectRight();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
+                {
+                    StartRotateObjectLeft();
                 }
 
                 UpdateAnimation(input);
@@ -108,6 +115,22 @@ public class Player : NetworkBehaviour
         if (isInputEnabled) // 입력이 활성화된 경우에만 카메라 타겟 업데이트
         {
             UpdateCamTarget();
+        }
+    }
+
+    public void StartRotateObjectRight()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectRight();
+        }
+    }
+
+    public void StartRotateObjectLeft()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectLeft();
         }
     }
 
@@ -202,6 +225,16 @@ public class Player : NetworkBehaviour
     public void ClearCurrentTriggerArea()
     {
         currentTriggerArea = null;
+    }
+
+    public void SetCurrentButton(ButtonController buttonController)
+    {
+        currentButton = buttonController;
+    }
+
+    public void ClearCurrentButton()
+    {
+        currentButton = null;
     }
 
     public void SetInputEnabled(bool enabled)

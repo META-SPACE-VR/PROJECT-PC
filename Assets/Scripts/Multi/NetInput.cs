@@ -14,6 +14,7 @@ public enum InputButton
     RobotRight,
     RobotAttach,
     //--------------- relative robot arm ---------------
+    Qtrigger
 }
 
 public struct NetInput : INetworkInput

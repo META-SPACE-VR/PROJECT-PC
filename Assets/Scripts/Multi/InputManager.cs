@@ -72,6 +72,8 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             //     buttons.Set(InputButton.Trigger, true);  // E key triggers interaction
             // }
             buttons.Set(InputButton.Trigger, keyboard.eKey.isPressed);
+            buttons.Set(InputButton.Qtrigger, keyboard.qKey.isPressed);
+            
 
             buttons.Set(InputButton.RobotUp, keyboard.upArrowKey.isPressed);
             buttons.Set(InputButton.RobotDown, keyboard.downArrowKey.isPressed);
