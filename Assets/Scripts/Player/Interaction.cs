@@ -34,7 +34,7 @@ public class Interaction : MonoBehaviour
 
             if (putable != null)
             {
-                putable.ShowText();
+                //putable.ShowText();
 
                 // 아이템 놓기
                 if (Input.GetMouseButtonDown(0))

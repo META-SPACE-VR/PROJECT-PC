@@ -11,15 +11,14 @@ public class Putable : MonoBehaviour
     public InventoryManager inventoryManager;
     public Transform putItemPosition;
     public Collectable putItem;
-
-    public void InjectInventoryManager(InventoryManager manager)
+    private void OnMouseEnter()
     {
-        inventoryManager = manager;
+        ShowText();
     }
 
-    public void InjectGuideText(TextMeshProUGUI textMesh)
+    private void OnMouseExit()
     {
-        guideText = textMesh;
+        HideText();
     }
 
     public void ShowText()
