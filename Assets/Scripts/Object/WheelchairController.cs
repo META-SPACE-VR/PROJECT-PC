@@ -58,16 +58,16 @@ public class WheelchairController : NetworkBehaviour
     //         }
     //     }
 
-        // if (isInteracting)
-        // {
-        //     // 플레이어의 입력에 따라 휠체어를 이동시킴
-        //     float moveHorizontal = Input.GetAxis("Horizontal");
-        //     float moveVertical = Input.GetAxis("Vertical");
+    // if (isInteracting)
+    // {
+    //     // 플레이어의 입력에 따라 휠체어를 이동시킴
+    //     float moveHorizontal = Input.GetAxis("Horizontal");
+    //     float moveVertical = Input.GetAxis("Vertical");
 
-        //     Vector3 movement = playerCamera.forward * moveVertical + playerCamera.right * moveHorizontal;
-        //     movement.y = 0; // 휠체어가 수직으로 이동하지 않도록
-        //     player.transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
-        // }
+    //     Vector3 movement = playerCamera.forward * moveVertical + playerCamera.right * moveHorizontal;
+    //     movement.y = 0; // 휠체어가 수직으로 이동하지 않도록
+    //     player.transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+    // }
     // }
 
     private void OnTriggerEnter(Collider other)
@@ -106,7 +106,7 @@ public class WheelchairController : NetworkBehaviour
             wheelchairRigidbody.isKinematic = true; // 물리적 힘 비활성화
             wheelchairRigidbody.useGravity = true; // 중력 비활성화
         }
-        
+
         isInteracting = true;
         Debug.Log("상호작용 시작");
 
@@ -127,7 +127,16 @@ public class WheelchairController : NetworkBehaviour
     {
         if (isInteracting && player != null)
         {
-        UpdateWheelChairPosition();
+            Vector3 playerPosition = player.transform.position;
+            Quaternion playerRotation = player.transform.rotation;
+
+            Position = playerPosition + player.transform.forward * 2f;
+            Rotation = playerRotation * Quaternion.Euler(-90, 0, 0); // 처음에 설정했던 -90도 회전을 유지
+
+            wheelchair.transform.position = Position;
+            wheelchair.transform.rotation = Rotation;
+
+            UpdateWheelChairPosition();
         }
 
     }
@@ -146,7 +155,7 @@ public class WheelchairController : NetworkBehaviour
         wheelchair.transform.rotation = Rotation;
     }
 
-    
+
 
     public void ExitInteraction()
     {
