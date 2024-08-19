@@ -5,14 +5,13 @@ using Fusion;
 
 public class Container : NetworkBehaviour
 {
-    RobotArm robotArm;
+    [SerializeField] RobotArm robotArm;
 
     Quaternion rotationValue;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Spawned()
     {
-        robotArm = GameObject.FindGameObjectWithTag("Robot Arm").GetComponent<RobotArm>();
         rotationValue = transform.localRotation;
     }
 
