@@ -1,37 +1,23 @@
-using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
-public class DialController : MonoBehaviour
+public class DialController : NetworkBehaviour
 {
-    public int currentNumber = 4;
+    [Networked] public int currentNumber { get; set; } = 4;
+
     public int startNumber = 4;
     public int endNumber = 7;
     public float rotationAngle = 45.0f;
 
-    private float range = 5f;
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, range))
-            {
-                if (hit.transform == transform)
-                {
-                    RotateDial();
-                }
-            }
-        }
-    }
-
     public void RotateDial()
     {
-        currentNumber += 1;
+        UpdateDoorVisual();
+    }
+
+    private void UpdateDoorVisual()
+    {
         if (currentNumber > endNumber)
         {
             currentNumber = 1;
@@ -39,7 +25,13 @@ public class DialController : MonoBehaviour
         }
         else
         {
+            currentNumber += 1;
             transform.Rotate(0, rotationAngle, 0);
         }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        UpdateDoorVisual();
     }
 }

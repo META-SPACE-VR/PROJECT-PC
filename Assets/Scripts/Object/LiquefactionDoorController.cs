@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class LiquefactionDoorController : NetworkBehaviour
 {
-    public bool isClosed = false;
+    [Networked] public bool isClosed { get; set; } = false;
 
     public void ToggleDoor()
     {

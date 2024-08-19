@@ -641,6 +641,7 @@ GameObject:
   - component: {fileID: 1410807799532484714}
   - component: {fileID: 5124363241031427160}
   - component: {fileID: 795031182149850374}
+  - component: {fileID: 1434826556724220582}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -700,10 +701,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43fab0a02112878408048385a9f09b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentNumber: 4
+  _currentNumber: 4
   startNumber: 4
   endNumber: 7
   rotationAngle: 45
+--- !u!114 &1434826556724220582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200576070019091785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 0
+  ObjectInterest: 1
+  Flags: 0
+  NestedObjects: []
+  NetworkedBehaviours: []
 --- !u!1 &2310390263753491593
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,7 +792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 150be516d67c9464a8e37ed13c0e1ede, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isClosed: 0
+  _isClosed: 0
 --- !u!114 &7842917003251650670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,6 +1124,7 @@ GameObject:
   - component: {fileID: 130661261994481956}
   - component: {fileID: 1809785239909793848}
   - component: {fileID: 5250140983077966766}
+  - component: {fileID: 1962608997850186626}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
@@ -1165,10 +1184,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43fab0a02112878408048385a9f09b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentNumber: 4
+  _currentNumber: 4
   startNumber: 4
   endNumber: 7
   rotationAngle: 45
+--- !u!114 &1962608997850186626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5782149760812732661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 0
+  ObjectInterest: 1
+  Flags: 0
+  NestedObjects: []
+  NetworkedBehaviours: []
 --- !u!1 &5874936690484091456
 GameObject:
   m_ObjectHideFlags: 0
