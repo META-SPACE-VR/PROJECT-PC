@@ -81,7 +81,7 @@ public class ExaminationPanel : MonoBehaviour
         if (triggerArea != null)
         {
             triggerArea.ExitInteraction(); // Call ExitInteraction to hide other UI elements
-            triggerArea.gameObject.SetActive(false);
+            Destroy(triggerArea.gameObject);
         }
 
         if (resultPanel != null)
