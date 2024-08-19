@@ -22,9 +22,13 @@ public class StairsEvent : MonoBehaviour
     bool isPlaying = false; // 이벤트 재생 상태
 
     public void PlayEvent() {
-        mainCamera = triggerArea.GetInteractingPlayer()?.GetComponentInChildren<Camera>();
-        if(mainCamera && !isPlaying) {
-            StartCoroutine(PlayEventFlow());
+        Player currentPlayer = triggerArea.GetInteractingPlayer();
+
+        if(currentPlayer) {
+            mainCamera = currentPlayer.GetComponentInChildren<Camera>();
+            if(mainCamera && !isPlaying) {
+                StartCoroutine(PlayEventFlow());
+            }
         }
     }
 
@@ -41,7 +45,7 @@ public class StairsEvent : MonoBehaviour
         // Scene Fade In
         yield return fadePanel.FadeIn();
 
-        if(!stairs.isFinished()) {
+        if(!stairs.IsFinished()) {
             stairs.Use();
             yield return new WaitForSeconds(stairs.GetMovingTime() * 1.1f);
         }  

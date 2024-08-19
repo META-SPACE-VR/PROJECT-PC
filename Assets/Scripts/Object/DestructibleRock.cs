@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class DestructibleRock : MonoBehaviour
+public class DestructibleRock : NetworkBehaviour
 {
+    // 활성화 여부
+    [Networked] public NetworkBool isAlive { get; set; }
+
     [SerializeField]
     List<GameObject> cells; // 조각들
 
     [SerializeField]
-    float explosionForce = 5;
+    float explosionForce = 5; // 폭발 힘
 
     [SerializeField]
-    float explosionRadius = 5;
+    float explosionRadius = 5; // 폭발 반경
 
     [SerializeField]
-    float explosionUpward = 5;
+    float explosionUpward = 5; 
 
     [SerializeField]
     AudioSource crumbleSound;
@@ -22,13 +26,21 @@ public class DestructibleRock : MonoBehaviour
     [SerializeField]
     float cellDestroyTime = 3f;
 
-    private void Start() {
+    public override void Spawned() {
         // 원래 돌은 활성화
-        gameObject.SetActive(true);
+        isAlive = true;
 
         // 조각들은 비활성화
         foreach(GameObject cell in cells) {
             cell.SetActive(false);
+        }
+    }
+    
+    public override void FixedUpdateNetwork()
+    {
+        if (!isAlive && Object.HasStateAuthority)
+        {
+            Runner.Despawn(Object);
         }
     }
 
@@ -37,9 +49,6 @@ public class DestructibleRock : MonoBehaviour
         Debug.Log("Explode");
 
         crumbleSound.Play();
-
-        // 원래 돌 비활성화
-        gameObject.SetActive(false);
 
         // 조각들은 활성화
         foreach(GameObject cell in cells) {
@@ -59,5 +68,7 @@ public class DestructibleRock : MonoBehaviour
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, explosionUpward);
             }
         }
+
+        isAlive = false;
     }
 }

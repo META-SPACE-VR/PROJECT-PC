@@ -47,6 +47,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
 
     public void PlayEvent() {
         mainCamera = triggerArea.GetInteractingPlayer()?.GetComponentInChildren<Camera>();
+        
         if(mainCamera && !isPlaying) {
             StartCoroutine(PlayEventFlow());
         }
@@ -95,7 +96,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
             float dz = targetObj.transform.position.z - laserPointer.transform.position.z;
 
             float slope;
-            if(dx == 0 || dz == 0) {
+            if(dx == 0 && dz == 0) {
                 slope = (dy < 0 ? -1 : 1) * 1000000000;
             }
             else {

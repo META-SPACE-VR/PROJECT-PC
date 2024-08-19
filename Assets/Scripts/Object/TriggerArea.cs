@@ -108,11 +108,10 @@ public class TriggerArea : MonoBehaviour
     {
         if (playerController != null)
         {
-            // You could disable player movement or camera control here if needed
             playerController.SetInputEnabled(false); // Disable player input
+            Cursor.lockState = CursorLockMode.None;  // Unlock the cursor for UI interaction
+            Cursor.visible = true; 
         }
-
-        Cursor.lockState = CursorLockMode.None; // Unlock the cursor for UI interaction
     }
 
     private void UnlockCameraControl()
@@ -120,10 +119,11 @@ public class TriggerArea : MonoBehaviour
         if (playerController != null)
         {
             // Re-enable player movement or camera control here
-            playerController.SetInputEnabled(true); // Enable player input
+            playerController.SetInputEnabled(true);  // Enable player input
+            Cursor.lockState = CursorLockMode.Locked;  // Lock the cursor back to gameplay mode
+            Cursor.visible = false; 
         }
         // You could re-lock the cursor if necessary
-        // Cursor.lockState = CursorLockMode.Locked;
     }
 
     // This method returns whether the player is currently interacting

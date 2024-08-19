@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class Goods : MonoBehaviour
+public class Goods : NetworkBehaviour
 {
     GameObject playerInRange = null;
-    bool hasFood = true;
+    [Networked] bool hasFood { get; set; } = true;
 
     [SerializeField]
     GameObject spaceFood; // 우주식량
@@ -48,13 +49,17 @@ public class Goods : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag("Player") && hasFood) {
-            playerInRange = other.gameObject;
-            interactionPrompt.SetActive(true);
+            Player player = other.GetComponent<Player>();
+
+            if(player && player.HasInputAuthority) {
+                playerInRange = player.gameObject;
+                interactionPrompt.SetActive(true);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if(other.CompareTag("Player") && hasFood) {
+        if(other.CompareTag("Player") && hasFood && other.gameObject == playerInRange) {
             playerInRange = null;
             interactionPrompt.SetActive(false);
         }

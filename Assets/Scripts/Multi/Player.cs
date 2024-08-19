@@ -17,8 +17,9 @@ public class Player : NetworkBehaviour
 
     // Replace Animator with NetworkMecanimAnimator
     [SerializeField] private NetworkMecanimAnimator networkAnimator;
+    private bool isInputEnabled = true; // 입력 활성화 여부
 
-    private bool isInputEnabled = true; // Default to true
+
     private float currentSpeed;
 
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
@@ -55,46 +56,60 @@ public class Player : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        // Apply animation parameters only when input is available and it is a forward tick
-        if (GetInput(out NetInput input) && Runner.IsForward)
+        // 입력을 받아와야 합니다.
+        if (GetInput(out NetInput input))
         {
-            // Rotate based on input
-            kcc.AddLookRotation(input.LookDelta * lookSensitivity);
-
-            // Update movement
-            UpdateMovement(input);
-
-            // Update camera target
-            UpdateCamTarget();
-
-            // Handle interaction for mouse click
-            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
+            // 입력이 비활성화된 경우에도 PreviousButtons는 업데이트되어야 합니다.
+            if (!isInputEnabled)
             {
-                HandleInteraction(); // Example: Handle object interaction
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+                {
+                    HandleTriggerInteraction();
+                }
+
+                // 이전 버튼 상태를 항상 기록
+                PreviousButtons = input.Buttons;
+                return;  // 입력이 비활성화된 경우, 다른 입력 처리를 하지 않음
             }
 
-            // Handle interaction for E key (Trigger)
-            if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+            // Apply animation parameters only when input is available and it is a forward tick
+            if (Runner.IsForward)
             {
-                HandleTriggerInteraction(); // Example: Handle trigger interaction (E key)
-                StartRotateObjectRight();
+                kcc.AddLookRotation(input.LookDelta * lookSensitivity);
+
+                UpdateMovement(input);
+                UpdateCamTarget();
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
+                {
+                    HandleInteraction();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+                {
+                    HandleTriggerInteraction();
+                    StartRotateObjectRight();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
+                {
+                    StartRotateObjectLeft();
+                }
+
+                UpdateAnimation(input);
             }
 
-            else if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
-            {
-                StartRotateObjectLeft();
-            }
-
-            // Update animation parameters based on input
-            UpdateAnimation(input);
-
+            // 항상 PreviousButtons를 업데이트하여 다음 프레임에서 입력 비교 가능
             PreviousButtons = input.Buttons;
         }
     }
 
     public override void Render()
     {
-        UpdateCamTarget();
+        if (isInputEnabled) // 입력이 활성화된 경우에만 카메라 타겟 업데이트
+        {
+            UpdateCamTarget();
+        }
     }
 
     public void StartRotateObjectRight()
@@ -156,6 +171,8 @@ public class Player : NetworkBehaviour
         }
     }
 
+
+    
     private void UpdateMovement(NetInput input)
     {
         currentSpeed = input.Buttons.IsSet(InputButton.Run) ? runSpeed : walkSpeed;
@@ -186,10 +203,6 @@ public class Player : NetworkBehaviour
         camTarget.localRotation = Quaternion.Euler(kcc.GetLookRotation().x, 0f, 0f);
     }
 
-    public void SetInputEnabled(bool enabled)
-    {
-        isInputEnabled = enabled;
-    }
 
     // This method is called by the TriggerArea when the player enters
     public void SetCurrentTriggerArea(TriggerArea triggerArea)
@@ -213,4 +226,8 @@ public class Player : NetworkBehaviour
         currentButton = null;
     }
 
+    public void SetInputEnabled(bool enabled)
+    {
+        isInputEnabled = enabled;
+    }
 }
