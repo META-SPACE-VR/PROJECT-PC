@@ -2199,6 +2199,7 @@ GameObject:
   - component: {fileID: 3803798571548224393}
   - component: {fileID: 2759897059124535779}
   - component: {fileID: 3984882561794897345}
+  - component: {fileID: -1072473696127236909}
   m_Layer: 3
   m_Name: animation_rigged 1
   m_TagString: Player
@@ -2267,7 +2268,7 @@ MonoBehaviour:
   runSpeed: 8
   jumpImpulse: 10
   playerCamera: {fileID: 3974371714699470639}
-  animator: {fileID: 2759897059124535779}
+  networkAnimator: {fileID: 0}
 --- !u!114 &3420898891305769638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2375,6 +2376,30 @@ CapsuleCollider:
   m_Height: 1.7
   m_Direction: 1
   m_Center: {x: 0, y: 1.06, z: 0.09}
+--- !u!114 &-1072473696127236909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6239918330384693157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c5f4b8afc012c45938934ef86adcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
+  selectRange: 10
+  selectLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  <SelectedObject>k__BackingField: {fileID: 0}
+  handTransform: {fileID: 0}
+  holdingForce: 0.5
+  heldObjectLayer: 0
+  heldClamXRotation: 45
+  <HeldObject>k__BackingField: {fileID: 0}
+  <Interacting>k__BackingField: 0
 --- !u!1 &6374993503003713187
 GameObject:
   m_ObjectHideFlags: 0

@@ -1392,11 +1392,12 @@ GameObject:
   - component: {fileID: 8669816830556551529}
   - component: {fileID: -8835525887197703778}
   - component: {fileID: 8286350783592600854}
-  - component: {fileID: 1674243069456783647}
   - component: {fileID: 4121051539378732595}
   - component: {fileID: 5033451430443433999}
   - component: {fileID: 8049202106988471231}
   - component: {fileID: 2878930442412833134}
+  - component: {fileID: 7198238275537650707}
+  - component: {fileID: 2649711072898634419}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1442,9 +1443,9 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 1674243069456783647}
   - {fileID: 4121051539378732595}
   - {fileID: 2878930442412833134}
+  - {fileID: 7198238275537650707}
 --- !u!54 &8286350783592600854
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1472,27 +1473,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1674243069456783647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2690234683535358372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec02ed70018cd3644896ce64ea3f53ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modelParts: []
-  kcc: {fileID: 4121051539378732595}
-  camTarget: {fileID: 3559117495271750627}
-  lookSensitivity: 0.15
-  walkSpeed: 5
-  runSpeed: 8
-  jumpImpulse: 10
-  playerCamera: {fileID: 5542594237261943205}
-  networkAnimator: {fileID: 2878930442412833134}
 --- !u!114 &4121051539378732595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1591,6 +1571,63 @@ MonoBehaviour:
   SyncSettings: 127
   StateHashes: 00000000cfc590586a8177e7cc7607236932e09c8269478ea1d944284e624aae8c108b0cec3c6717610e183941d714609f7c55030b50f51f16573258
   TriggerHashes: 0000000028a98107
+--- !u!114 &7198238275537650707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690234683535358372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec02ed70018cd3644896ce64ea3f53ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelParts: []
+  kcc: {fileID: 4121051539378732595}
+  camTarget: {fileID: 3559117495271750627}
+  lookSensitivity: 0.15
+  walkSpeed: 5
+  runSpeed: 8
+  jumpImpulse: 10
+  playerCamera: {fileID: 5542594237261943205}
+  networkAnimator: {fileID: 2878930442412833134}
+  playerCameraTransform: {fileID: 2938202696581999629}
+  selectRange: 10
+  selectLayer:
+    serializedVersion: 2
+    m_Bits: 1025
+  <SelectedObject>k__BackingField: {fileID: 0}
+  handTransform: {fileID: 2938202696581999629}
+  holdingForce: 0.5
+  heldObjectLayer: 0
+  heldClamXRotation: 45
+  <HeldObject>k__BackingField: {fileID: 0}
+  <Interacting>k__BackingField: 0
+--- !u!114 &2649711072898634419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690234683535358372}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c5f4b8afc012c45938934ef86adcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 2938202696581999629}
+  selectRange: 10
+  selectLayer:
+    serializedVersion: 2
+    m_Bits: 1025
+  <SelectedObject>k__BackingField: {fileID: 0}
+  handTransform: {fileID: 2938202696581999629}
+  holdingForce: 0.5
+  heldObjectLayer: 0
+  heldClamXRotation: 45
+  <HeldObject>k__BackingField: {fileID: 0}
+  <Interacting>k__BackingField: 0
 --- !u!1 &2880616880526894496
 GameObject:
   m_ObjectHideFlags: 0
