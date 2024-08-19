@@ -21,12 +21,12 @@ public class Interaction : MonoBehaviour
             
             if (collectable != null)
             {
-                collectable.ShowText();
+                //collectable.ShowText();
 
                 // 아이템 줍기
                 if (Input.GetMouseButtonDown(0))
                 {
-                    collectable.Collect();
+                    //collectable.Collect();
                 }
             }
 

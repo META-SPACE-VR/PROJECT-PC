@@ -20,7 +20,6 @@ public class AlarmController : MonoBehaviour
         if (isAlarming)
         {
             alarmLight.intensity = Mathf.PingPong(Time.time * flashSpeed, flashIntensity);
-            Debug.Log("Current Intensity: " + alarmLight.intensity);
         }
     }
 
