@@ -50,6 +50,7 @@ public class InventoryManager : MonoBehaviour
         pickedItemPosition = player.transform.Find("PickedItemPosition").gameObject;
         zoomedItemPosition = player.transform.Find("ZoomedItemPosition");
         originalCameraPosition = player.transform.Find("OriginalCameraPosition");
+        mainCamera = Camera.main;
 
         collectables = new Dictionary<int, Collectable>();
 

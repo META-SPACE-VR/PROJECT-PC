@@ -62,6 +62,7 @@ public class Player : NetworkBehaviour, IObjectHolder
 
     [Header("Inventory")]
     public InventoryManager inventoryManager;
+    private bool isZoomed = false;
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -170,6 +171,11 @@ public class Player : NetworkBehaviour, IObjectHolder
                     HandleTransformInteraction();
                 }
 
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Zoom))
+                {
+                    HandleZoomState();
+                }
+
                 UpdateAnimation(input);
             }
 
@@ -209,12 +215,24 @@ public class Player : NetworkBehaviour, IObjectHolder
 
         if (Physics.Raycast(ray, out hit, 5f))
         {
-            Debug.Log("Raycast hit: " + hit.transform.name + inventoryManager.pickedItemIndex.ToString());
+            Debug.Log("Raycast hit: " + hit.transform.name);
             // 유리문 여닫기
             var glassDoor = hit.transform.GetComponent<GlassDoor>();
             if (glassDoor != null)
             {
                 glassDoor.ToggleDoor();  // Handle door interaction
+            }
+            // 믹서 뚜껑 닫기
+            var mixerCover = hit.transform.GetComponent<MixerCoverController>();
+            if (mixerCover != null)
+            {
+                mixerCover.ToggleDoor();
+            }
+            // 액화 장치 뚜껑 닫기
+            var liquificationDoor = hit.transform.GetComponent<LiquefactionDoorController>();
+            if (liquificationDoor != null)
+            {
+                liquificationDoor.ToggleDoor();
             }
             // 아이템 줍기
             var collectable = hit.transform.GetComponent<Collectable>();
@@ -487,4 +505,19 @@ public class Player : NetworkBehaviour, IObjectHolder
             DropObject(HeldObject);
     }
 
+    private void HandleZoomState()
+    {
+        if (inventoryManager != null && inventoryManager.pickedItemIndex != -1)
+        {
+            isZoomed = !isZoomed;
+            if (isZoomed)
+            {
+                inventoryManager.ZoomItem();
+            }
+            else
+            {
+                inventoryManager.UnzoomItem();
+            }
+        }
+    }
 }

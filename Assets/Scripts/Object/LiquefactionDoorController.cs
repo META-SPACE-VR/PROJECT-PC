@@ -1,33 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Fusion;
 using UnityEngine;
 
-public class LiquefactionDoorController : MonoBehaviour
+public class LiquefactionDoorController : NetworkBehaviour
 {
     public bool isClosed = false;
-
-    private float range = 5f;
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, range))
-            {
-                if (hit.transform == transform)
-                {
-                    ToggleDoor();
-                }
-            }
-        }
-    }
 
     public void ToggleDoor()
     {
         isClosed = !isClosed;
+        UpdateDoorVisual();
+    }
+
+    private void UpdateDoorVisual()
+    {
         if (isClosed)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
@@ -38,4 +26,8 @@ public class LiquefactionDoorController : MonoBehaviour
         }
     }
 
+    public override void FixedUpdateNetwork()
+    {
+        UpdateDoorVisual();
+    }
 }

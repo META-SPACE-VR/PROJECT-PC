@@ -1,37 +1,25 @@
 using Oculus.Interaction.Surfaces;
 using System.Collections;
 using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
-public class MixerCoverController : MonoBehaviour
+public class MixerCoverController : NetworkBehaviour
 {
-    public bool isClosed = false;
+    [Networked] public bool isClosed { get; set; }  = false;
+
     public Transform leftCover;
     public Transform rightCover;
     public Vector3 distance = new Vector3(0, 0, -0.5f);
 
-    private float range = 5f;
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, range))
-            {
-                if (hit.transform == transform)
-                {
-                    ToggleDoor();
-                }
-            }
-        }
-    }
-
     public void ToggleDoor()
     {
         isClosed = !isClosed;
+        UpdateDoorVisual();
+    }
+
+    private void UpdateDoorVisual()
+    {
         if (isClosed)
         {
             leftCover.position += distance;
@@ -42,5 +30,10 @@ public class MixerCoverController : MonoBehaviour
             leftCover.position -= distance;
             rightCover.position += distance;
         }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        UpdateDoorVisual();
     }
 }
