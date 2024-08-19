@@ -15,6 +15,10 @@ namespace Managers
         public const int GAME_SCENE = 2; 
         public GameObject StartBtnCanvas;
         public Button StartBtn; 
+
+        //생화학자, 기계공, 전기공, 의사 
+        string[] jobList = {"Biochemist","Mechanic","Electrician","Doctor"};
+        List<string> availableJobList; //남은 직업을 담을 리스트 
         
         public static GameStartManager Instance => Singleton<GameStartManager>.Instance;
 
@@ -35,6 +39,37 @@ namespace Managers
         {
             Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
             StartBtnCanvas.SetActive(false);
+        }
+
+        public void AssignJobs()
+        {
+            availableJobList = new List<string>(jobList);
+            AssignRandomJobs();
+        }
+
+        void AssignRandomJobs()
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+            foreach(GameObject player in players)
+            {
+                string randomJob = GetRandomJob();
+                Player.Local.Rpc_SetJob(randomJob);
+            }
+        }
+
+        string GetRandomJob()
+        {
+            if (availableJobList.Count==0) return ""; 
+
+            int randomIndex = Random.Range(0, availableJobList.Count);
+            string randomJob = availableJobList[randomIndex];
+            Debug.Log("할당된 직업: " + randomJob);
+
+            //할당된 직업을 리스트에서 제거 (중복 할당 방지)
+            availableJobList.RemoveAt(randomIndex);
+            
+            return randomJob; 
         }
     }
 }
