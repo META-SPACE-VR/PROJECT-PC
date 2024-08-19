@@ -22,23 +22,22 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
         }
 
         Keyboard keyboard = Keyboard.current;
-        if (keyboard != null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame))
-        {
-            if (Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-        }
+        // if (keyboard != null && (keyboard.eKey.wasPressedThisFrame))
+        // {
+        //     if (Cursor.lockState == CursorLockMode.Locked)
+        //     {
+        //         Cursor.lockState = CursorLockMode.None;
+        //         Cursor.visible = true;
+        //     }
+        //     else
+        //     {
+        //         Cursor.lockState = CursorLockMode.Locked;
+        //         // Cursor.visible = false;
+        //     }
+        // }
 
-        // Accumulate input only if the cursor is locked.
-        if (Cursor.lockState != CursorLockMode.Locked)
-            return;
+        // if (Cursor.lockState != CursorLockMode.Locked)
+        //     return;
 
         NetworkButtons buttons = default;
 
@@ -50,10 +49,11 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             accumulatedInput.LookDelta += lookRotationDelta;
 
             // 추가된 부분: 마우스 클릭 감지
-            if (mouse.leftButton.wasPressedThisFrame)
-            {
-                buttons.Set(InputButton.Interact, true);  // 상호작용 버튼 처리
-            }
+            // if (mouse.leftButton.wasPressedThisFrame)
+            // {
+            //     buttons.Set(InputButton.Interact, true);  // 상호작용 버튼 처리
+            // }
+            buttons.Set(InputButton.Interact, mouse.leftButton.isPressed);
         }
 
         if (keyboard != null)
