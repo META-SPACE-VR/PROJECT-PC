@@ -21,19 +21,19 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
         }
 
         Keyboard keyboard = Keyboard.current;
-        // if (keyboard != null && (keyboard.eKey.wasPressedThisFrame))
-        // {
-        //     if (Cursor.lockState == CursorLockMode.Locked)
-        //     {
-        //         Cursor.lockState = CursorLockMode.None;
-        //         Cursor.visible = true;
-        //     }
-        //     else
-        //     {
-        //         Cursor.lockState = CursorLockMode.Locked;
-        //         // Cursor.visible = false;
-        //     }
-        // }
+        if (keyboard != null && (keyboard.escapeKey.wasPressedThisFrame))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
 
         // if (Cursor.lockState != CursorLockMode.Locked)
         //     return;
@@ -72,6 +72,7 @@ public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCa
             //     buttons.Set(InputButton.Trigger, true);  // E key triggers interaction
             // }
             buttons.Set(InputButton.Trigger, keyboard.eKey.isPressed);
+            buttons.Set(InputButton.Transform, keyboard.rKey.isPressed);
             
             accumulatedInput.Direction += moveDirection;
             buttons.Set(InputButton.Jump, keyboard.spaceKey.isPressed);

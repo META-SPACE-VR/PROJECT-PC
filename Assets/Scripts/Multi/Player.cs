@@ -12,7 +12,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 8f;
     [SerializeField] private float jumpImpulse = 10f;
-
+    private NPCInteraction currentNPC;  // 현재 상호작용 중인 NPC
+    private WheelchairController currentWheelchair;
     [SerializeField] private Camera playerCamera;
 
     // Replace Animator with NetworkMecanimAnimator
@@ -89,6 +90,11 @@ public class Player : NetworkBehaviour
                     HandleTriggerInteraction();
                 }
 
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Transform))
+                {
+                    HandleTransformInteraction();
+                }
+
                 UpdateAnimation(input);
             }
 
@@ -142,9 +148,39 @@ public class Player : NetworkBehaviour
                 currentTriggerArea.EnterInteraction();
             }
         }
+        else if (currentNPC != null)
+        {
+            if (!currentNPC.isInteracting)
+            {
+                currentNPC.StartInteraction();
+            }
+            else
+            {
+                currentNPC.AdvanceDialogue();
+            }
+        }
         else
         {
-            Debug.Log("No TriggerArea in range.");
+            Debug.Log("No TriggerArea or NPC in range.");
+        }
+    }
+
+    private void HandleTransformInteraction()
+    {
+        if (currentWheelchair != null)
+        {
+            if (currentWheelchair.isInteracting)
+            {
+                currentWheelchair.ExitInteraction();
+            }
+            else
+            {
+                currentWheelchair.EnterInteraction();
+            }
+        }
+        else
+        {
+            Debug.Log("No wheelchair in range.");
         }
     }
 
@@ -181,6 +217,16 @@ public class Player : NetworkBehaviour
     }
 
 
+    public void SetCurrentWheelchair(WheelchairController wheelchair)
+    {
+        currentWheelchair = wheelchair;
+    }
+
+    public void ClearCurrentWheelchair()
+    {
+        currentWheelchair = null;
+    }
+    
     // This method is called by the TriggerArea when the player enters
     public void SetCurrentTriggerArea(TriggerArea triggerArea)
     {
@@ -197,4 +243,16 @@ public class Player : NetworkBehaviour
     {
         isInputEnabled = enabled;
     }
+
+    public void SetCurrentNPC(NPCInteraction npcInteraction)
+    {
+        currentNPC = npcInteraction;
+    }
+
+    // This method is called by the NPC when the player exits its interaction area
+    public void ClearCurrentNPC()
+    {
+        currentNPC = null;
+    }
+
 }
