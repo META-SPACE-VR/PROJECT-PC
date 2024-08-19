@@ -24,6 +24,7 @@ public class Player : NetworkBehaviour
     private float currentSpeed;
 
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
+    private ButtonController currentButton;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -67,6 +68,12 @@ public class Player : NetworkBehaviour
                     HandleTriggerInteraction();
                 }
 
+                if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotUp)) HandleRobotArmInteraction(MoveType.Up);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotDown)) HandleRobotArmInteraction(MoveType.Down);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotLeft)) HandleRobotArmInteraction(MoveType.Left);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotRight)) HandleRobotArmInteraction(MoveType.Right);
+                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotAttach)) HandleRobotArmInteraction(MoveType.Attach);
+
                 // 이전 버튼 상태를 항상 기록
                 PreviousButtons = input.Buttons;
                 return;  // 입력이 비활성화된 경우, 다른 입력 처리를 하지 않음
@@ -88,6 +95,12 @@ public class Player : NetworkBehaviour
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
                 {
                     HandleTriggerInteraction();
+                    StartRotateObjectRight();
+                }
+
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
+                {
+                    StartRotateObjectLeft();
                 }
 
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Transform))
@@ -108,6 +121,22 @@ public class Player : NetworkBehaviour
         if (isInputEnabled) // 입력이 활성화된 경우에만 카메라 타겟 업데이트
         {
             UpdateCamTarget();
+        }
+    }
+
+    public void StartRotateObjectRight()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectRight();
+        }
+    }
+
+    public void StartRotateObjectLeft()
+    {
+        if (currentButton != null)
+        {
+            currentButton.StartRotateObjectLeft();
         }
     }
 
@@ -184,7 +213,12 @@ public class Player : NetworkBehaviour
         }
     }
 
-
+    private void HandleRobotArmInteraction(MoveType moveType) {
+        RobotArm robotArm = GameObject.Find("Robot Arm").GetComponent<RobotArm>();
+        if(currentTriggerArea == robotArm.GetTriggerArea() && currentTriggerArea.IsInteracting()) {
+            robotArm.Move(moveType);
+        }
+    }
     
     private void UpdateMovement(NetInput input)
     {
@@ -237,6 +271,16 @@ public class Player : NetworkBehaviour
     public void ClearCurrentTriggerArea()
     {
         currentTriggerArea = null;
+    }
+
+    public void SetCurrentButton(ButtonController buttonController)
+    {
+        currentButton = buttonController;
+    }
+
+    public void ClearCurrentButton()
+    {
+        currentButton = null;
     }
 
     public void SetInputEnabled(bool enabled)
