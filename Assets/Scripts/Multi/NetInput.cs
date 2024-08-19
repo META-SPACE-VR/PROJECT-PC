@@ -7,6 +7,13 @@ public enum InputButton
     Run,  // Run 버튼 추가
     Interact,
     Trigger,
+    //--------------- relative robot arm ---------------
+    RobotUp,
+    RobotDown,
+    RobotLeft,
+    RobotRight,
+    RobotAttach,
+    //--------------- relative robot arm ---------------
     Qtrigger
 }
 
