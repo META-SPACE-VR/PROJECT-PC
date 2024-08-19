@@ -7,6 +7,7 @@ public enum InputButton
     Run,  // Run 버튼 추가
     Interact,
     Trigger,
+    Transform,
     //--------------- relative robot arm ---------------
     RobotUp,
     RobotDown,
