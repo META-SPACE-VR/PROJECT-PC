@@ -24,7 +24,25 @@ public class InventoryManager : MonoBehaviour
     public Transform originalCameraPosition;
     public Camera mainCamera;
 
+    // 전역 변수
+    public static InventoryManager Instance { get; private set; }
+
+    // 네트워크 변수
     private GameObject player;
+
+    private void Awake()
+    {
+        // 전역 변수로 만들기
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {

@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using HInteractions;
 using System;
 using HPlayer;
+using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour, IObjectHolder
 {
@@ -28,7 +29,6 @@ public class Player : NetworkBehaviour, IObjectHolder
     // Replace Animator with NetworkMecanimAnimator
     [SerializeField] private NetworkMecanimAnimator networkAnimator;
     private bool isInputEnabled = true; // 입력 활성화 여부
-
 
     private float currentSpeed;
 
@@ -59,6 +59,17 @@ public class Player : NetworkBehaviour, IObjectHolder
 
     public event Action OnInteractionStart;
     public event Action OnInteractionEnd;
+
+    [Header("Inventory")]
+    public InventoryManager inventoryManager;
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Game")
+        {
+            inventoryManager = InventoryManager.Instance;
+        }
+    }
 
     public override void Spawned()
     {
@@ -198,21 +209,32 @@ public class Player : NetworkBehaviour, IObjectHolder
 
         if (Physics.Raycast(ray, out hit, 5f))
         {
-            Debug.Log("Raycast hit: " + hit.transform.name);
-
+            Debug.Log("Raycast hit: " + hit.transform.name + inventoryManager.pickedItemIndex.ToString());
+            // 유리문 여닫기
             var glassDoor = hit.transform.GetComponent<GlassDoor>();
             if (glassDoor != null)
             {
                 glassDoor.ToggleDoor();  // Handle door interaction
             }
-
+            // 아이템 줍기
             var collectable = hit.transform.GetComponent<Collectable>();
-            if (collectable != null)
+            if (collectable != null && inventoryManager != null && inventoryManager.pickedItemIndex == -1)
             {
                 collectable.Collect();
             }
+            // 아이템 두기
+            var putable = hit.transform.GetComponent<Putable>();
+            if (putable != null && inventoryManager != null && inventoryManager.pickedItemIndex != -1)
+            {
+                putable.PutItem();
+            }
+            // 아이템 버리기
+            if (putable == null && inventoryManager != null && inventoryManager.pickedItemIndex != -1)
+            {
+                Vector3 dropPosition = transform.position + transform.forward * 2f + Vector3.up * 2.5f;
+                inventoryManager.DropItem(inventoryManager.pickedItemIndex, dropPosition);
+            }
         }
-
     }
 
     // New method to handle Trigger (E key) interactions
@@ -366,12 +388,16 @@ public class Player : NetworkBehaviour, IObjectHolder
         OnInteractionStart += ChangeHeldObject;
 
         PlayerController.OnPlayerEnterPortal += CheckHeldObjectOnTeleport;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
         OnInteractionStart -= ChangeHeldObject;
 
         PlayerController.OnPlayerEnterPortal -= CheckHeldObjectOnTeleport;
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void UpdateInput(NetInput input)
