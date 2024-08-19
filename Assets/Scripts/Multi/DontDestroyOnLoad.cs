@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class DontDestroyOnLoad : MonoBehaviour
 {
-    public GameObject gameObjectToKeep;
+    private static DontDestroyOnLoad instance;
 
-    private void Awake()
+    void Awake()
     {
-        // 현재 씬에 이미 해당 오브젝트가 존재하는지 확인
-        GameObject[] objs = GameObject.FindGameObjectsWithTag(gameObjectToKeep.tag);
-        if (objs.Length > 1)
+        // 이미 인스턴스가 존재하는지 확인
+        if (instance == null)
         {
-            // 씬에 중복된 오브젝트가 있을 경우, 새로 생성된 오브젝트를 파괴
-            Destroy(gameObject);
+            // 인스턴스가 없다면 현재 오브젝트를 인스턴스로 설정
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // `DontDestroyOnLoad` 설정
-            DontDestroyOnLoad(gameObject);
+            // 이미 인스턴스가 존재하면 현재 오브젝트를 파괴
+            Destroy(gameObject);
         }
     }
 }
