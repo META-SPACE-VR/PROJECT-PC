@@ -53,6 +53,7 @@ public class Player : NetworkBehaviour
                 playerCamera.enabled = false;
             }
         }
+        DontDestroyOnLoad(this);
     }
 
     public override void FixedUpdateNetwork()

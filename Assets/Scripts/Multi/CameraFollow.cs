@@ -11,6 +11,7 @@ public class CameraFollow : MonoBehaviour
         if (Singleton == null)
         {
             Singleton = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {

@@ -1,6 +1,7 @@
 using Fusion;
 using Fusion.Menu;
 using UnityEngine;
+using Managers;
 
 namespace MultiClimb.Menu
 {

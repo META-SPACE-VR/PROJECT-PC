@@ -3,6 +3,7 @@ using Oculus.Interaction.Surfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
@@ -23,9 +24,14 @@ public class InventoryManager : MonoBehaviour
     public Transform originalCameraPosition;
     public Camera mainCamera;
 
+    private GameObject player;
+
     private void Start()
     {
-        pickedItemPosition = GameObject.Find("PickedItemPosition");
+        player = FindAnyObjectByType<Player>().gameObject;
+        pickedItemPosition = player.transform.Find("PickedItemPosition").gameObject;
+        zoomedItemPosition = player.transform.Find("ZoomedItemPosition");
+        originalCameraPosition = player.transform.Find("OriginalCameraPosition");
 
         collectables = new Dictionary<int, Collectable>();
 
