@@ -37,7 +37,7 @@ namespace Managers
 
         public void onClickStartBtn()
         {
-            // Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
+            Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
             StartBtnCanvas.SetActive(false);
 
             availableJobList = new List<string>(jobList);
