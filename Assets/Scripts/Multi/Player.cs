@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 public class Player : NetworkBehaviour, IObjectHolder
 {
     public static Player Local;
+    private InputManager inputManager;
+    [Networked] public string Name { get; private set; }
     
     [SerializeField] private MeshRenderer[] modelParts;
     [SerializeField] private SimpleKCC kcc;
@@ -81,23 +83,17 @@ public class Player : NetworkBehaviour, IObjectHolder
             Local = this;
             
             foreach (MeshRenderer renderer in modelParts)
-            {
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-            }
-
-            playerCamera = Camera.main;
-            playerCamera.transform.SetParent(camTarget);
-            playerCamera.transform.localPosition = Vector3.zero;
-            playerCamera.transform.localRotation = Quaternion.identity;
-
-            CameraFollow.Singleton.SetTarget(camTarget);
-        }
-        else
-        {
-            if (playerCamera != null)
-            {
-                playerCamera.enabled = false;
-            }
+            
+            inputManager = Runner.GetComponent<InputManager>();
+            inputManager.LocalPlayer = this;
+            Name = PlayerPrefs.GetString("Photon.Menu.Username");
+            RPC_PlayerName(Name);
+            CameraFollow.Instance.SetTarget(camTarget);
+            // UIManager.Singleton.LocalPlayer = this;
+            // playerCamera = Camera.main;
+            playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            kcc.Settings.ForcePredictedLookRotation = true;
         }
         DontDestroyOnLoad(this);
     }
@@ -107,6 +103,12 @@ public class Player : NetworkBehaviour, IObjectHolder
 	{
 		this.currentJob = job;
 	}
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    private void RPC_PlayerName(string name)
+    {
+        Name = name;
+    }
 
     public override void FixedUpdateNetwork()
     {
@@ -211,6 +213,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     private void HandleInteraction()
     {
         Ray ray = playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 5f))

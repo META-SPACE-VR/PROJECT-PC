@@ -91,13 +91,13 @@ namespace HPlayer
 
         private void Start()
         {
-            SetMode(Mods.Default);
+            // SetMode(Mods.Default);
 
             // Cursor.lockState = CursorLockMode.Locked;
             // Cursor.visible = false;
 
             yaw = transform.eulerAngles.y;
-            pitch = playerCamera.transform.localEulerAngles.x;
+            // pitch = playerCamera.transform.localEulerAngles.x;
         }
 
         private void Update()
@@ -107,44 +107,43 @@ namespace HPlayer
             isGrounded = Physics.CheckSphere(groundCheck, radius, groundMask);
 
             GetInput();
+            // MoveCamera();
 
-            MoveCamera();
-
-            ChoseMode();
-            MovePlayer();
+            // ChoseMode();
+            // MovePlayer();
         }
 
-        private void SetMode(Mods mod)
-        {
-            if (currentMod == mod)
-                return;
+        // private void SetMode(Mods mod)
+        // {
+        //     if (currentMod == mod)
+        //         return;
 
-            switch (mod)
-            {
-                case Mods.Default:
-                    currentSpeed = defaultSpeed;
-                    currentJumpHeight = defaultJumpHeight;
-                    break;
-                case Mods.Sprint:
-                    currentSpeed = sprintSpeed;
-                    currentJumpHeight = sprintJumpHeight;
-                    break;
-                default:
-                    currentSpeed = 0;
-                    currentJumpHeight = 0;
-                    break;
-            }
+        //     switch (mod)
+        //     {
+        //         case Mods.Default:
+        //             currentSpeed = defaultSpeed;
+        //             currentJumpHeight = defaultJumpHeight;
+        //             break;
+        //         case Mods.Sprint:
+        //             currentSpeed = sprintSpeed;
+        //             currentJumpHeight = sprintJumpHeight;
+        //             break;
+        //         default:
+        //             currentSpeed = 0;
+        //             currentJumpHeight = 0;
+        //             break;
+        //     }
 
-            currentMod = mod;
-        }
+        //     currentMod = mod;
+        // }
 
-        private void ChoseMode()
-        {
-            if (canSprint && inputSprint)
-                SetMode(Mods.Sprint);
-            else
-                SetMode(Mods.Default);
-        }
+        // private void ChoseMode()
+        // {
+        //     if (canSprint && inputSprint)
+        //         SetMode(Mods.Sprint);
+        //     else
+        //         SetMode(Mods.Default);
+        // }
 
 
         private void GetInput()
@@ -167,102 +166,102 @@ namespace HPlayer
             inputJump = Input.GetKey(KeyCode.Space);
         }
 
-        private void MoveCamera()
-        {
-            // Verrrrrry gross hack to stop camera swinging down at start
-            if (Time.unscaledTime < 6f && inputMouse.x * inputMouse.x + inputMouse.y * inputMouse.y > 50)
-            {
-                inputMouse.x = 0;
-                inputMouse.y = 0;
-            }
+        // private void MoveCamera()
+        // {
+        //     // Verrrrrry gross hack to stop camera swinging down at start
+        //     if (Time.unscaledTime < 6f && inputMouse.x * inputMouse.x + inputMouse.y * inputMouse.y > 50)
+        //     {
+        //         inputMouse.x = 0;
+        //         inputMouse.y = 0;
+        //     }
 
-            if (FreezCamera)
-                return;
+        //     if (FreezCamera)
+        //         return;
 
-            yaw += inputMouse.x * mouseSensitivity;
-            pitch -= inputMouse.y * mouseSensitivity;
-            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+        //     yaw += inputMouse.x * mouseSensitivity;
+        //     pitch -= inputMouse.y * mouseSensitivity;
+        //     pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-            transform.eulerAngles = Vector3.up * yaw;
-            playerCamera.transform.localEulerAngles = Vector3.right * pitch;
-        }
+        //     transform.eulerAngles = Vector3.up * yaw;
+        //     playerCamera.transform.localEulerAngles = Vector3.right * pitch;
+        // }
 
-        private void MovePlayer()
-        {
-            if (FreezMovement)
-                return;
+        // private void MovePlayer()
+        // {
+        //     if (FreezMovement)
+        //         return;
 
-            Vector3 inputDir = new Vector3(inputMove.x, 0, inputMove.y).normalized;
-            Vector3 worldInputDir = transform.TransformDirection(inputDir);
+        //     Vector3 inputDir = new Vector3(inputMove.x, 0, inputMove.y).normalized;
+        //     Vector3 worldInputDir = transform.TransformDirection(inputDir);
 
-            Vector3 targetVelocity = worldInputDir * currentSpeed;
-            velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref smoothV, smoothMoveTime);
+        //     Vector3 targetVelocity = worldInputDir * currentSpeed;
+        //     velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref smoothV, smoothMoveTime);
 
-            if (isGrounded)
-            {
-                if (verticalVelocity < 0)
-                    verticalVelocity = -2f;
+        //     if (isGrounded)
+        //     {
+        //         if (verticalVelocity < 0)
+        //             verticalVelocity = -2f;
 
-                if (canJump && inputJump && verticalVelocity < 1f)
-                    verticalVelocity = Mathf.Sqrt(currentJumpHeight * -2f * gravity);
-            }
+        //         if (canJump && inputJump && verticalVelocity < 1f)
+        //             verticalVelocity = Mathf.Sqrt(currentJumpHeight * -2f * gravity);
+        //     }
 
-            verticalVelocity += gravity * Time.deltaTime;
-            velocity = new Vector3(velocity.x, verticalVelocity, velocity.z);
+        //     verticalVelocity += gravity * Time.deltaTime;
+        //     velocity = new Vector3(velocity.x, verticalVelocity, velocity.z);
 
-            controller.Move(velocity * Time.deltaTime);
-        }
+        //     controller.Move(velocity * Time.deltaTime);
+        // }
 
 
-        public void SetPosition(Vector3 position)
-        {
-            controller.enabled = false;
-            transform.position = position;
-            velocity = Vector3.zero;
-            smoothV = Vector3.zero;
-            verticalVelocity = 0;
-            controller.enabled = true;
-        }
-        public void SetRotation(float rotX, float rotY)
-        {
-            if (rotX > 180)
-                rotX -= 360;
+        // public void SetPosition(Vector3 position)
+        // {
+        //     controller.enabled = false;
+        //     transform.position = position;
+        //     velocity = Vector3.zero;
+        //     smoothV = Vector3.zero;
+        //     verticalVelocity = 0;
+        //     controller.enabled = true;
+        // }
+        // public void SetRotation(float rotX, float rotY)
+        // {
+        //     if (rotX > 180)
+        //         rotX -= 360;
 
-            inputMouse.y = 0;
-            pitch = rotX;
-            playerCamera.transform.localEulerAngles = Vector3.right * rotX;
+        //     inputMouse.y = 0;
+        //     pitch = rotX;
+        //     playerCamera.transform.localEulerAngles = Vector3.right * rotX;
 
-            inputMouse.x = 0;
-            yaw = rotY;
-            transform.eulerAngles = Vector3.up * rotY;
-        }
+        //     inputMouse.x = 0;
+        //     yaw = rotY;
+        //     transform.eulerAngles = Vector3.up * rotY;
+        // }
 
-        public void SetCameraBackgroundOnSkyBox(float viewRange)
-        {
-            playerCamera.clearFlags = CameraClearFlags.Skybox;
-            playerCamera.farClipPlane = viewRange;
-        }
-        public void SetCameraBackgroundOnSolidColor(Color color, float viewRange)
-        {
-            playerCamera.farClipPlane = viewRange;
-            playerCamera.clearFlags = CameraClearFlags.SolidColor;
-            playerCamera.backgroundColor = color;
-        }
+        // public void SetCameraBackgroundOnSkyBox(float viewRange)
+        // {
+        //     playerCamera.clearFlags = CameraClearFlags.Skybox;
+        //     playerCamera.farClipPlane = viewRange;
+        // }
+        // public void SetCameraBackgroundOnSolidColor(Color color, float viewRange)
+        // {
+        //     playerCamera.farClipPlane = viewRange;
+        //     playerCamera.clearFlags = CameraClearFlags.SolidColor;
+        //     playerCamera.backgroundColor = color;
+        // }
 
-        private void SetEnable() => SetEnable(true);
-        private void SetDisable() => SetEnable(false);
-        public void SetEnable(bool enableState)
-        {
-            if (enableState)
-            {
-                FreezCamera = true;
-                enabled = false;
-            }
-            else
-            {
-                FreezCamera = false;
-                enabled = true;
-            }
-        }
+        // private void SetEnable() => SetEnable(true);
+        // private void SetDisable() => SetEnable(false);
+        // public void SetEnable(bool enableState)
+        // {
+        //     if (enableState)
+        //     {
+        //         FreezCamera = true;
+        //         enabled = false;
+        //     }
+        //     else
+        //     {
+        //         FreezCamera = false;
+        //         enabled = true;
+        //     }
+        // }
     }
 }
