@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using NaughtyAttributes;
+using Fusion;
 
 namespace HPhysic
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Connector : MonoBehaviour
+    public class Connector : NetworkBehaviour
     {
+
         public enum ConType { Male, Female }
         public enum CableColor { White, Red, Green, Yellow, Blue, Cyan, Magenta }
 
@@ -22,13 +24,12 @@ namespace HPhysic
         [SerializeField] private bool allowConnectDifrentCollor = false;
 
         [field: SerializeField] public Connector ConnectedTo { get; private set; }
-        [SerializeField] public Connector TargetConnector;
+        [Networked, SerializeField] public Connector TargetConnector { get; private set; }
 
         [Header("Object to set")]
         [SerializeField, Required] private Transform connectionPoint;
         [SerializeField] private MeshRenderer collorRenderer;
         [SerializeField] private ParticleSystem sparksParticle;
-
 
         private FixedJoint _fixedJoint;
         public Rigidbody Rigidbody { get; private set; }
@@ -38,10 +39,15 @@ namespace HPhysic
         public Quaternion RotationOffset => connectionPoint ? connectionPoint.localRotation : Quaternion.Euler(Vector3.zero);
         public Vector3 ConnectedOutOffset => connectionPoint ? connectionPoint.right : transform.right;
 
-        public bool IsConnected => ConnectedTo != null;
+        [Networked] private NetworkBool isConnectedInternal { get; set; }
+        public bool IsConnected => isConnectedInternal;
         public bool IsConnectedRight => IsConnected && ConnectionColor == ConnectedTo.ConnectionColor;
 
-
+        public override void Spawned()
+        {
+            base.Spawned();
+            Rigidbody = GetComponent<Rigidbody>();
+        }
 
         private void Awake()
         {
@@ -58,10 +64,6 @@ namespace HPhysic
                 ConnectedTo = null;
                 Connect(t);
             }
-            
-            // if(TargetConnector != null){
-            //     IsConnectedTo(TargetConnector);
-            // }
         }
 
         private void OnDisable() => Disconnect();
@@ -72,6 +74,7 @@ namespace HPhysic
             _wasConnectionKinematic = secondConnector.Rigidbody.isKinematic;
             UpdateInteractableWhenIsConnected();
         }
+
         public void Connect(Connector secondConnector)
         {
             if (secondConnector == null)
@@ -95,6 +98,10 @@ namespace HPhysic
                 secondConnector.Rigidbody.isKinematic = true;
             ConnectedTo = secondConnector;
 
+            // 네트워크 동기화된 상태 업데이트
+            TargetConnector = secondConnector;
+            isConnectedInternal = true;
+
             // 스파크 효과
             if (incorrectSparksC == null && sparksParticle && !AreConnected(this, TargetConnector))
             {
@@ -105,6 +112,7 @@ namespace HPhysic
             // 연결 시 아웃라인 업데이트
             UpdateInteractableWhenIsConnected();
         }
+
         public void Disconnect(Connector onlyThis = null)
         {
             if (ConnectedTo == null || onlyThis != null && onlyThis != ConnectedTo)
@@ -112,12 +120,15 @@ namespace HPhysic
 
             Destroy(_fixedJoint);
 
-            // 중요한 부분: 재귀 방지
             Connector toDisconect = ConnectedTo;
             ConnectedTo = null;
             if (makeConnectionKinematic)
                 toDisconect.Rigidbody.isKinematic = _wasConnectionKinematic;
             toDisconect.Disconnect(this);
+
+            // 네트워크 동기화된 상태 업데이트
+            TargetConnector = null;
+            isConnectedInternal = false;
 
             // 스파크 효과 정지
             if (sparksParticle)
@@ -139,12 +150,10 @@ namespace HPhysic
             }
         }
 
-
         private IEnumerator incorrectSparksC;
         private IEnumerator IncorrectSparks()
         {
             while (incorrectSparksC != null && sparksParticle && !AreConnected(this, TargetConnector))
-            // while (incorrectSparksC != null && sparksParticle)
             {
                 sparksParticle.Play();
 
@@ -177,23 +186,17 @@ namespace HPhysic
             _ => Color.clear
         };
 
-
         public bool CanConnect(Connector secondConnector)
         {
-            // 동일한 객체나 이미 연결된 커넥터는 연결 불가
             if (this == secondConnector || IsConnected || secondConnector.IsConnected)
                 return false;
 
-            // F-F, M-M 연결 금지, F-M만 연결 가능
             if (ConnectionType == secondConnector.ConnectionType)
                 return false;
 
-            // 색상이 다른 경우 연결 가능 여부 확인
-            // return allowConnectDifrentCollor || secondConnector.allowConnectDifrentCollor || ConnectionColor == secondConnector.ConnectionColor;
             return true;
         }
 
-        // 커넥터가 다른 커넥터에 연결되어 있는지 확인
         public bool IsConnectedTo(Connector target)
         {
             if (target == null)
@@ -205,54 +208,39 @@ namespace HPhysic
             Connector nextConnector = ConnectedTo;
             while (nextConnector != null)
             {
-                // Debug.Log("2: " + nextConnector.name);
                 if (nextConnector == target)
                 {
                     Debug.Log("connected " + nextConnector.name);
                     return true;
                 }
 
-                // `Start` 
                 if (nextConnector.name == "Start")
                 {
-                    // Debug.Log("start잇음");
                     Transform parentConnector = nextConnector.transform.parent;
                     Connector endConnector = parentConnector.transform.Find("End").GetComponent<Connector>();
                     if (endConnector != null)
                     {
-                        // Debug.Log("4-0: " + endConnector.name);
                         nextConnector = endConnector.ConnectedTo;
-                        // Debug.Log("4-1: " + (nextConnector != null ? nextConnector.name : "null"));
-                        continue; // 다음 루프로 이동
-                    } 
+                        continue;
+                    }
                 }
-
-                // `End`
                 else if (nextConnector.name == "End")
                 {
-                    // Debug.Log("end잇음");
                     Transform parentConnector = nextConnector.transform.parent;
                     Connector startConnector = parentConnector.transform.Find("Start").GetComponent<Connector>();
                     if (startConnector != null)
                     {
-                        // Debug.Log("4-2: " + startConnector.name);
                         nextConnector = startConnector.ConnectedTo;
-                        // Debug.Log("4-3: " + (nextConnector != null ? nextConnector.name : "null"));
-                        continue; // 다음 루프로 이동
-                    } 
+                        continue;
+                    }
                 }
 
-                // 더 이상 연결이 없는 경우
-                // Debug.Log("5: null");
                 nextConnector = null;
             }
 
-            // Debug.Log("6: null");
             return false;
         }
 
-
-        // 두 커넥터가 연결되어 있는지 확인
         public static bool AreConnected(Connector start, Connector end)
         {
             if (start == null || end == null)

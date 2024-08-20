@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using Fusion;
 
 namespace HPhysic
 {
-    public class PhysicCable : MonoBehaviour
+    public class PhysicCable : NetworkBehaviour
     {
         [Header("Look")]
         [SerializeField, Min(1)] private int numberOfPoints = 3;
@@ -204,7 +205,16 @@ namespace HPhysic
             points.Add(end.transform);
         }
 
-        private void Update()
+        public override void FixedUpdateNetwork()
+        {
+            base.FixedUpdateNetwork();
+
+            if (Runner.IsForward)
+            {
+                UpdateCableState();
+            }
+        }
+        private void UpdateCableState()
         {
             float cableLength = 0f;
             bool isConnected = startConnector.IsConnected || endConnector.IsConnected;
@@ -236,7 +246,7 @@ namespace HPhysic
             {
                 if (cableLength > brakeLength)
                 {
-                    timeToBrake -= Time.deltaTime;
+                    timeToBrake -= Runner.DeltaTime;
                     if (timeToBrake < 0f)
                     {
                         startConnector.Disconnect();
