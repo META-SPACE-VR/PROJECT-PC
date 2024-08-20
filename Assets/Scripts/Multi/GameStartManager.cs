@@ -31,6 +31,8 @@ namespace Managers
             // 씬이 로딩된 후에 수행할 작업을 여기에 작성합니다.
             Debug.Log($"씬이 로드되었습니다: {sceneRef}");
 
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().enabled = true;
+
             if (Instance.Runner!=null && Instance.Runner.IsServer && sceneRef.AsIndex == LOBBY_SCENE)
                 StartBtnCanvas.SetActive(true);
         }

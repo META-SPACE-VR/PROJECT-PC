@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 
 public class InputManager : SimulationBehaviour, IBeforeUpdate, INetworkRunnerCallbacks
 {
+    public Player LocalPlayer;
     private NetInput accumulatedInput;
     private bool resetInput;
 
