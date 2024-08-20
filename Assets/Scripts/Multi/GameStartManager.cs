@@ -37,12 +37,9 @@ namespace Managers
 
         public void onClickStartBtn()
         {
-            Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
+            // Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
             StartBtnCanvas.SetActive(false);
-        }
 
-        public void AssignJobs()
-        {
             availableJobList = new List<string>(jobList);
             AssignRandomJobs();
         }
@@ -53,8 +50,9 @@ namespace Managers
 
             foreach(GameObject player in players)
             {
+                Player playerComponent = player.GetComponent<Player>();
                 string randomJob = GetRandomJob();
-                Player.Local.Rpc_SetJob(randomJob);
+                playerComponent.Rpc_SetJob(randomJob);
             }
         }
 
