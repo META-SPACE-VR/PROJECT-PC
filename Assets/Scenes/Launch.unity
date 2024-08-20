@@ -9249,6 +9249,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 393815322096692907}
     m_Modifications:
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 6346876041980953393, guid: 07668791be69b114994c373db3d9d71d, type: 3}
       propertyPath: m_Name
       value: 1
@@ -9404,6 +9412,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 393815322096692907}
     m_Modifications:
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 6346876041980953393, guid: 07668791be69b114994c373db3d9d71d, type: 3}
       propertyPath: m_Name
       value: 3
@@ -9506,6 +9522,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 393815322096692907}
     m_Modifications:
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 6346876041980953393, guid: 07668791be69b114994c373db3d9d71d, type: 3}
       propertyPath: m_Name
       value: 2
@@ -9754,6 +9778,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 393815322096692907}
     m_Modifications:
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266510222413522444, guid: 07668791be69b114994c373db3d9d71d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 6346876041980953393, guid: 07668791be69b114994c373db3d9d71d, type: 3}
       propertyPath: m_Name
       value: 4

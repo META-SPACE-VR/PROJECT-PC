@@ -95,7 +95,7 @@ public class UIManager : MonoBehaviour
             if (i < players.Length)
             {
                 item.nameText.text = players[i].Value.Name;
-                // item.heightText.text = $"{players[i].Value.Score}m";
+                item.heightText.text = $"{players[i].Value.currentJob}";
             }
             else
             {
