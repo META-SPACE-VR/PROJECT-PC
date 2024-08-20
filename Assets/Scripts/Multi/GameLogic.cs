@@ -1,12 +1,37 @@
 using Fusion;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+public enum GameState
+{
+    Waiting,
+    Playing,
+}
 
 public class GameLogic : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 {
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [Networked, Capacity(4)] private NetworkDictionary<PlayerRef, Player> Players => default;
     public Transform spawnPosition;  // 스폰 위치를 지정할 Transform
+
+    public override void Spawned()
+    {
+        // Winner = null;
+        // State = GameState.Waiting;
+        // UIManager.Singleton.SetWaitUI(State, Winner);
+        Runner.SetIsSimulated(Object, true);
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (Players.Count < 1)
+            return;
+
+        // if (State == GameState.Playing && !Runner.IsResimulation)
+        if (!Runner.IsResimulation)
+            UIManager.Singleton.UpdateLeaderboard(Players.OrderByDescending(p => p.Value.Name).ToArray());
+    }
 
     public void PlayerJoined(PlayerRef player)
     {
