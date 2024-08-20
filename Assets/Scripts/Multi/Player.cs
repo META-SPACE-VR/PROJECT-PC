@@ -90,7 +90,7 @@ public class Player : NetworkBehaviour, IObjectHolder
             Name = PlayerPrefs.GetString("Photon.Menu.Username");
             RPC_PlayerName(Name);
             CameraFollow.Instance.SetTarget(camTarget);
-            // UIManager.Singleton.LocalPlayer = this;
+            UIManager.Singleton.LocalPlayer = this;
             // playerCamera = Camera.main;
             playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             kcc.Settings.ForcePredictedLookRotation = true;
