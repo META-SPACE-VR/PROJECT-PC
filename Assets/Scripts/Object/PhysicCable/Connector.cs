@@ -47,16 +47,6 @@ namespace HPhysic
         {
             base.Spawned();
             Rigidbody = GetComponent<Rigidbody>();
-        }
-
-        private void Awake()
-        {
-            Rigidbody = gameObject.GetComponent<Rigidbody>();
-        }
-
-        private void Start()
-        {
-            UpdateConnectorColor();
 
             if (ConnectedTo != null)
             {
@@ -64,6 +54,11 @@ namespace HPhysic
                 ConnectedTo = null;
                 Connect(t);
             }
+        }
+
+        private void Awake()
+        {
+            Rigidbody = gameObject.GetComponent<Rigidbody>();
         }
 
         private void OnDisable() => Disconnect();
