@@ -28,7 +28,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
 
     // 네트워크 변수
-    private GameObject player;
+    // private GameObject player;
+    public Player player;
 
     private void Awake()
     {
@@ -46,11 +47,12 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        player = FindAnyObjectByType<Player>().gameObject;
+        // player = FindAnyObjectByType<Player>().gameObject;
         pickedItemPosition = player.transform.Find("PickedItemPosition").gameObject;
         zoomedItemPosition = player.transform.Find("ZoomedItemPosition");
         originalCameraPosition = player.transform.Find("OriginalCameraPosition");
-        mainCamera = Camera.main;
+        // mainCamera = Camera.main;
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
         collectables = new Dictionary<int, Collectable>();
 
