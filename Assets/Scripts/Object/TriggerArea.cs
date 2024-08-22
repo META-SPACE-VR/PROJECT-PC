@@ -4,11 +4,11 @@ using Fusion;
 
 public class TriggerArea : MonoBehaviour
 {
-    private Camera mainCamera;
+    private Transform attachPoint;
+    private Transform camTarget;
     private Player playerController; // Reference to the player controller
 
     public Transform screenViewTransform;
-    public Transform originalViewTransform; // Reference to the original view transform
     public ScreenUIManager screenUIManager; // Reference to the screen UI manager
     public GameObject interactionPrompt; // Reference to the interaction prompt UI
 
@@ -19,7 +19,7 @@ public class TriggerArea : MonoBehaviour
     {
         // Validate required references
         if (screenViewTransform == null) Debug.LogError("screenViewTransform is not assigned.");
-        if (originalViewTransform == null) Debug.LogError("originalViewTransform is not assigned.");
+        if (attachPoint == null) Debug.LogError("originalViewTransform is not assigned.");
         if (screenUIManager == null) Debug.LogError("screenUIManager is not assigned.");
         if (interactionPrompt == null) Debug.LogError("interactionPrompt is not assigned.");
 
@@ -28,7 +28,7 @@ public class TriggerArea : MonoBehaviour
 
     void Update()
     {
-        if (mainCamera == null || screenViewTransform == null || originalViewTransform == null || playerController == null || screenUIManager == null || interactionPrompt == null)
+        if (camTarget == null || screenViewTransform == null || attachPoint == null || playerController == null || screenUIManager == null || interactionPrompt == null)
         {
             return;
         }
@@ -47,11 +47,10 @@ public class TriggerArea : MonoBehaviour
             // Ensure that we only interact with the local player's camera
             if (playerController != null && playerController.HasInputAuthority)
             {
-                mainCamera = playerController.GetComponentInChildren<Camera>(); // Get the camera from the player
+                attachPoint = playerController.transform.Find("Attach Point"); // Get the camera from the player
+                camTarget = playerController.transform.Find("CamTarget"); // Get the camera from the player
 
-                originalViewTransform = playerController.transform.Find("Camera Offset");
-
-                if (originalViewTransform == null)
+                if (attachPoint == null)
                 {
                     Debug.LogError("OriginalViewTransform (Camera Offset) not found in player hierarchy.");
                 }
@@ -76,11 +75,11 @@ public class TriggerArea : MonoBehaviour
 
     public void EnterInteraction()
     {
-        if (mainCamera != null)
+        if (camTarget != null)
         {
             // Move the camera to the interaction position
-            mainCamera.transform.position = screenViewTransform.position;
-            mainCamera.transform.rotation = screenViewTransform.rotation;
+            camTarget.transform.position = screenViewTransform.position;
+            camTarget.transform.rotation = screenViewTransform.rotation;
 
             LockCameraControl();
             screenUIManager.ShowScreenUI(); // Show the screen UI
@@ -91,11 +90,11 @@ public class TriggerArea : MonoBehaviour
 
     public void ExitInteraction()
     {
-        if (mainCamera != null)
+        if (camTarget != null)
         {
             // Move the camera back to the original position
-            mainCamera.transform.position = originalViewTransform.position;
-            mainCamera.transform.rotation = originalViewTransform.rotation;
+            camTarget.transform.position = attachPoint.position;
+            camTarget.transform.rotation = attachPoint.rotation;
 
             UnlockCameraControl();
             screenUIManager.HideScreenUI(); // Hide the screen UI
