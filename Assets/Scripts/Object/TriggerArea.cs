@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using Fusion;
 
-public class TriggerArea : NetworkBehaviour
+public class TriggerArea : MonoBehaviour
 {
     private Camera mainCamera;
     private Player playerController; // Reference to the player controller
@@ -12,7 +12,7 @@ public class TriggerArea : NetworkBehaviour
     public ScreenUIManager screenUIManager; // Reference to the screen UI manager
     public GameObject interactionPrompt; // Reference to the interaction prompt UI
 
-    [Networked] private bool isPlayerInRange { get; set; } = false;
+    private bool isPlayerInRange = false;
     private bool isInteracting = false;
 
     void Start()
@@ -36,9 +36,10 @@ public class TriggerArea : NetworkBehaviour
         // The interaction logic is now handled by the Player's HandleTriggerInteraction method.
     }
 
-    private void OnTriggerStay(Collider other) {
+    void OnTriggerEnter(Collider other)
+    {
         // Check if the player entered the trigger area
-        if (other.CompareTag("Player") && !isPlayerInRange)
+        if (other.CompareTag("Player"))
         {
             // Attempt to get the Player component from the object
             playerController = other.GetComponent<Player>();
@@ -61,33 +62,6 @@ public class TriggerArea : NetworkBehaviour
             }
         }
     }
-
-    // void OnTriggerEnter(Collider other)
-    // {
-    //     // Check if the player entered the trigger area
-    //     if (other.CompareTag("Player"))
-    //     {
-    //         // Attempt to get the Player component from the object
-    //         playerController = other.GetComponent<Player>();
-
-    //         // Ensure that we only interact with the local player's camera
-    //         if (playerController != null && playerController.HasInputAuthority)
-    //         {
-    //             mainCamera = playerController.GetComponentInChildren<Camera>(); // Get the camera from the player
-
-    //             originalViewTransform = playerController.transform.Find("Camera Offset");
-
-    //             if (originalViewTransform == null)
-    //             {
-    //                 Debug.LogError("OriginalViewTransform (Camera Offset) not found in player hierarchy.");
-    //             }
-
-    //             interactionPrompt.SetActive(true); // Show the interaction prompt
-    //             isPlayerInRange = true;
-    //             playerController.SetCurrentTriggerArea(this);  // Inform the player that they are in range
-    //         }
-    //     }
-    // }
 
     void OnTriggerExit(Collider other)
     {
