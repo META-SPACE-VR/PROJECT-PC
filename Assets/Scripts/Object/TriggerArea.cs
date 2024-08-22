@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using Fusion;
+using System.Collections;
 
 public class TriggerArea : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class TriggerArea : MonoBehaviour
 
     private bool isPlayerInRange = false;
     private bool isInteracting = false;
+    private bool canExitInteraction = true;  // Interaction을 종료할 수 있는지 여부를 제어
+
 
     void Start()
     {
@@ -58,6 +61,7 @@ public class TriggerArea : MonoBehaviour
                 interactionPrompt.SetActive(true); // Show the interaction prompt
                 isPlayerInRange = true;
                 playerController.SetCurrentTriggerArea(this);  // Inform the player that they are in range
+
             }
         }
     }
@@ -85,12 +89,16 @@ public class TriggerArea : MonoBehaviour
             screenUIManager.ShowScreenUI(); // Show the screen UI
             interactionPrompt.SetActive(false); // Hide the interaction prompt
             isInteracting = true;
+
+            canExitInteraction = false;
+            StartCoroutine(EnableExitInteractionAfterDelay(1f));
+
         }
     }
 
     public void ExitInteraction()
     {
-        if (camTarget != null)
+        if (camTarget != null && canExitInteraction)  // ExitInteraction이 가능해야만 호출
         {
             // Move the camera back to the original position
             camTarget.transform.position = attachPoint.position;
@@ -107,9 +115,8 @@ public class TriggerArea : MonoBehaviour
     {
         if (playerController != null)
         {
-            playerController.SetInputEnabled(false); // Disable player input
             Cursor.lockState = CursorLockMode.None;  // Unlock the cursor for UI interaction
-            Cursor.visible = true; 
+            Cursor.visible = true;
         }
     }
 
@@ -118,9 +125,8 @@ public class TriggerArea : MonoBehaviour
         if (playerController != null)
         {
             // Re-enable player movement or camera control here
-            playerController.SetInputEnabled(true);  // Enable player input
             Cursor.lockState = CursorLockMode.Locked;  // Lock the cursor back to gameplay mode
-            Cursor.visible = false; 
+            Cursor.visible = false;
         }
         // You could re-lock the cursor if necessary
     }
@@ -132,7 +138,13 @@ public class TriggerArea : MonoBehaviour
     }
 
     // give player who interacting
-    public Player GetInteractingPlayer() {
+    public Player GetInteractingPlayer()
+    {
         return isInteracting ? playerController : null;
+    }
+    private IEnumerator EnableExitInteractionAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        canExitInteraction = true;  // 1초 후에 상호작용 종료 가능
     }
 }
