@@ -96,7 +96,7 @@ public class Player : NetworkBehaviour, IObjectHolder
             playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             kcc.Settings.ForcePredictedLookRotation = true;
         }
-        DontDestroyOnLoad(this);
+        // DontDestroyOnLoad(this);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
