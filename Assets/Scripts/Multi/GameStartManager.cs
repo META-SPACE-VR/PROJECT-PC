@@ -12,7 +12,7 @@ namespace Managers
     {
         public const int LAUNCH_SCENE = 0;
 		public const int LOBBY_SCENE = 1;
-        public const int GAME_SCENE = 2; 
+        public const int GAME_SCENE = 1; 
         public GameObject StartBtnCanvas;
         public Button StartBtn; 
 
@@ -39,7 +39,7 @@ namespace Managers
 
         public void onClickStartBtn()
         {
-            Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
+            // Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
             StartBtnCanvas.SetActive(false);
 
             availableJobList = new List<string>(jobList);

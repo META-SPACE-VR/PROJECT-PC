@@ -20,7 +20,7 @@ public class GameLogic : NetworkBehaviour, IPlayerJoined, IPlayerLeft
         // Winner = null;
         // State = GameState.Waiting;
         // UIManager.Singleton.SetWaitUI(State, Winner);
-        Runner.SetIsSimulated(Object, true);
+        // Runner.SetIsSimulated(Object, true);
     }
 
     public override void FixedUpdateNetwork()
@@ -29,8 +29,8 @@ public class GameLogic : NetworkBehaviour, IPlayerJoined, IPlayerLeft
             return;
 
         // if (State == GameState.Playing && !Runner.IsResimulation)
-        if (!Runner.IsResimulation)
-            UIManager.Singleton.UpdateLeaderboard(Players.OrderByDescending(p => p.Value.Name).ToArray());
+        // if (!Runner.IsResimulation)
+            // UIManager.Singleton.UpdateLeaderboard(Players.OrderByDescending(p => p.Value.Name).ToArray());
     }
 
     public void PlayerJoined(PlayerRef player)

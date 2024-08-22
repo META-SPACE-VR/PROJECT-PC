@@ -18,9 +18,6 @@ MonoBehaviour:
   _availableRegions:
   - kr
   _availableScenes:
-  - Name: PreGame
-    ScenePath: Assets/Scenes/PreGame.unity
-    Preview: {fileID: 0}
   - Name: Game
     ScenePath: Assets/Scenes/Game.unity
     Preview: {fileID: 0}
