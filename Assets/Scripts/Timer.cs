@@ -1,14 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public TextMeshProUGUI timerText; // TMP Text 요소를 할당받기 위한 변수
     public float limitTime = 60f; // 제한 시간 (초)
-    // public GameObject mainCanvas;
+    public GameObject mainCanvas;
     public GameObject gameOverCanvas; // GameOverCanvas 오브젝트
-    public Button gameExitButton; // GameExitButton 오브젝트
 
     private float elapsedTime = 0f; // 경과 시간
     private bool isGameOver = false; // 게임 오버 상태
@@ -16,7 +12,6 @@ public class Timer : MonoBehaviour
     // 게임이 시작될 때 호출되는 메서드
     void Start()
     {
-        timerText.text = "00:00:00.000";
         elapsedTime = 0f;
         isGameOver = false;
         if (gameOverCanvas != null)
@@ -32,7 +27,6 @@ public class Timer : MonoBehaviour
         {
             // 경과 시간 업데이트
             elapsedTime += Time.deltaTime;
-            timerText.text = GetTimeString();
 
             // 제한 시간 초과 체크
             if (elapsedTime >= limitTime)
@@ -49,7 +43,7 @@ public class Timer : MonoBehaviour
         isGameOver = true;
         if (gameOverCanvas != null)
         {
-            // mainCanvas.SetActive(false); // 메인 캔버스 비활성화
+            mainCanvas.SetActive(false); // 메인 캔버스 비활성화
             gameOverCanvas.SetActive(true); // 게임 오버 캔버스 표시
         }
     }
@@ -72,16 +66,5 @@ public class Timer : MonoBehaviour
 
         // 시간 형식으로 문자열 생성 후 리턴
         return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", hours, minutes, seconds, miliSeconds);
-    }
-
-    void OnGameExitButtonClick()
-    {
-        // 애플리케이션 종료
-        Application.Quit();
-
-        // 에디터에서 실행 중일 때는 Play Mode를 종료
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        #endif
     }
 }
