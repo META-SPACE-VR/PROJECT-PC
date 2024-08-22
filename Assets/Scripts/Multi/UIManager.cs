@@ -39,9 +39,9 @@ public class UIManager : MonoBehaviour
     {
         Singleton = this;
 
-        grappleCD.value = 0f;
-        glideCD.value = 0f;
-        doubleJumpCD.value = 0f;
+        // grappleCD.value = 0f;
+        // glideCD.value = 0f;
+        // doubleJumpCD.value = 0f;
     }
 
     private void Update()
