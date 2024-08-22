@@ -65,7 +65,7 @@ public class Goods : NetworkBehaviour
     }
 
     private void OnTriggerExit(Collider other) {
-        if(other.CompareTag("Player") && hasFood && other.gameObject == playerInRange.gameObject) {
+        if(other.CompareTag("Player") && hasFood && playerInRange && other.gameObject == playerInRange.gameObject) {
             playerInRange.SetCurrentGoods(null);
             playerInRange = null;
             interactionPrompt.SetActive(false);

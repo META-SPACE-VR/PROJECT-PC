@@ -113,14 +113,17 @@ public class Player : NetworkBehaviour, IObjectHolder
 
     public override void FixedUpdateNetwork()
     {
+        Keyboard keyboard = Keyboard.current;
+
         // 입력을 받아와야 합니다.
         if (GetInput(out NetInput input))
         {
             // 입력이 비활성화된 경우에도 PreviousButtons는 업데이트되어야 합니다.
             if (!isInputEnabled)
             {
-                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
                 {
+                    Debug.Log(gameObject.transform.position);
                     HandleTriggerInteraction();
                 }
 
@@ -157,7 +160,7 @@ public class Player : NetworkBehaviour, IObjectHolder
                     HandleInteraction();
                 }
 
-                if (input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
+                if(input.Buttons.WasPressed(PreviousButtons, InputButton.Trigger))
                 {
                     HandleTriggerInteraction();
                     StartRotateObjectRight();
@@ -264,7 +267,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     {
         if (currentTriggerArea != null)
         {
-            if (currentTriggerArea.IsInteracting())
+            if (currentTriggerArea.isInteracting)
             {
                 currentTriggerArea.ExitInteraction();
             }
@@ -440,7 +443,7 @@ public class Player : NetworkBehaviour, IObjectHolder
         Interactable foundInteractable = null;
 
         // 마우스 위치에서 월드 공간으로 레이캐스트 수행
-        Ray ray = playerCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, selectRange, selectLayer))
             foundInteractable = hit.collider.GetComponent<Interactable>();
