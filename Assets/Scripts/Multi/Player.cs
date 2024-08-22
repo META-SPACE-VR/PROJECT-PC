@@ -91,6 +91,7 @@ public class Player : NetworkBehaviour, IObjectHolder
             RPC_PlayerName(Name);
             CameraFollow.Instance.SetTarget(camTarget);
             UIManager.Singleton.LocalPlayer = this;
+            InventoryManager.Instance.player = this;
             // playerCamera = Camera.main;
             playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             kcc.Settings.ForcePredictedLookRotation = true;
