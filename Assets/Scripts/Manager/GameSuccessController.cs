@@ -54,17 +54,21 @@ public class GameSuccessController : MonoBehaviour
     // 모든 필요한 아이템이 올바른 위치에 놓였는지 확인
     private bool AreAllItemsPlacedCorrectly()
     {
-        // 필요한 아이템이 모두 놓였는지 확인하는 리스트
-        List<string> itemsToPlace = new List<string>(requiredItems);
+        foreach(string itemName in requiredItems) {
+            bool flag = false;
 
-        foreach (Putable putable in putables)
-        {
-            if (putable.putItem != null && itemsToPlace.Contains(putable.objectName))
+            foreach (Putable putable in putables)
             {
-                itemsToPlace.Remove(putable.objectName); // 올바른 아이템이 놓여있다면 리스트에서 제거
+                if (putable.putItem != null && putable.putItem.gameObject.GetComponent<Collectable>().Name == itemName)
+                {
+                    flag = true;
+                    break;
+                }
             }
-        }
 
-        return itemsToPlace.Count == 0; // 모든 아이템이 놓였으면 true 반환
+            if(!flag) return false;
+        }
+        
+        return true;
     }
 }

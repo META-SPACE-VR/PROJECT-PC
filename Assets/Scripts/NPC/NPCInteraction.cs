@@ -25,6 +25,8 @@ public class NPCInteraction : MonoBehaviour
     private bool hasGivenCartilageProtectant = false;
     public bool medicineGive = false; // To track if both items have been given
     public InventoryManager InventoryManager;
+    public GameObject bandage1; // Reference to the bandage GameObject
+
 
 
 
@@ -63,7 +65,9 @@ public class NPCInteraction : MonoBehaviour
             if (playerNearby)
             {
                 CheckForItem();
+                CheckSurgery();
             }
+
             yield return new WaitForSeconds(1.0f); // Check every second (adjust as needed)
         }
     }
@@ -83,7 +87,8 @@ public class NPCInteraction : MonoBehaviour
             {
                 player = playerController.gameObject; // player를 설정합니다.
                 playerController.SetCurrentNPC(this);
-                if (!dialogueFinished && IsWheelchairNearby() && !isSittingInWheelchair)
+                
+                if (!dialogueFinished && !isSittingInWheelchair)
                 {
                     npcStartDialogue.SetActive(true); // 대화 후 E 버튼을 표시
                 }
@@ -94,7 +99,6 @@ public class NPCInteraction : MonoBehaviour
                 }
                 playerNearby = true; // 플레이어가 근처에 있을 때
                 CheckForItem();
-
             }
         }
     }
@@ -110,7 +114,8 @@ public class NPCInteraction : MonoBehaviour
                 playerController.ClearCurrentNPC();
                 sitInWheelchairPrompt.SetActive(false); // 플레이어가 나가면 E 버튼 숨김
                 npcStartDialogue.SetActive(false);
-
+                dialoguePanel.SetActive(false);
+                playerNearby = false;
             }
         }
     }
@@ -304,6 +309,40 @@ public class NPCInteraction : MonoBehaviour
         {
             giveItemButton.SetActive(false);
             Debug.Log("No item found in PickedItemPosition.");
+        }
+    }
+
+    private void CheckSurgery()
+    {   
+        if (dialogueFinished && medicineGive)
+        {
+            dialoguePanel.SetActive(true);
+
+            if (bandage1.activeSelf)
+            {
+                // Update dialogue text to provide the escape code
+                dialogueText.text = "탈출정 비밀번호는 LV0730입니다.";
+            }
+            else
+            {
+                dialogueText.text = "응급 수술이 필요할것 같아요";
+
+            }
+        }
+        if (dialogueFinished && !medicineGive)
+        {
+            dialoguePanel.SetActive(true);
+            
+            if (bandage1.activeSelf)
+            {
+                // Update dialogue text to provide the escape code
+                dialogueText.text = "다리가 안움직여요... 약을 찾아서 투여해주세요";
+
+            }
+            else
+            {
+                dialogueText.text = "응급 수술이 필요할것 같아요";
+            }
         }
     }
 
