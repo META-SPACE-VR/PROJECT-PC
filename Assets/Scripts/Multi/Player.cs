@@ -240,6 +240,9 @@ public class Player : NetworkBehaviour, IObjectHolder
             }
             // 아이템 줍기
             var collectable = hit.transform.GetComponent<Collectable>();
+            Debug.Log(collectable != null);
+            Debug.Log(inventoryManager != null);
+            Debug.Log(inventoryManager != null);
             if (collectable != null && inventoryManager != null && inventoryManager.pickedItemIndex == -1)
             {
                 collectable.Collect();
