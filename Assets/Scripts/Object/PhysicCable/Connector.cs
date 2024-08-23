@@ -24,7 +24,7 @@ namespace HPhysic
         [SerializeField] private bool allowConnectDifrentCollor = false;
 
         [field: SerializeField] public Connector ConnectedTo { get; private set; }
-        [Networked, SerializeField] public Connector TargetConnector { get; private set; }
+        [SerializeField] public Connector TargetConnector;
 
         [Header("Object to set")]
         [SerializeField, Required] private Transform connectionPoint;
@@ -93,10 +93,6 @@ namespace HPhysic
                 secondConnector.Rigidbody.isKinematic = true;
             ConnectedTo = secondConnector;
 
-            // 네트워크 동기화된 상태 업데이트
-            TargetConnector = secondConnector;
-            isConnectedInternal = true;
-
             // 스파크 효과
             if (incorrectSparksC == null && sparksParticle && !AreConnected(this, TargetConnector))
             {
@@ -120,10 +116,6 @@ namespace HPhysic
             if (makeConnectionKinematic)
                 toDisconect.Rigidbody.isKinematic = _wasConnectionKinematic;
             toDisconect.Disconnect(this);
-
-            // 네트워크 동기화된 상태 업데이트
-            TargetConnector = null;
-            isConnectedInternal = false;
 
             // 스파크 효과 정지
             if (sparksParticle)

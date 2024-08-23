@@ -2522,7 +2522,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
+  m_Radius: 0.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
@@ -32758,7 +32758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3368665932
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3750578540448980672}
@@ -33247,7 +33247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1126741171
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4333524874529571672}
@@ -36087,7 +36087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3723774847
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1855209170666650781}
@@ -39917,7 +39917,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3780765140
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 2046870800233162035}
@@ -42570,7 +42570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3704292239668481541, guid: 29e68962e221f9b45aacdfcabbbb717d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41.787
+      value: 41.51
       objectReference: {fileID: 0}
     - target: {fileID: 3704292239668481541, guid: 29e68962e221f9b45aacdfcabbbb717d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -42635,7 +42635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 2262852280
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5143206937848392884}
@@ -43490,7 +43490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1158257879
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 5671482593756773735}
