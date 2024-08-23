@@ -16,7 +16,8 @@ public class NPCInteraction : MonoBehaviour
     public bool isInteracting = false;
     private int dialogueStep = 0;
     public Animator npcAnimator;
-
+    public GameObject npcStartDialogue;
+    public GameObject sitInWheelchairPrompt; // E 버튼을 표시할 UI 요소
 
     private string[] initialDialogueLines = new string[]
     {
@@ -35,10 +36,12 @@ public class NPCInteraction : MonoBehaviour
     };
 
     private bool initialDialogueComplete = false;
+    private bool dialogueFinished = false; // 대화가 끝났는지 여부
 
     void Start()
     {
         dialoguePanel.SetActive(false); // Initially hide the dialogue panel
+        sitInWheelchairPrompt.SetActive(false); // E 버튼을 숨김
         AddEventTriggerListener(dialoguePanel, EventTriggerType.PointerClick, OnDialoguePanelClick);
     }
 
@@ -51,6 +54,15 @@ public class NPCInteraction : MonoBehaviour
             if (playerController != null)
             {
                 playerController.SetCurrentNPC(this);
+                if (!dialogueFinished && IsWheelchairNearby() && !isSittingInWheelchair)
+                {
+                    npcStartDialogue.SetActive(true); // 대화 후 E 버튼을 표시
+                }
+
+                if (dialogueFinished && IsWheelchairNearby() && !isSittingInWheelchair)
+                {
+                    sitInWheelchairPrompt.SetActive(true); // 대화 후 E 버튼을 표시
+                }
             }
         }
     }
@@ -64,6 +76,9 @@ public class NPCInteraction : MonoBehaviour
             if (playerController != null)
             {
                 playerController.ClearCurrentNPC();
+                sitInWheelchairPrompt.SetActive(false); // 플레이어가 나가면 E 버튼 숨김
+                npcStartDialogue.SetActive(false);
+
             }
         }
     }
@@ -73,6 +88,7 @@ public class NPCInteraction : MonoBehaviour
         isInteracting = true;
         dialogueStep = 0;
         dialoguePanel.SetActive(true);
+        npcStartDialogue.SetActive(false);
 
         if (!initialDialogueComplete)
         {
@@ -80,10 +96,15 @@ public class NPCInteraction : MonoBehaviour
         }
         else
         {
-            if (IsWheelchairNearby())
+            if (IsWheelchairNearby() && dialogueFinished)
+            {
+                SitInWheelchair();
+            }
+            if (IsWheelchairNearby() && !dialogueFinished)
             {
                 dialogueText.text = wheelchairFoundDialogue[dialogueStep];
                 SitInWheelchair();
+                dialogueFinished = true;
             }
             else
             {
@@ -143,6 +164,11 @@ public class NPCInteraction : MonoBehaviour
     {
         isInteracting = false;
         dialoguePanel.SetActive(false);
+
+        if (IsWheelchairNearby())
+        {
+            sitInWheelchairPrompt.SetActive(true); // 대화 후 E 버튼을 표시
+        }
     }
 
     private bool IsWheelchairNearby()
@@ -159,6 +185,8 @@ public class NPCInteraction : MonoBehaviour
         isSittingInWheelchair = true;
         npcAnimator.SetBool("Laying", false);
         Debug.Log("NPC is now in the wheelchair.");
+        dialoguePanel.SetActive(false);
+        sitInWheelchairPrompt.SetActive(false); // E 버튼 숨김
     }
 
     public void LayOnBed(Transform bedTransform)
@@ -190,5 +218,14 @@ public class NPCInteraction : MonoBehaviour
         EventTrigger.Entry entry = new EventTrigger.Entry { eventID = type };
         entry.callback.AddListener(action);
         trigger.triggers.Add(entry);
+    }
+
+    // 플레이어가 E 키를 눌렀을 때 휠체어에 앉히는 메서드
+    public void OnSitInWheelchairButtonPressed()
+    {
+        if (IsWheelchairNearby() && !isSittingInWheelchair)
+        {
+            SitInWheelchair();
+        }
     }
 }

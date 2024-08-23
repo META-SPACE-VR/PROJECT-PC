@@ -9,14 +9,14 @@ public class MachineStart : MonoBehaviour
     public float wheelDistance;
     public GameObject wheelchair;
     public Animator machineAnimator;
-    public KeyCode interactionKey = KeyCode.E; // E 키를 상호작용 키로 설정
+    public KeyCode interactionKey;
     public GameObject interactionPrompt; // Interaction prompt 참조
 
     // Update is called once per frame
     void Update()
     {
         // NPC와 휠체어가 가까이 있는지 확인
-        if (IsNearby())
+        if (IsNearby() && npcInteraction.isSittingInWheelchair)
         {
             // 가까이 있으면 상호작용 프롬프트 활성화
             interactionPrompt.SetActive(true);
@@ -26,6 +26,10 @@ public class MachineStart : MonoBehaviour
             {
                 onMachineStart();
             }
+        }
+        if (!IsNearby())
+        {
+            interactionPrompt.SetActive(false);
         }
 
     }

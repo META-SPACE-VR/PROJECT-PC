@@ -114,6 +114,8 @@ public class WheelchairController : NetworkBehaviour
         wheelchair.transform.SetParent(player.transform);
 
         UpdateWheelChairPosition();
+        interactionText.gameObject.SetActive(false); // 상호작용 텍스트 비활성화
+
 
         // // 초기 회전값을 설정
         // wheelchair.transform.localRotation = Quaternion.Euler(-90, 0, 0);
