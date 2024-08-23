@@ -84,9 +84,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5346858a84563471c8306ae3a0276979, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6731788426405880023}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5346858a84563471c8306ae3a0276979, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -4768247063351385530}
   m_SourcePrefab: {fileID: 100100000, guid: 5346858a84563471c8306ae3a0276979, type: 3}
 --- !u!1 &7439110422508331433 stripped
 GameObject:
@@ -159,7 +156,6 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 6731788426405880023}
-  - {fileID: -4768247063351385530}
 --- !u!114 &6731788426405880023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,27 +171,5 @@ MonoBehaviour:
   Prefab: {fileID: 7439110422508331433}
   Name: "\uC6B0\uC8FC\uC2DD\uB7C9 B\uD615"
   Icon: {fileID: 21300000, guid: 27760ad7851290740b35fff4251e3934, type: 3}
-  guideText: {fileID: 0}
+  guideText: {fileID: 3233096119810634757, guid: 1fc403b8913bfc6498133eef5c3007f8, type: 3}
   InventoryManager: {fileID: 0}
---- !u!114 &-4768247063351385530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7439110422508331433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 1
-  _interpolationTarget: {fileID: 0}
-  UsePreciseRotation: 0
-  UseRenderSleepThresholds: 1
-  RenderThresholds:
-    UseEnergy: 1
-    Position: 0.01
-    Rotation: 0.01
-    Scale: 0.01

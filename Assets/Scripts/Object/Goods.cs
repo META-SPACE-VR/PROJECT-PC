@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Fusion;
 
 public class Goods : NetworkBehaviour
@@ -30,7 +31,11 @@ public class Goods : NetworkBehaviour
     }
 
     private void SpawnFood() {
+        hasFood = false;
+
         NetworkObject spawnedFood = Runner.Spawn(spaceFood, spawnPoint.position, Quaternion.identity);
+        Collectable foodCollectable = spawnedFood.GetComponent<Collectable>();
+        foodCollectable.InventoryManager = InventoryManager.Instance;
 
         Rigidbody foodRigid = spawnedFood.GetComponent<Rigidbody>();
 
@@ -46,8 +51,6 @@ public class Goods : NetworkBehaviour
 
         playerInRange = null;
         interactionPrompt.SetActive(false);
-      
-        hasFood = false;
     }
 
     private void OnTriggerEnter(Collider other) {
