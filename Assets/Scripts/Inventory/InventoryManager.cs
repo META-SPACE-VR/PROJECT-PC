@@ -45,7 +45,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void AssignProperties(Player player)
     {
         // player = FindAnyObjectByType<Player>().gameObject;
         pickedItemPosition = player.transform.Find("PickedItemPosition").gameObject;

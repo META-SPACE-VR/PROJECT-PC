@@ -91,7 +91,9 @@ public class Player : NetworkBehaviour, IObjectHolder
             RPC_PlayerName(Name);
             CameraFollow.Instance.SetTarget(camTarget);
             UIManager.Singleton.LocalPlayer = this;
+            inventoryManager = InventoryManager.Instance;
             InventoryManager.Instance.player = this;
+            InventoryManager.Instance.AssignProperties(this);
             // playerCamera = Camera.main;
             playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             kcc.Settings.ForcePredictedLookRotation = true;
@@ -213,7 +215,11 @@ public class Player : NetworkBehaviour, IObjectHolder
 
     private void HandleInteraction()
     {
-        Ray ray = playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Ray 생성
+        Ray ray = playerCamera.ScreenPointToRay(mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red, 1f);
 
         RaycastHit hit;
 
