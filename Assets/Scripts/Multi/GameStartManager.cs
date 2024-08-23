@@ -33,14 +33,14 @@ namespace Managers
 
             GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().enabled = true;
 
-            if (Instance.Runner!=null && Instance.Runner.IsServer && sceneRef.AsIndex == LOBBY_SCENE)
-                StartBtnCanvas.SetActive(true);
+            // if (Instance.Runner!=null && Instance.Runner.IsServer && sceneRef.AsIndex == LOBBY_SCENE)
+            //     StartBtnCanvas.SetActive(true);
         }
 
         public void onClickStartBtn()
         {
             // Instance.Runner.LoadScene(SceneRef.FromIndex(GAME_SCENE));
-            StartBtnCanvas.SetActive(false);
+            // StartBtnCanvas.SetActive(false);
 
             availableJobList = new List<string>(jobList);
             AssignRandomJobs();
