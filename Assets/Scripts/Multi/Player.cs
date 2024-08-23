@@ -37,6 +37,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
     private Goods currentGoods;  // Reference to the current Goods
     private ButtonController currentButton;
+    private TeleportPlayer currentTeleportPlayer;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -91,7 +92,9 @@ public class Player : NetworkBehaviour, IObjectHolder
             RPC_PlayerName(Name);
             CameraFollow.Instance.SetTarget(camTarget);
             UIManager.Singleton.LocalPlayer = this;
+            inventoryManager = InventoryManager.Instance;
             InventoryManager.Instance.player = this;
+            InventoryManager.Instance.AssignProperties(this);
             // playerCamera = Camera.main;
             playerCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
             kcc.Settings.ForcePredictedLookRotation = true;
@@ -162,6 +165,7 @@ public class Player : NetworkBehaviour, IObjectHolder
                     HandleTriggerInteraction();
                     StartRotateObjectRight();
                     HandleGoodsInteraction();
+                    Teleport();
                 }
 
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
@@ -211,9 +215,20 @@ public class Player : NetworkBehaviour, IObjectHolder
         }
     }
 
+    public void Teleport()
+    {
+        if(currentTeleportPlayer != null){
+            currentTeleportPlayer.Teleport();
+        }
+    }
+
     private void HandleInteraction()
     {
-        Ray ray = playerCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Ray 생성
+        Ray ray = playerCamera.ScreenPointToRay(mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red, 1f);
 
         RaycastHit hit;
 
@@ -390,6 +405,16 @@ public class Player : NetworkBehaviour, IObjectHolder
     public void ClearCurrentButton()
     {
         currentButton = null;
+    }
+
+    public void SetCurrentTeleportPlayer(TeleportPlayer teleportPlayer)
+    {
+        currentTeleportPlayer = teleportPlayer;
+    }
+
+    public void ClearTeleportPlayer()
+    {
+        currentTeleportPlayer = null;
     }
 
     public void SetInputEnabled(bool enabled)

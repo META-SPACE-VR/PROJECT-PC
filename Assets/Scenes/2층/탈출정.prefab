@@ -756,7 +756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690d439a34a945649a4e627a557f2194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: "\uC544\uC774\uD15C1"
+  objectName: "\uD14C\uC774\uBE14"
   guideText: {fileID: 0}
   inventoryManager: {fileID: 0}
   putItemPosition: {fileID: 6536418377997108089}
@@ -990,7 +990,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690d439a34a945649a4e627a557f2194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: "\uC544\uC774\uD15C1"
+  objectName: "\uD14C\uC774\uBE14"
   guideText: {fileID: 0}
   inventoryManager: {fileID: 0}
   putItemPosition: {fileID: 8733067767670078997}
@@ -1938,7 +1938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690d439a34a945649a4e627a557f2194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: "\uC544\uC774\uD15C1"
+  objectName: "\uD14C\uC774\uBE14"
   guideText: {fileID: 0}
   inventoryManager: {fileID: 0}
   putItemPosition: {fileID: 7719689096601226521}
@@ -4334,7 +4334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 690d439a34a945649a4e627a557f2194, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectName: "\uC544\uC774\uD15C1"
+  objectName: "\uD14C\uC774\uBE14"
   guideText: {fileID: 0}
   inventoryManager: {fileID: 0}
   putItemPosition: {fileID: 1341359664382270688}
@@ -4410,6 +4410,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 115324, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6997599998669087576}
+    - targetCorrespondingSourceObject: {fileID: 115324, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9151618389760192280}
   m_SourcePrefab: {fileID: 100100000, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
 --- !u!1 &1115429028610436043 stripped
 GameObject:
@@ -4429,6 +4432,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1115429028617749885}
+--- !u!114 &9151618389760192280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115429028610436043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3081930874
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 6997599998669087576}
 --- !u!4 &1115429028610472995 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 415124, guid: 820591594dcfa124d8a9c5d016d6c22c, type: 3}
@@ -10402,8 +10423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4cabd1a67658984e802512d6e797945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  interactionKey: 101
   interactionPrompt: {fileID: 0}
   spaceshipAnimator: {fileID: 4444334131637929416}
   boxColliderObject: {fileID: 3603977502074330401}

@@ -1396,7 +1396,6 @@ GameObject:
   - component: {fileID: 8049202106988471231}
   - component: {fileID: 2878930442412833134}
   - component: {fileID: 7198238275537650707}
-  - component: {fileID: 2649711072898634419}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -1489,7 +1488,7 @@ MonoBehaviour:
   _settings:
     Shape: 1
     IsTrigger: 0
-    Radius: 0.35
+    Radius: 0.2
     Height: 1.8
     Extent: 0.035
     ColliderLayer: 0
@@ -1591,7 +1590,7 @@ MonoBehaviour:
   lookSensitivity: 0.15
   walkSpeed: 5
   runSpeed: 8
-  jumpImpulse: 10
+  jumpImpulse: 7
   _currentJob:
     _length: 0
     _data:
@@ -1611,30 +1610,6 @@ MonoBehaviour:
   <HeldObject>k__BackingField: {fileID: 0}
   <Interacting>k__BackingField: 0
   inventoryManager: {fileID: 0}
---- !u!114 &2649711072898634419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2690234683535358372}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64c5f4b8afc012c45938934ef86adcfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
-  selectRange: 10
-  selectLayer:
-    serializedVersion: 2
-    m_Bits: 1025
-  <SelectedObject>k__BackingField: {fileID: 0}
-  handTransform: {fileID: 0}
-  holdingForce: 0.5
-  heldObjectLayer: 0
-  heldClamXRotation: 45
-  <HeldObject>k__BackingField: {fileID: 0}
-  <Interacting>k__BackingField: 0
 --- !u!1 &2880616880526894496
 GameObject:
   m_ObjectHideFlags: 0
