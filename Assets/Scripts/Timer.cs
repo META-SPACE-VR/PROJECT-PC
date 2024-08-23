@@ -43,7 +43,7 @@ public class Timer : MonoBehaviour
         isGameOver = true;
         if (gameOverCanvas != null)
         {
-            // mainCanvas.SetActive(false); // 메인 캔버스 비활성화
+            mainCanvas.SetActive(false); // 메인 캔버스 비활성화
             gameOverCanvas.SetActive(true); // 게임 오버 캔버스 표시
         }
     }
@@ -65,6 +65,16 @@ public class Timer : MonoBehaviour
         int miliSeconds = Mathf.FloorToInt((remainingTime % 1f) * 1000f);
 
         // 시간 형식으로 문자열 생성 후 리턴
-        return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", hours, minutes, seconds, miliSeconds);
+        return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, miliSeconds);
+    }
+
+    public string GetClearTimeString(){
+        int hours = Mathf.FloorToInt(elapsedTime / 3600f);
+        int minutes = Mathf.FloorToInt((elapsedTime % 3600) / 60f);
+        int seconds = Mathf.FloorToInt(elapsedTime % 60);
+        int miliSeconds = Mathf.FloorToInt((elapsedTime % 1f) * 1000f);
+
+        // 시간 형식으로 문자열 생성 후 리턴
+        return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, miliSeconds);
     }
 }

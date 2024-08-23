@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class GameSuccessController : MonoBehaviour
 {
+    public GameObject mainCanvas;
     public Timer timer;  // Timer 스크립트 참조
     public GameObject gameSuccessCanvas; // Game Success Canvas 오브젝트
     public TextMeshProUGUI timeText; // 탈출까지 걸린 시간을 표시할 TextMeshProUGUI 오브젝트
     public List<EscapePoint> escapePoints; // 탈출 정 위치들
     public List<Putable> putables; // Putable 오브젝트들
-    public List<GameObject> requiredItems; // 필요한 아이템 오브젝트들
+    public List<string> requiredItems; // 필요한 아이템 오브젝트들
     private bool isGameSuccess = false;
 
     void Start()
@@ -35,7 +36,7 @@ public class GameSuccessController : MonoBehaviour
         }
 
         // 모든 플레이어가 탈출 정 위치에 있는지 확인
-        if (playersInEscapePoints == 4 && AreAllItemsPlacedCorrectly() && !isGameSuccess)
+        if (playersInEscapePoints == 1 && AreAllItemsPlacedCorrectly() && !isGameSuccess)
         {
             isGameSuccess = true;
 
@@ -43,10 +44,10 @@ public class GameSuccessController : MonoBehaviour
             timer.StopTimer();
 
             // 경과 시간을 문자열로 가져와서 UI 텍스트에 설정
-            timeText.text = "클리어 시간: " + timer.GetTimeString();
+            timeText.text = "클리어 시간: " + timer.GetClearTimeString();
 
-            // 게임 성공 캔버스 활성화
-            gameSuccessCanvas.SetActive(true);
+            gameSuccessCanvas.SetActive(true); // 게임 성공 캔버스 활성화
+            mainCanvas.SetActive(false); // 메인 캔버스 비활성화
         }
     }
 
@@ -54,13 +55,13 @@ public class GameSuccessController : MonoBehaviour
     private bool AreAllItemsPlacedCorrectly()
     {
         // 필요한 아이템이 모두 놓였는지 확인하는 리스트
-        List<GameObject> itemsToPlace = new List<GameObject>(requiredItems);
+        List<string> itemsToPlace = new List<string>(requiredItems);
 
         foreach (Putable putable in putables)
         {
-            if (putable.putItem != null && itemsToPlace.Contains(putable.putItem.gameObject))
+            if (putable.putItem != null && itemsToPlace.Contains(putable.objectName))
             {
-                itemsToPlace.Remove(putable.putItem.gameObject); // 올바른 아이템이 놓여있다면 리스트에서 제거
+                itemsToPlace.Remove(putable.objectName); // 올바른 아이템이 놓여있다면 리스트에서 제거
             }
         }
 
