@@ -25,7 +25,7 @@ public class StairsEvent : MonoBehaviour
         Player currentPlayer = triggerArea.GetInteractingPlayer();
 
         if(currentPlayer) {
-            mainCamera = currentPlayer.GetComponentInChildren<Camera>();
+            mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
             if(mainCamera && !isPlaying) {
                 StartCoroutine(PlayEventFlow());
             }
