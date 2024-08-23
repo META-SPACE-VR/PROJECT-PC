@@ -1,4 +1,4 @@
-using System.Collections;
+        using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;  // Canvas Text 관리를 위해 필요

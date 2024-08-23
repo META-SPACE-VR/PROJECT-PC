@@ -37,6 +37,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     private TriggerArea currentTriggerArea;  // Reference to the current TriggerArea
     private Goods currentGoods;  // Reference to the current Goods
     private ButtonController currentButton;
+    private TeleportPlayer currentTeleportPlayer;
 
     [Networked] private NetworkButtons PreviousButtons { get; set; }
 
@@ -162,6 +163,7 @@ public class Player : NetworkBehaviour, IObjectHolder
                     HandleTriggerInteraction();
                     StartRotateObjectRight();
                     HandleGoodsInteraction();
+                    Teleport();
                 }
 
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Qtrigger))
@@ -208,6 +210,13 @@ public class Player : NetworkBehaviour, IObjectHolder
         if (currentButton != null)
         {
             currentButton.StartRotateObjectLeft();
+        }
+    }
+
+    public void Teleport()
+    {
+        if(currentTeleportPlayer != null){
+            currentTeleportPlayer.Teleport();
         }
     }
 
@@ -387,6 +396,16 @@ public class Player : NetworkBehaviour, IObjectHolder
     public void ClearCurrentButton()
     {
         currentButton = null;
+    }
+
+    public void SetCurrentTeleportPlayer(TeleportPlayer teleportPlayer)
+    {
+        currentTeleportPlayer = teleportPlayer;
+    }
+
+    public void ClearTeleportPlayer()
+    {
+        currentTeleportPlayer = null;
     }
 
     public void SetInputEnabled(bool enabled)
