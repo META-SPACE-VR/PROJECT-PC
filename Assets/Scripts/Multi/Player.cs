@@ -237,37 +237,35 @@ public class Player : NetworkBehaviour, IObjectHolder
             Debug.Log("Raycast hit: " + hit.transform.name);
             // 유리문 여닫기
             var glassDoor = hit.transform.GetComponent<GlassDoor>();
-            if (glassDoor != null)
-            {
-                glassDoor.ToggleDoor();  // Handle door interaction
-            }
+            if (glassDoor != null) glassDoor.ToggleDoor();
             // 믹서 뚜껑 닫기
-            var mixerCover = hit.transform.GetComponent<MixerCoverController>();
-            if (mixerCover != null)
-            {
-                mixerCover.ToggleDoor();
-            }
+            var mixerCover = hit.transform.GetComponent<MixerCoverPartController>();
+            if (mixerCover != null) mixerCover.ToggleDoor();
             // 액화 장치 뚜껑 닫기
             var liquificationDoor = hit.transform.GetComponent<LiquefactionDoorController>();
-            if (liquificationDoor != null)
+            if (liquificationDoor != null) liquificationDoor.ToggleDoor();
+            // 다이얼 돌리기
+            var dial = hit.transform.GetComponent<DialController>();
+            if (dial != null) dial.RotateDial();
+            // 버튼 클릭
+            var button_l = hit.transform.GetComponent<LiquefactionButtonController>();
+            if (button_l != null) button_l.CheckValidate();
+            var button_m = hit.transform.GetComponent<MixerButtonController>();
+            if (button_m != null) button_m.CheckValidate();
+            // 스크린 클릭
+            var button_s = hit.transform.GetComponent<LabScreenButtonController>();
+            if (button_s != null)
             {
-                liquificationDoor.ToggleDoor();
+                if (button_s.name == "BS") button_s.controller.BackspaceKey();
+                else if (button_s.name == "ET") button_s.controller.EnterKey();
+                else button_s.controller.InputKey(button_s.name);
             }
             // 아이템 줍기
             var collectable = hit.transform.GetComponent<Collectable>();
-            Debug.Log(collectable != null);
-            Debug.Log(inventoryManager != null);
-            Debug.Log(inventoryManager != null);
-            if (collectable != null && inventoryManager != null && inventoryManager.pickedItemIndex == -1)
-            {
-                collectable.Collect();
-            }
+            if (collectable != null && inventoryManager != null && inventoryManager.pickedItemIndex == -1) collectable.Collect();
             // 아이템 두기
             var putable = hit.transform.GetComponent<Putable>();
-            if (putable != null && inventoryManager != null && inventoryManager.pickedItemIndex != -1)
-            {
-                putable.PutItem();
-            }
+            if (putable != null && inventoryManager != null && inventoryManager.pickedItemIndex != -1) putable.PutItem();
             // 아이템 버리기
             if (putable == null && inventoryManager != null && inventoryManager.pickedItemIndex != -1)
             {

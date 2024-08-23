@@ -1,8 +1,9 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MixerButtonController : MonoBehaviour
+public class MixerButtonController : NetworkBehaviour
 {
     public Putable leftInput;
     public Putable rightInput;
@@ -14,23 +15,6 @@ public class MixerButtonController : MonoBehaviour
     public Renderer Alert;
 
     private float range = 5f;
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, range))
-            {
-                if (hit.transform == transform)
-                {
-                    CheckValidate();
-                }
-            }
-        }
-    }
 
     public void CheckValidate()
     {

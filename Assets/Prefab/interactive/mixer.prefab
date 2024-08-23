@@ -345,6 +345,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7573584481335090180}
   - component: {fileID: 2961466286113689982}
+  - component: {fileID: 1505542265577784151}
   m_Layer: 0
   m_Name: left_cover
   m_TagString: Untagged
@@ -392,6 +393,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.971486, y: 4.4229994, z: 7.6014957}
   m_Center: {x: -6.7645044, y: 2.0374994, z: -1.9967492}
+--- !u!114 &1505542265577784151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455104733303991323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa6858102fb8cb43b23ab171f52c807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftCover: {fileID: 7573584481335090180}
+  rightCover: {fileID: 4263566958647326216}
+  controller: {fileID: 2951954737050579074}
+  distance: {x: 0, y: 0, z: -0.5}
 --- !u!1 &526373241380530272
 GameObject:
   m_ObjectHideFlags: 0
@@ -2939,9 +2956,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isClosed: 0
-  leftCover: {fileID: 7573584481335090180}
-  rightCover: {fileID: 4263566958647326216}
-  distance: {x: 0, y: 0, z: -0.5}
 --- !u!114 &1987835028187937607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3075,6 +3089,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4263566958647326216}
   - component: {fileID: 4866394743564069536}
+  - component: {fileID: 3016263056164719520}
   m_Layer: 0
   m_Name: right_cover
   m_TagString: Untagged
@@ -3122,6 +3137,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.930744, y: 4.2192497, z: 7.601497}
   m_Center: {x: -2.6283815, y: 2.057876, z: 0.3667506}
+--- !u!114 &3016263056164719520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5427220886079318863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfa6858102fb8cb43b23ab171f52c807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftCover: {fileID: 7573584481335090180}
+  rightCover: {fileID: 4263566958647326216}
+  controller: {fileID: 2951954737050579074}
+  distance: {x: 0, y: 0, z: -0.5}
 --- !u!1 &5434851712679665822
 GameObject:
   m_ObjectHideFlags: 0

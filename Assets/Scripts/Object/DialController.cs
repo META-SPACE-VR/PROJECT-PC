@@ -29,9 +29,4 @@ public class DialController : NetworkBehaviour
             transform.Rotate(0, rotationAngle, 0);
         }
     }
-
-    public override void FixedUpdateNetwork()
-    {
-        UpdateDoorVisual();
-    }
 }
