@@ -88,7 +88,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
 
         // 타겟을 향해 조준 -> 발사
         foreach(GameObject targetObj in targetObjects) {
-            if(!targetObj.activeSelf || targetObj.IsDestroyed()) continue;
+            if(!targetObj || targetObj.IsDestroyed() || !targetObj.activeSelf) continue;
             
             // 레이져의 기울기를 계산. 만약에 기울기가 일정 수준 이상 커질것 같다면 해당 오브젝트는 일단 넘긴다.
             float dx = targetObj.transform.position.x - laserPointer.transform.position.x;
@@ -100,7 +100,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
                 slope = (dy < 0 ? -1 : 1) * 1000000000;
             }
             else {
-                slope = dy / Mathf.Sqrt(dx * dx + dz * dz);
+                slope = Mathf.Clamp(dy / Mathf.Sqrt(dx * dx + dz * dz), -1000000000, 1000000000);
             }
 
             Debug.Log(targetObj.transform.position);
