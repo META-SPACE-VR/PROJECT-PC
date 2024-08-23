@@ -46,7 +46,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
     }
 
     public void PlayEvent() {
-        mainCamera = triggerArea.GetInteractingPlayer()?.GetComponentInChildren<Camera>();
+        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
         
         if(mainCamera && !isPlaying) {
             StartCoroutine(PlayEventFlow());
