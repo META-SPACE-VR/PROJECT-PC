@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections;
+
 
 public class NPCInteraction : MonoBehaviour
 {
@@ -18,6 +20,13 @@ public class NPCInteraction : MonoBehaviour
     public Animator npcAnimator;
     public GameObject npcStartDialogue;
     public GameObject sitInWheelchairPrompt; // E 버튼을 표시할 UI 요소
+    public GameObject giveItemButton; // 아이템 주기 버튼
+    private bool hasGivenNSAIDs = false;
+    private bool hasGivenCartilageProtectant = false;
+    public bool medicineGive = false; // To track if both items have been given
+    public InventoryManager InventoryManager;
+
+
 
     private string[] initialDialogueLines = new string[]
     {
@@ -40,9 +49,28 @@ public class NPCInteraction : MonoBehaviour
 
     void Start()
     {
-        dialoguePanel.SetActive(false); // Initially hide the dialogue panel
-        sitInWheelchairPrompt.SetActive(false); // E 버튼을 숨김
+        dialoguePanel.SetActive(false);
+        sitInWheelchairPrompt.SetActive(false);
         AddEventTriggerListener(dialoguePanel, EventTriggerType.PointerClick, OnDialoguePanelClick);
+
+        StartCoroutine(CheckForItemsPeriodically());
+    }   
+
+    private IEnumerator CheckForItemsPeriodically()
+    {
+        while (true)
+        {
+            if (playerNearby)
+            {
+                CheckForItem();
+            }
+            yield return new WaitForSeconds(1.0f); // Check every second (adjust as needed)
+        }
+    }
+
+    public void Update()
+    {
+        Debug.Log(medicineGive);
     }
 
     public void OnTriggerEnter(Collider other)
@@ -53,6 +81,7 @@ public class NPCInteraction : MonoBehaviour
 
             if (playerController != null)
             {
+                player = playerController.gameObject; // player를 설정합니다.
                 playerController.SetCurrentNPC(this);
                 if (!dialogueFinished && IsWheelchairNearby() && !isSittingInWheelchair)
                 {
@@ -63,6 +92,9 @@ public class NPCInteraction : MonoBehaviour
                 {
                     sitInWheelchairPrompt.SetActive(true); // 대화 후 E 버튼을 표시
                 }
+                playerNearby = true; // 플레이어가 근처에 있을 때
+                CheckForItem();
+
             }
         }
     }
@@ -228,4 +260,51 @@ public class NPCInteraction : MonoBehaviour
             SitInWheelchair();
         }
     }
+
+    private void CheckForItem()
+    {
+        Debug.Log("Checking for item...");
+        
+        Transform pickedItemPosition = player.transform.Find("PickedItemPosition");
+        
+        if (pickedItemPosition != null && pickedItemPosition.childCount > 0)
+        {
+            GameObject pickedItem = pickedItemPosition.GetChild(0).gameObject;
+            string pickedItemName = pickedItem.name;
+
+            Debug.Log($"Picked item: {pickedItemName}");
+
+            // Handle the item based on its name
+            if (pickedItemName == "NSAIDs" || pickedItemName == "연골보호제")
+            {
+                if (pickedItemName == "NSAIDs")
+                {
+                    hasGivenNSAIDs = true;
+                }
+                else if (pickedItemName == "연골보호제")
+                {
+                    hasGivenCartilageProtectant = true;
+                }
+
+                // Check if both items have been given
+                medicineGive = hasGivenNSAIDs && hasGivenCartilageProtectant;
+                
+                string displayName = pickedItemName;
+                giveItemButton.SetActive(true);
+                giveItemButton.GetComponentInChildren<TMP_Text>().text = $"{displayName} 투여하기";
+                Debug.Log($"Button activated with text: {giveItemButton.GetComponentInChildren<TMP_Text>().text}");
+            }
+            else
+            {
+                giveItemButton.SetActive(false);
+                Debug.Log("Item is not valid for giving.");
+            }
+        }
+        else
+        {
+            giveItemButton.SetActive(false);
+            Debug.Log("No item found in PickedItemPosition.");
+        }
+    }
+
 }
