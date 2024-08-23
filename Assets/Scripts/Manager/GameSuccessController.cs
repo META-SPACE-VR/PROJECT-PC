@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class GameSuccessController : MonoBehaviour
 {
+    public GameObject mainCanvas;
     public Timer timer;  // Timer 스크립트 참조
     public GameObject gameSuccessCanvas; // Game Success Canvas 오브젝트
     public TextMeshProUGUI timeText; // 탈출까지 걸린 시간을 표시할 TextMeshProUGUI 오브젝트
@@ -35,7 +36,7 @@ public class GameSuccessController : MonoBehaviour
         }
 
         // 모든 플레이어가 탈출 정 위치에 있는지 확인
-        if (playersInEscapePoints == 4 && AreAllItemsPlacedCorrectly() && !isGameSuccess)
+        if (playersInEscapePoints == 1 && AreAllItemsPlacedCorrectly() && !isGameSuccess)
         {
             isGameSuccess = true;
 
@@ -43,10 +44,10 @@ public class GameSuccessController : MonoBehaviour
             timer.StopTimer();
 
             // 경과 시간을 문자열로 가져와서 UI 텍스트에 설정
-            timeText.text = "클리어 시간: " + timer.GetTimeString();
+            timeText.text = "클리어 시간: " + timer.GetClearTimeString();
 
-            // 게임 성공 캔버스 활성화
-            gameSuccessCanvas.SetActive(true);
+            gameSuccessCanvas.SetActive(true); // 게임 성공 캔버스 활성화
+            mainCanvas.SetActive(false); // 메인 캔버스 비활성화
         }
     }
 
