@@ -1,11 +1,11 @@
 using UnityEngine;
 using TMPro;
 using System.Collections; // IEnumerator를 사용하기 위한 네임스페이스 추가
+using Fusion;
 
 public class TeleportPlayer : MonoBehaviour
 {
-    public GameObject player; // 플레이어 오브젝트 (OVRCameraRig 포함)
-    public KeyCode interactionKey = KeyCode.E; // 텔레포트 키 설정 // 텔레포트 키 설정
+    private Player playerController;
     public GameObject interactionPrompt; // Interaction prompt 참조
     private bool canTeleport = false; // 텔레포트 가능 여부
     public Animator spaceshipAnimator; // 애니메이터
@@ -36,6 +36,8 @@ public class TeleportPlayer : MonoBehaviour
             Debug.Log("플레이어 발견!!!");
             canTeleport = true;
             interactionPrompt.SetActive(true); // 텍스트 활성화
+            playerController = other.GetComponent<Player>();
+            playerController.SetCurrentTeleportPlayer(this);
         }
     }
 
@@ -46,17 +48,22 @@ public class TeleportPlayer : MonoBehaviour
             Debug.Log("플레이어 나감!!!");
             canTeleport = false;
             interactionPrompt.SetActive(false); // 텍스트 비활성화
+            playerController.ClearTeleportPlayer();
         }
     }
 
-    void Update()
+    public void Teleport()
     {
-        if (canTeleport && Input.GetKeyDown(interactionKey))
+        if (canTeleport)
         {
             Debug.Log("텔레포트!!!");
             StartCoroutine(TeleportCoroutine());
         }
+    }
 
+
+    void Update()
+    {
         // 텔레포트 애니메이션이 진행 중인 경우, 박스 콜라이더 이동
         if (isTeleporting)
         {
@@ -76,34 +83,33 @@ public class TeleportPlayer : MonoBehaviour
 
     IEnumerator TeleportCoroutine()
     {
-        if (player != null)
+        // 박스 콜라이더의 목표 위치 설정
+        float currentY = boxColliderObject.transform.position.y;
+
+        if (currentY < thresholdY)
         {
-            // 박스 콜라이더의 목표 위치 설정
-            float currentY = boxColliderObject.transform.position.y;
-
-            if (currentY < thresholdY)
-            {
-                // 현재 위치가 1층이면 위로 11만큼 이동
-                targetBoxColliderPosition = boxColliderObject.transform.position + new Vector3(0, 11f, 0);
-                spaceshipAnimator.SetTrigger("LiftUp");
-                currentMoveDuration = moveDurationUp;
-                currentDelayBeforeMove = delayBeforeMoveUp;
-            }
-            else
-            {
-                // 현재 위치가 2층이면 아래로 11만큼 이동
-                targetBoxColliderPosition = boxColliderObject.transform.position - new Vector3(0, 11f, 0);
-                spaceshipAnimator.SetTrigger("LiftDown");
-                currentMoveDuration = moveDurationDown;
-                currentDelayBeforeMove = delayBeforeMoveDown;
-            }
-
-            // 애니메이션 재생 후 지연
-            yield return new WaitForSeconds(currentDelayBeforeMove);
-
-            // 텔레포트 애니메이션을 시작합니다
-            isTeleporting = true;
-            originalBoxColliderPosition = boxColliderObject.transform.position;
+            // 현재 위치가 1층이면 위로 11만큼 이동
+            targetBoxColliderPosition = boxColliderObject.transform.position + new Vector3(0, 11f, 0);
+            spaceshipAnimator.SetTrigger("LiftUp");
+            currentMoveDuration = moveDurationUp;
+            currentDelayBeforeMove = delayBeforeMoveUp;
         }
+        else
+        {
+            // 현재 위치가 2층이면 아래로 11만큼 이동
+            targetBoxColliderPosition = boxColliderObject.transform.position - new Vector3(0, 11f, 0);
+            spaceshipAnimator.SetTrigger("LiftDown");
+            currentMoveDuration = moveDurationDown;
+            currentDelayBeforeMove = delayBeforeMoveDown;
+        }
+
+        // 애니메이션 재생 후 지연
+        yield return new WaitForSeconds(currentDelayBeforeMove);
+
+        // 텔레포트 애니메이션을 시작합니다
+        isTeleporting = true;
+        originalBoxColliderPosition = boxColliderObject.transform.position;
     }
+
+
 }

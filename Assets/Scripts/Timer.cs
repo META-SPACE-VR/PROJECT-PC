@@ -43,7 +43,7 @@ public class Timer : MonoBehaviour
         isGameOver = true;
         if (gameOverCanvas != null)
         {
-            mainCanvas.SetActive(false); // 메인 캔버스 비활성화
+            // mainCanvas.SetActive(false); // 메인 캔버스 비활성화
             gameOverCanvas.SetActive(true); // 게임 오버 캔버스 표시
         }
     }
