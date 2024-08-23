@@ -10,7 +10,7 @@ public class GameSuccessController : MonoBehaviour
     public TextMeshProUGUI timeText; // 탈출까지 걸린 시간을 표시할 TextMeshProUGUI 오브젝트
     public List<EscapePoint> escapePoints; // 탈출 정 위치들
     public List<Putable> putables; // Putable 오브젝트들
-    public List<GameObject> requiredItems; // 필요한 아이템 오브젝트들
+    public List<string> requiredItems; // 필요한 아이템 오브젝트들
     private bool isGameSuccess = false;
 
     void Start()
@@ -55,13 +55,13 @@ public class GameSuccessController : MonoBehaviour
     private bool AreAllItemsPlacedCorrectly()
     {
         // 필요한 아이템이 모두 놓였는지 확인하는 리스트
-        List<GameObject> itemsToPlace = new List<GameObject>(requiredItems);
+        List<string> itemsToPlace = new List<string>(requiredItems);
 
         foreach (Putable putable in putables)
         {
-            if (putable.putItem != null && itemsToPlace.Contains(putable.putItem.gameObject))
+            if (putable.putItem != null && itemsToPlace.Contains(putable.objectName))
             {
-                itemsToPlace.Remove(putable.putItem.gameObject); // 올바른 아이템이 놓여있다면 리스트에서 제거
+                itemsToPlace.Remove(putable.objectName); // 올바른 아이템이 놓여있다면 리스트에서 제거
             }
         }
 
