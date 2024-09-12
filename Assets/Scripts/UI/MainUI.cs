@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainUI : PageUI
+public enum BTNType
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    Start,
+    Exit,
+    Stage,
+    Level,
+    Back,
+    Play
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public class MainUI : MonoBehaviour
+{
+    
 }
