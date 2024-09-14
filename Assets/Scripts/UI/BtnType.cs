@@ -18,12 +18,12 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public CanvasGroup mainGroup;
     public CanvasGroup startGroup;
 
-    public int stageNumber;
     public CanvasGroup stage;
     public CanvasGroup[] stages;
 
-    public int levelNumber;
-    public GameObject playButton;
+    public int sceneIndex;
+    public SceneData sceneData;
+    public Button playButton;
     public Sprite previewImage;
     public Image preview;
 
@@ -32,13 +32,14 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     // 커스텀 인스펙터
     [CustomEditor(typeof(BtnType))]
-    public class CustonEditor: Editor
+    public class CustoEditor: Editor
     {
         SerializedProperty m_buttonScale;
         SerializedProperty m_mainGroup;
         SerializedProperty m_startGroup;
         SerializedProperty m_stage;
         SerializedProperty m_stages;
+        SerializedProperty m_sceneData;
         SerializedProperty m_playButton;
         SerializedProperty m_previewImage;
         SerializedProperty m_preview;
@@ -50,6 +51,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             m_startGroup = serializedObject.FindProperty("startGroup");
             m_stage = serializedObject.FindProperty("stage");
             m_stages = serializedObject.FindProperty("stages");
+            m_sceneData = serializedObject.FindProperty("sceneData");
             m_playButton = serializedObject.FindProperty("playButton");
             m_previewImage = serializedObject.FindProperty("previewImage");
             m_preview = serializedObject.FindProperty("preview");
@@ -79,6 +81,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             }
             else if (script.currentType == BTNType.Stage)
             {
+                EditorGUILayout.PropertyField(m_sceneData, new GUIContent("Main Data"));
                 EditorGUILayout.PropertyField(m_playButton, new GUIContent("Play Button"));
                 EditorGUILayout.PropertyField(m_preview, new GUIContent("Preview"));
                 EditorGUILayout.PropertyField(m_stage, new GUIContent("Stage"));
@@ -86,16 +89,15 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             }
             else if (script.currentType == BTNType.Level)
             {
-                script.stageNumber = EditorGUILayout.IntField("Stage Number", script.stageNumber);
-                script.levelNumber = EditorGUILayout.IntField("Level Number", script.levelNumber);
+                script.sceneIndex = EditorGUILayout.IntField("Next Scene Index", script.sceneIndex);
+                EditorGUILayout.PropertyField(m_sceneData, new GUIContent("Main Data"));
                 EditorGUILayout.PropertyField(m_playButton, new GUIContent("Play Button"));
                 EditorGUILayout.PropertyField(m_previewImage, new GUIContent("Preview Images"));
                 EditorGUILayout.PropertyField(m_preview, new GUIContent("Preview"));
             }
             else if (script.currentType == BTNType.Play)
             {
-                script.stageNumber = EditorGUILayout.IntField("Stage Number", script.stageNumber);
-                script.levelNumber = EditorGUILayout.IntField("Level Number", script.levelNumber);
+                EditorGUILayout.PropertyField(m_sceneData, new GUIContent("Main Data"));
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -130,8 +132,8 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             case BTNType.Level:
                 preview.color = Color.white;
                 preview.sprite = previewImage;
-                if (playButton.TryGetComponent<Button>(out var btn)) btn.interactable = true;
-                if (playButton.TryGetComponent<BtnType>(out var btnType)) btnType.SetStageAndLevel(stageNumber, levelNumber);
+                playButton.interactable = true;
+                sceneData.SetSceneIndex(sceneIndex);
                 break;
             case BTNType.Back:
                 InitStartMenu();
@@ -139,8 +141,8 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 CanvasGroupOff(startGroup);
                 break;
             case BTNType.Play:
-                if (stageNumber == 0 || levelNumber == 0) return;
-                SceneManager.LoadScene(string.Format("Scenes/Stage_{0}/Level_{1}", stageNumber, levelNumber));
+                if (sceneData.sceneIndex == -1) return;
+                SceneManager.LoadScene("Loading");
                 break;
         }
     }
@@ -181,9 +183,8 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         preview.color = Color.gray;
         preview.sprite = null;
-
-        if (playButton.TryGetComponent<Button>(out var btn)) btn.interactable = false;
-        if (playButton.TryGetComponent<BtnType>(out var btnType)) btnType.SetStageAndLevel(0, 0);
+        playButton.interactable = false;
+        sceneData.SetSceneIndex(-1);
     }
 
     public static bool ContainsParam(Animator _Anim, string _ParamName)
@@ -193,12 +194,6 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (param.name == _ParamName) return true;
         }
         return false;
-    }
-
-    public void SetStageAndLevel(int stageNum, int levelNum)
-    {
-        stageNumber = stageNum;
-        levelNumber = levelNum;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

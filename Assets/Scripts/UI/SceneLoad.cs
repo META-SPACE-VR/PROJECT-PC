@@ -10,15 +10,19 @@ public class SceneLoad : MonoBehaviour
     public Slider progressbar;
     public TextMeshProUGUI loadtext;
 
+    public int sceneIndex;
+
     private void Start()
     {
+        SceneData sceneData = GameObject.FindObjectOfType<SceneData>();
+        sceneIndex = sceneData.sceneIndex;
         StartCoroutine(LoadScene());
     }
 
     IEnumerator LoadScene()
     {
         yield return null;
-        AsyncOperation operation = SceneManager.LoadSceneAsync("Scenes/Stage_1/Level_1");
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
         operation.allowSceneActivation = false;
 
         while (!operation.isDone)
