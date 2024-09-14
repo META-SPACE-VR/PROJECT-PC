@@ -27,8 +27,7 @@ public class InventoryManager : MonoBehaviour
     // 전역 변수
     public static InventoryManager Instance { get; private set; }
 
-    // 네트워크 변수
-    // private GameObject player;
+    [Header("Network Variables")]
     public Player player;
 
     private void Awake()
@@ -47,11 +46,9 @@ public class InventoryManager : MonoBehaviour
 
     public void AssignProperties(Player player)
     {
-        // player = FindAnyObjectByType<Player>().gameObject;
         pickedItemPosition = player.transform.Find("PickedItemPosition").gameObject;
         zoomedItemPosition = player.transform.Find("ZoomedItemPosition");
         originalCameraPosition = player.transform.Find("OriginalCameraPosition");
-        // mainCamera = Camera.main;
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
         collectables = new Dictionary<int, Collectable>();
