@@ -435,7 +435,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     {
         OnInteractionStart += ChangeHeldObject;
 
-        PlayerController.OnPlayerEnterPortal += CheckHeldObjectOnTeleport;
+        // PlayerController.OnPlayerEnterPortal += CheckHeldObjectOnTeleport;
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -443,7 +443,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     {
         OnInteractionStart -= ChangeHeldObject;
 
-        PlayerController.OnPlayerEnterPortal -= CheckHeldObjectOnTeleport;
+        // PlayerController.OnPlayerEnterPortal -= CheckHeldObjectOnTeleport;
 
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
