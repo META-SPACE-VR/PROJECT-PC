@@ -8,6 +8,8 @@ public class Interaction : MonoBehaviour
     public TextMeshProUGUI guideText;
     public InventoryManager inventoryManager;
     public float range = 5f;
+    public Collectable curCollectable = null;
+    public Putable curPutable = null;
 
     private void Update()
     {   
@@ -21,12 +23,12 @@ public class Interaction : MonoBehaviour
             
             if (collectable != null)
             {
-                //collectable.ShowText();
+                curCollectable = collectable;
 
                 // 아이템 줍기
                 if (Input.GetMouseButtonDown(0))
                 {
-                    //collectable.Collect();
+                    collectable.Collect();
                 }
             }
 
@@ -34,7 +36,7 @@ public class Interaction : MonoBehaviour
 
             if (putable != null)
             {
-                //putable.ShowText();
+                curPutable = putable;
 
                 // 아이템 놓기
                 if (Input.GetMouseButtonDown(0))

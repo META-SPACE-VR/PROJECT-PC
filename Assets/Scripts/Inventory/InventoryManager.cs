@@ -11,7 +11,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Inventory Slot")]
     public List<Collectable> initialItems;
     public GameObject[] slots;
-    public Dictionary<int, Collectable> collectables;
+    public Dictionary<int, Collectable> collectables = new Dictionary<int, Collectable>();
 
     [Header("Item Pickup")]
     public int pickedItemIndex = -1;

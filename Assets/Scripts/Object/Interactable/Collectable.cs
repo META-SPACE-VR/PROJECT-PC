@@ -4,7 +4,7 @@ using Fusion;
 using TMPro;
 using UnityEngine;
 
-public class Collectable : NetworkBehaviour
+public class Collectable : MonoBehaviour
 {
     public GameObject Prefab;
     public string Name;
