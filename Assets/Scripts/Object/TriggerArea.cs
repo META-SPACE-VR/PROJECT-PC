@@ -1,138 +1,122 @@
 using UnityEngine;
 using TMPro;
-using Fusion;
 
 public class TriggerArea : MonoBehaviour
 {
-    private Transform attachPoint;
-    private Transform camTarget;
-    private Player playerController; // Reference to the player controller
-
+    public Camera mainCamera;
     public Transform screenViewTransform;
-    public ScreenUIManager screenUIManager; // Reference to the screen UI manager
-    public GameObject interactionPrompt; // Reference to the interaction prompt UI
-
+    public Transform originalViewTransform; // 카메라의 원래 위치와 회전
+    public MonoBehaviour cameraControlScript; // 카메라 제어 스크립트 참조
+    public PlayerController playerController; // PlayerController 참조
+    public ScreenUIManager screenUIManager; // ScreenUIManager 참조
+    public GameObject interactionPrompt; // Interaction prompt 참조
     private bool isPlayerInRange = false;
     private bool isInteracting = false;
 
     void Start()
     {
-        // Validate required references
+        if (mainCamera == null) Debug.LogError("mainCamera is not assigned.");
         if (screenViewTransform == null) Debug.LogError("screenViewTransform is not assigned.");
-        if (attachPoint == null) Debug.LogError("originalViewTransform is not assigned.");
+        if (originalViewTransform == null) Debug.LogError("originalViewTransform is not assigned.");
+        if (cameraControlScript == null) Debug.LogError("cameraControlScript is not assigned.");
+        if (playerController == null) Debug.LogError("playerController is not assigned.");
         if (screenUIManager == null) Debug.LogError("screenUIManager is not assigned.");
         if (interactionPrompt == null) Debug.LogError("interactionPrompt is not assigned.");
 
-        interactionPrompt.SetActive(false); // Hide the interaction prompt by default
+        interactionPrompt.SetActive(false); // 시작 시 텍스트 비활성화
     }
 
     void Update()
     {
-        if (camTarget == null || screenViewTransform == null || attachPoint == null || playerController == null || screenUIManager == null || interactionPrompt == null)
+        if (mainCamera == null || screenViewTransform == null || originalViewTransform == null || playerController == null || screenUIManager == null || interactionPrompt == null)
         {
             return;
         }
 
-        // The interaction logic is now handled by the Player's HandleTriggerInteraction method.
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+        {
+            if (isInteracting)
+            {
+                ExitInteraction();
+            }
+            else
+            {
+                EnterInteraction();
+            }
+        }
     }
+
+    public bool IsInteracting() { return isInteracting; }
 
     void OnTriggerEnter(Collider other)
     {
-        // Check if the player entered the trigger area
         if (other.CompareTag("Player"))
         {
-            // Attempt to get the Player component from the object
-            playerController = other.GetComponent<Player>();
-
-            // Ensure that we only interact with the local player's camera
-            if (playerController != null && playerController.HasInputAuthority)
-            {
-                attachPoint = playerController.transform.Find("Attach Point"); // Get the camera from the player
-                camTarget = playerController.transform.Find("CamTarget"); // Get the camera from the player
-
-                if (attachPoint == null)
-                {
-                    Debug.LogError("OriginalViewTransform (Camera Offset) not found in player hierarchy.");
-                }
-
-                interactionPrompt.SetActive(true); // Show the interaction prompt
-                isPlayerInRange = true;
-                playerController.SetCurrentTriggerArea(this);  // Inform the player that they are in range
-            }
+            isPlayerInRange = true;
+            interactionPrompt.SetActive(true); // 텍스트 활성화
+            Debug.Log("텍스트 활성화");
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        // Check if the player exited the trigger area
-        if (other.CompareTag("Player") && playerController != null && other.gameObject == playerController.gameObject)
+        if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            interactionPrompt.SetActive(false); // Hide the interaction prompt
-            playerController.ClearCurrentTriggerArea();  // Inform the player that they are out of range
+            interactionPrompt.SetActive(false); // 텍스트 비활성화
+            Debug.Log("텍스트 비활성화");
+
         }
     }
 
     public void EnterInteraction()
     {
-        if (camTarget != null)
-        {
-            // Move the camera to the interaction position
-            camTarget.transform.position = screenViewTransform.position;
-            camTarget.transform.rotation = screenViewTransform.rotation;
+        // 상호작용 위치로 이동
+        mainCamera.transform.position = screenViewTransform.position;
+        mainCamera.transform.rotation = screenViewTransform.rotation;
 
-            LockCameraControl();
-            screenUIManager.ShowScreenUI(); // Show the screen UI
-            interactionPrompt.SetActive(false); // Hide the interaction prompt
-            isInteracting = true;
-        }
+        // 카메라가 모니터를 바라보게 함
+        mainCamera.transform.LookAt(screenViewTransform);
+
+        LockCameraControl();
+        playerController.EnterInteractionMode();
+        screenUIManager.ShowScreenUI(); // UI 활성화
+        interactionPrompt.SetActive(false); // 텍스트 비활성화
+        isInteracting = true;
+        Debug.Log("상호작용 시작");
     }
 
     public void ExitInteraction()
     {
-        if (camTarget != null)
-        {
-            // Move the camera back to the original position
-            camTarget.transform.position = attachPoint.position;
-            camTarget.transform.rotation = attachPoint.rotation;
-
-            UnlockCameraControl();
-            screenUIManager.HideScreenUI(); // Hide the screen UI
-            interactionPrompt.SetActive(false); // Hide the interaction prompt
-            isInteracting = false;
-        }
+        // 원래 위치로 돌아가기
+        mainCamera.transform.position = originalViewTransform.position;
+        mainCamera.transform.rotation = originalViewTransform.rotation;
+        UnlockCameraControl();
+        playerController.ExitInteractionMode();
+        screenUIManager.HideScreenUI(); // UI 비활성화
+        interactionPrompt.SetActive(false); // 텍스트 비활성화
+        isInteracting = false;
+        Debug.Log("상호작용 종료");
     }
 
-    private void LockCameraControl()
+    void LockCameraControl()
     {
-        if (playerController != null)
+        // 카메라 제어 비활성화
+        if (cameraControlScript != null)
         {
-            playerController.SetInputEnabled(false); // Disable player input
-            Cursor.lockState = CursorLockMode.None;  // Unlock the cursor for UI interaction
-            Cursor.visible = true; 
+            cameraControlScript.enabled = false;
         }
+        Cursor.lockState = CursorLockMode.None;
     }
 
-    private void UnlockCameraControl()
+    void UnlockCameraControl()
     {
-        if (playerController != null)
+        // 카메라 제어 활성화
+        if (cameraControlScript != null)
         {
-            // Re-enable player movement or camera control here
-            playerController.SetInputEnabled(true);  // Enable player input
-            Cursor.lockState = CursorLockMode.Locked;  // Lock the cursor back to gameplay mode
-            Cursor.visible = false; 
+            cameraControlScript.enabled = true;
         }
-        // You could re-lock the cursor if necessary
-    }
-
-    // This method returns whether the player is currently interacting
-    public bool IsInteracting()
-    {
-        return isInteracting;
-    }
-
-    // give player who interacting
-    public Player GetInteractingPlayer() {
-        return isInteracting ? playerController : null;
+        // 커서 잠금 상태 설정 부분을 제거합니다.
+        // Cursor.lockState = CursorLockMode.Locked;
     }
 }

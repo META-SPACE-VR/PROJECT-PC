@@ -13,7 +13,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     public static Player Local;
     private InputManager inputManager;
     [Networked] public string Name { get; private set; }
-    
+
     [SerializeField] private MeshRenderer[] modelParts;
     [SerializeField] private SimpleKCC kcc;
     [SerializeField] private Transform camTarget;
@@ -51,7 +51,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     [SerializeField, Required] private Transform handTransform;
     [SerializeField, Min(1)] private float holdingForce = 0.5f;
     [SerializeField] private int heldObjectLayer;
-    [SerializeField] [Range(0f, 90f)] private float heldClamXRotation = 45f;
+    [SerializeField][Range(0f, 90f)] private float heldClamXRotation = 45f;
     [field: SerializeField, NaughtyAttributes.ReadOnly] public Liftable HeldObject { get; private set; } = null;
 
     [field: Header("Input")]
@@ -82,10 +82,10 @@ public class Player : NetworkBehaviour, IObjectHolder
         if (HasInputAuthority)
         {
             Local = this;
-            
+
             foreach (MeshRenderer renderer in modelParts)
                 renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-            
+
             inputManager = Runner.GetComponent<InputManager>();
             inputManager.LocalPlayer = this;
             Name = PlayerPrefs.GetString("Photon.Menu.Username");
@@ -103,10 +103,10 @@ public class Player : NetworkBehaviour, IObjectHolder
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-	public void Rpc_SetJob(string job)
-	{
-		this.currentJob = job;
-	}
+    public void Rpc_SetJob(string job)
+    {
+        this.currentJob = job;
+    }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     private void RPC_PlayerName(string name)
@@ -127,11 +127,11 @@ public class Player : NetworkBehaviour, IObjectHolder
                     HandleTriggerInteraction();
                 }
 
-                if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotUp)) HandleRobotArmInteraction(MoveType.Up);
-                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotDown)) HandleRobotArmInteraction(MoveType.Down);
-                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotLeft)) HandleRobotArmInteraction(MoveType.Left);
-                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotRight)) HandleRobotArmInteraction(MoveType.Right);
-                else if(input.Buttons.WasPressed(PreviousButtons, InputButton.RobotAttach)) HandleRobotArmInteraction(MoveType.Attach);
+                if (input.Buttons.WasPressed(PreviousButtons, InputButton.RobotUp)) HandleRobotArmInteraction(MoveType.Up);
+                else if (input.Buttons.WasPressed(PreviousButtons, InputButton.RobotDown)) HandleRobotArmInteraction(MoveType.Down);
+                else if (input.Buttons.WasPressed(PreviousButtons, InputButton.RobotLeft)) HandleRobotArmInteraction(MoveType.Left);
+                else if (input.Buttons.WasPressed(PreviousButtons, InputButton.RobotRight)) HandleRobotArmInteraction(MoveType.Right);
+                else if (input.Buttons.WasPressed(PreviousButtons, InputButton.RobotAttach)) HandleRobotArmInteraction(MoveType.Attach);
                 if (input.Buttons.WasPressed(PreviousButtons, InputButton.Interact))
                 {
                     HandleInteraction();
@@ -217,7 +217,8 @@ public class Player : NetworkBehaviour, IObjectHolder
 
     public void Teleport()
     {
-        if(currentTeleportPlayer != null){
+        if (currentTeleportPlayer != null)
+        {
             currentTeleportPlayer.Teleport();
         }
     }
@@ -289,17 +290,6 @@ public class Player : NetworkBehaviour, IObjectHolder
                 currentTriggerArea.EnterInteraction();
             }
         }
-        else if (currentNPC != null)
-        {
-            if (!currentNPC.isInteracting)
-            {
-                currentNPC.StartInteraction();
-            }
-            else
-            {
-                currentNPC.AdvanceDialogue();
-            }
-        }
         else
         {
             Debug.Log("No TriggerArea or NPC in range.");
@@ -310,14 +300,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     {
         if (currentWheelchair != null)
         {
-            if (currentWheelchair.isInteracting)
-            {
-                currentWheelchair.ExitInteraction();
-            }
-            else
-            {
-                currentWheelchair.EnterInteraction();
-            }
+
         }
         else
         {
@@ -325,23 +308,28 @@ public class Player : NetworkBehaviour, IObjectHolder
         }
     }
 
-    private void HandleRobotArmInteraction(MoveType moveType) {
+    private void HandleRobotArmInteraction(MoveType moveType)
+    {
         RobotArm robotArm = GameObject.Find("Robot Arm").GetComponent<RobotArm>();
-        if(currentTriggerArea == robotArm.GetTriggerArea() && currentTriggerArea.IsInteracting()) {
+        if (currentTriggerArea == robotArm.GetTriggerArea() && currentTriggerArea.IsInteracting())
+        {
             robotArm.Move(moveType);
         }
     }
 
-    private void HandleGoodsInteraction() {
-        if(currentGoods) {
+    private void HandleGoodsInteraction()
+    {
+        if (currentGoods)
+        {
             currentGoods.TriggerSpawnFood();
         }
     }
 
-    public void SetCurrentGoods(Goods goods) {
+    public void SetCurrentGoods(Goods goods)
+    {
         currentGoods = goods;
     }
-    
+
     private void UpdateMovement(NetInput input)
     {
         currentSpeed = input.Buttons.IsSet(InputButton.Run) ? runSpeed : walkSpeed;
@@ -382,7 +370,7 @@ public class Player : NetworkBehaviour, IObjectHolder
     {
         currentWheelchair = null;
     }
-    
+
     // This method is called by the TriggerArea when the player enters
     public void SetCurrentTriggerArea(TriggerArea triggerArea)
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class StairsEvent : MonoBehaviour
 {
     Camera mainCamera; // 메인 카메라
-    
+
     [SerializeField]
     Camera targetCamera; // 목표 카메라
 
@@ -21,18 +21,22 @@ public class StairsEvent : MonoBehaviour
 
     bool isPlaying = false; // 이벤트 재생 상태
 
-    public void PlayEvent() {
-        Player currentPlayer = triggerArea.GetInteractingPlayer();
+    public void PlayEvent()
+    {
+        // Player currentPlayer = triggerArea.GetInteractingPlayer();
 
-        if(currentPlayer) {
-            mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-            if(mainCamera && !isPlaying) {
-                StartCoroutine(PlayEventFlow());
-            }
-        }
+        // if (currentPlayer)
+        // {
+        //     mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        //     if (mainCamera && !isPlaying)
+        //     {
+        //         StartCoroutine(PlayEventFlow());
+        //     }
+        // }
     }
 
-    IEnumerator PlayEventFlow() {
+    IEnumerator PlayEventFlow()
+    {
         isPlaying = true;
 
         // Scene Fade Out
@@ -45,10 +49,11 @@ public class StairsEvent : MonoBehaviour
         // Scene Fade In
         yield return fadePanel.FadeIn();
 
-        if(!stairs.IsFinished()) {
+        if (!stairs.IsFinished())
+        {
             stairs.Use();
             yield return new WaitForSeconds(stairs.GetMovingTime() * 1.1f);
-        }  
+        }
 
         // Scene Fade Out
         yield return fadePanel.FadeOut();

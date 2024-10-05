@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using System.Collections;
-
 
 public class NPCInteraction : MonoBehaviour
 {
@@ -15,19 +13,9 @@ public class NPCInteraction : MonoBehaviour
     public float interactionDistance; // Distance to check if the wheelchair is nearby
     public bool isSittingInWheelchair = false;
     private bool playerNearby = false;
-    public bool isInteracting = false;
+    private bool isInteracting = false;
     private int dialogueStep = 0;
     public Animator npcAnimator;
-    public GameObject npcStartDialogue;
-    public GameObject sitInWheelchairPrompt; // E 버튼을 표시할 UI 요소
-    public GameObject giveItemButton; // 아이템 주기 버튼
-    private bool hasGivenNSAIDs = false;
-    private bool hasGivenCartilageProtectant = false;
-    public bool medicineGive = false; // To track if both items have been given
-    public InventoryManager InventoryManager;
-    public GameObject bandage1; // Reference to the bandage GameObject
-
-
 
 
     private string[] initialDialogueLines = new string[]
@@ -47,85 +35,44 @@ public class NPCInteraction : MonoBehaviour
     };
 
     private bool initialDialogueComplete = false;
-    private bool dialogueFinished = false; // 대화가 끝났는지 여부
 
     void Start()
     {
-        dialoguePanel.SetActive(false);
-        sitInWheelchairPrompt.SetActive(false);
+        dialoguePanel.SetActive(false); // Initially hide the dialogue panel
         AddEventTriggerListener(dialoguePanel, EventTriggerType.PointerClick, OnDialoguePanelClick);
+    }
 
-        StartCoroutine(CheckForItemsPeriodically());
-    }   
-
-    private IEnumerator CheckForItemsPeriodically()
+    void Update()
     {
-        while (true)
+        if (playerNearby && Input.GetKeyDown(KeyCode.E) && !isInteracting)
         {
-            if (playerNearby)
-            {
-                CheckForItem();
-                CheckSurgery();
-            }
-
-            yield return new WaitForSeconds(1.0f); // Check every second (adjust as needed)
+            StartDialogue();
         }
     }
 
-    public void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(medicineGive);
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        if (other.gameObject == player)
         {
-            Player playerController = other.GetComponent<Player>();
-
-            if (playerController != null)
-            {
-                player = playerController.gameObject; // player를 설정합니다.
-                playerController.SetCurrentNPC(this);
-                
-                if (!dialogueFinished && !isSittingInWheelchair)
-                {
-                    npcStartDialogue.SetActive(true); // 대화 후 E 버튼을 표시
-                }
-
-                if (dialogueFinished && IsWheelchairNearby() && !isSittingInWheelchair)
-                {
-                    sitInWheelchairPrompt.SetActive(true); // 대화 후 E 버튼을 표시
-                }
-                playerNearby = true; // 플레이어가 근처에 있을 때
-                CheckForItem();
-            }
+            playerNearby = true;
+            Debug.Log("Player nearby");
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject == player)
         {
-            Player playerController = other.GetComponent<Player>();
-
-            if (playerController != null)
-            {
-                playerController.ClearCurrentNPC();
-                sitInWheelchairPrompt.SetActive(false); // 플레이어가 나가면 E 버튼 숨김
-                npcStartDialogue.SetActive(false);
-                dialoguePanel.SetActive(false);
-                playerNearby = false;
-            }
+            playerNearby = false;
+            Debug.Log("Player left");
         }
     }
 
-    public void StartInteraction()
+    private void StartDialogue()
     {
         isInteracting = true;
         dialogueStep = 0;
         dialoguePanel.SetActive(true);
-        npcStartDialogue.SetActive(false);
 
         if (!initialDialogueComplete)
         {
@@ -133,15 +80,10 @@ public class NPCInteraction : MonoBehaviour
         }
         else
         {
-            if (IsWheelchairNearby() && dialogueFinished)
-            {
-                SitInWheelchair();
-            }
-            if (IsWheelchairNearby() && !dialogueFinished)
+            if (IsWheelchairNearby())
             {
                 dialogueText.text = wheelchairFoundDialogue[dialogueStep];
                 SitInWheelchair();
-                dialogueFinished = true;
             }
             else
             {
@@ -150,7 +92,7 @@ public class NPCInteraction : MonoBehaviour
         }
     }
 
-    public void AdvanceDialogue()
+    private void AdvanceDialogue()
     {
         if (!initialDialogueComplete)
         {
@@ -195,17 +137,13 @@ public class NPCInteraction : MonoBehaviour
         initialDialogueComplete = true;
         isInteracting = false;
         dialoguePanel.SetActive(false);
+        Debug.Log("First dialogue complete. Now find something to carry the NPC.");
     }
 
     private void EndDialogue()
     {
         isInteracting = false;
         dialoguePanel.SetActive(false);
-
-        if (IsWheelchairNearby())
-        {
-            sitInWheelchairPrompt.SetActive(true); // 대화 후 E 버튼을 표시
-        }
     }
 
     private bool IsWheelchairNearby()
@@ -222,8 +160,6 @@ public class NPCInteraction : MonoBehaviour
         isSittingInWheelchair = true;
         npcAnimator.SetBool("Laying", false);
         Debug.Log("NPC is now in the wheelchair.");
-        dialoguePanel.SetActive(false);
-        sitInWheelchairPrompt.SetActive(false); // E 버튼 숨김
     }
 
     public void LayOnBed(Transform bedTransform)
@@ -256,94 +192,4 @@ public class NPCInteraction : MonoBehaviour
         entry.callback.AddListener(action);
         trigger.triggers.Add(entry);
     }
-
-    // 플레이어가 E 키를 눌렀을 때 휠체어에 앉히는 메서드
-    public void OnSitInWheelchairButtonPressed()
-    {
-        if (IsWheelchairNearby() && !isSittingInWheelchair)
-        {
-            SitInWheelchair();
-        }
-    }
-
-    private void CheckForItem()
-    {
-        Debug.Log("Checking for item...");
-        
-        Transform pickedItemPosition = player.transform.Find("PickedItemPosition");
-        
-        if (pickedItemPosition != null && pickedItemPosition.childCount > 0)
-        {
-            GameObject pickedItem = pickedItemPosition.GetChild(0).gameObject;
-            string pickedItemName = pickedItem.name;
-
-            Debug.Log($"Picked item: {pickedItemName}");
-
-            // Handle the item based on its name
-            if (pickedItemName == "NSAIDs" || pickedItemName == "연골보호제")
-            {
-                if (pickedItemName == "NSAIDs")
-                {
-                    hasGivenNSAIDs = true;
-                }
-                else if (pickedItemName == "연골보호제")
-                {
-                    hasGivenCartilageProtectant = true;
-                }
-
-                // Check if both items have been given
-                medicineGive = hasGivenNSAIDs && hasGivenCartilageProtectant;
-                
-                string displayName = pickedItemName;
-                giveItemButton.SetActive(true);
-                giveItemButton.GetComponentInChildren<TMP_Text>().text = $"{displayName} 투여하기";
-                Debug.Log($"Button activated with text: {giveItemButton.GetComponentInChildren<TMP_Text>().text}");
-            }
-            else
-            {
-                giveItemButton.SetActive(false);
-                Debug.Log("Item is not valid for giving.");
-            }
-        }
-        else
-        {
-            giveItemButton.SetActive(false);
-            Debug.Log("No item found in PickedItemPosition.");
-        }
-    }
-
-    private void CheckSurgery()
-    {   
-        if (dialogueFinished && medicineGive)
-        {
-            dialoguePanel.SetActive(true);
-
-            if (bandage1.activeSelf)
-            {
-                // Update dialogue text to provide the escape code
-                dialogueText.text = "탈출정 비밀번호는 LV0730입니다.";
-            }
-            else
-            {
-                dialogueText.text = "응급 수술이 필요할것 같아요";
-
-            }
-        }
-        if (dialogueFinished && !medicineGive)
-        {
-            dialoguePanel.SetActive(true);
-            
-            if (bandage1.activeSelf)
-            {
-                // Update dialogue text to provide the escape code
-                dialogueText.text = "다리가 안움직여요... 약을 찾아서 투여해주세요";
-
-            }
-            else
-            {
-                dialogueText.text = "응급 수술이 필요할것 같아요";
-            }
-        }
-    }
-
 }
