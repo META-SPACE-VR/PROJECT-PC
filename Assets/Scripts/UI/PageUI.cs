@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using Fusion;
 
-public class PageUI : NetworkBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class PageUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField]
     List<TMP_InputField> inputFields; // 각 UI에서 사용하는 InputField들
