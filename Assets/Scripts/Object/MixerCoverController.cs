@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public class MixerCoverController : NetworkBehaviour
+public class MixerCoverController : MonoBehaviour
 {
-    [Networked] public bool isClosed { get; set; }  = false;
+    public bool IsClosed { get; set; }  = false;
 
     public void ToggleClose()
     {
-        isClosed = !isClosed;
+        IsClosed = !IsClosed;
     }
 }

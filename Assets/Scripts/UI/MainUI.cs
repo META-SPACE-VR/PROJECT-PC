@@ -9,10 +9,15 @@ public enum BTNType
     Stage,
     Level,
     Back,
-    Play
+    Play,
+
+    Pause,
+    Continue,
+    Reload,
+    Load
 }
 
 public class MainUI : MonoBehaviour
 {
-    
+
 }

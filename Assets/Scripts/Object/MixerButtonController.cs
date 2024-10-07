@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MixerButtonController : NetworkBehaviour
+public class MixerButtonController : MonoBehaviour
 {
     public Putable leftInput;
     public Putable rightInput;
@@ -18,7 +18,7 @@ public class MixerButtonController : NetworkBehaviour
 
     public void CheckValidate()
     {
-        if (cover.isClosed)
+        if (cover.IsClosed)
         {
             if ((leftInput.putItem.Name == "분자 6" && rightInput.putItem.Name == "분자 3") || (leftInput.putItem.Name == "분자 3" && rightInput.putItem.Name == "분자 6"))
             {

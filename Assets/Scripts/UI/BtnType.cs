@@ -27,6 +27,8 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Sprite previewImage;
     public Image preview;
 
+    public Timer timer;
+
     // public properties
     Vector3 defaultScale;
 
@@ -43,6 +45,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         SerializedProperty m_playButton;
         SerializedProperty m_previewImage;
         SerializedProperty m_preview;
+        SerializedProperty m_timer;
 
         private void OnEnable()
         {
@@ -55,6 +58,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             m_playButton = serializedObject.FindProperty("playButton");
             m_previewImage = serializedObject.FindProperty("previewImage");
             m_preview = serializedObject.FindProperty("preview");
+            m_timer = serializedObject.FindProperty("timer");
         }
 
         public override void OnInspectorGUI()
@@ -99,6 +103,23 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             {
                 EditorGUILayout.PropertyField(m_sceneData, new GUIContent("Main Data"));
             }
+            else if (script.currentType == BTNType.Pause)
+            {
+                EditorGUILayout.PropertyField(m_mainGroup, new GUIContent("Main Group"));
+                EditorGUILayout.PropertyField(m_startGroup, new GUIContent("Pause Group"));
+                EditorGUILayout.PropertyField(m_timer, new GUIContent("Timer"));
+            }
+            else if (script.currentType == BTNType.Continue)
+            {
+                EditorGUILayout.PropertyField(m_mainGroup, new GUIContent("Main Group"));
+                EditorGUILayout.PropertyField(m_startGroup, new GUIContent("Pause Group"));
+                EditorGUILayout.PropertyField(m_timer, new GUIContent("Timer"));
+            }
+            else if (script.currentType == BTNType.Load)
+            {
+                script.sceneIndex = EditorGUILayout.IntField("Next Scene Index", script.sceneIndex);
+                EditorGUILayout.PropertyField(m_sceneData, new GUIContent("Next Scene Data"));
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -142,6 +163,26 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 break;
             case BTNType.Play:
                 if (sceneData.sceneIndex == -1) return;
+                SceneManager.LoadScene("Loading");
+                break;
+            case BTNType.Pause:
+                mainGroup.interactable = false;
+                mainGroup.blocksRaycasts = false;
+                CanvasGroupOn(startGroup);
+                timer.StopTimer();
+                break;
+            case BTNType.Continue:
+                mainGroup.interactable = true;
+                mainGroup.blocksRaycasts = true;
+                CanvasGroupOff(startGroup);
+                timer.ContinueTimer();
+                break;
+            case BTNType.Reload:
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(currentSceneName);
+                break;
+            case BTNType.Load:
+                sceneData.SetSceneIndex(sceneIndex);
                 SceneManager.LoadScene("Loading");
                 break;
         }

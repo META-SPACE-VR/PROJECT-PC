@@ -5,13 +5,13 @@ using Fusion;
 
 public class Door : NetworkBehaviour
 {
-    [Networked] private bool isClosed { get; set; } = true;
+    [Networked] private bool IsClosed { get; set; } = true;
     public Animator anim;
     
     public override void FixedUpdateNetwork()
     {
         // 네트워크에서 동기화된 문 상태에 따라 애니메이션 업데이트
-        anim.SetBool("character_nearby", !isClosed);
+        anim.SetBool("character_nearby", !IsClosed);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,7 +19,7 @@ public class Door : NetworkBehaviour
         if (other.CompareTag("Player"))
         {
             anim.SetBool("character_nearby", true);
-            isClosed = false;
+            IsClosed = false;
         }
     }
 
@@ -28,7 +28,7 @@ public class Door : NetworkBehaviour
         if (other.CompareTag("Player"))
         {
             anim.SetBool("character_nearby", false);
-            isClosed = true;
+            IsClosed = true;
         }
     }
 }
