@@ -18,7 +18,7 @@ public class MixerCoverPartController : MonoBehaviour
 
     private void UpdateDoorVisual()
     {
-        if (controller.isClosed)
+        if (controller.IsClosed)
         {
             leftCover.position += distance;
             rightCover.position -= distance;

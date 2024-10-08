@@ -48,6 +48,11 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public void ContinueTimer()
+    {
+        isGameOver = false;
+    }
+
     // 타이머 멈추기 메서드
     public void StopTimer()
     {

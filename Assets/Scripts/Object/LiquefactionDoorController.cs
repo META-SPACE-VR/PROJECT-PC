@@ -4,19 +4,19 @@ using Unity.VisualScripting;
 using Fusion;
 using UnityEngine;
 
-public class LiquefactionDoorController : NetworkBehaviour
+public class LiquefactionDoorController : MonoBehaviour
 {
-    [Networked] public bool isClosed { get; set; } = false;
+    public bool IsClosed { get; set; } = false;
 
     public void ToggleDoor()
     {
-        isClosed = !isClosed;
+        IsClosed = !IsClosed;
         UpdateDoorVisual();
     }
 
     private void UpdateDoorVisual()
     {
-        if (isClosed)
+        if (IsClosed)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
@@ -26,8 +26,4 @@ public class LiquefactionDoorController : NetworkBehaviour
         }
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        UpdateDoorVisual();
-    }
 }

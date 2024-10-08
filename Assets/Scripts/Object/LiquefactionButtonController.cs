@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LiquefactionButtonController : NetworkBehaviour
+public class LiquefactionButtonController : MonoBehaviour
 {
     public LiquefactionDoorController door;
     public DialController pressureDial;
@@ -17,7 +17,7 @@ public class LiquefactionButtonController : NetworkBehaviour
 
     public void CheckValidate()
     {
-        if (door.isClosed && pressureDial.currentNumber == 5 && temperatureDial.currentNumber == 6 && input.putItem.Name == "분자 7")
+        if (door.IsClosed && pressureDial.currentNumber == 5 && temperatureDial.currentNumber == 6 && input.putItem.Name == "분자 7")
         {
             Alert.material.color = Color.green;
             ingredient.SetActive(false);
