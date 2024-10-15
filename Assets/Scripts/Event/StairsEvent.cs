@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class StairsEvent : MonoBehaviour
 {
+    [SerializeField]
     Camera mainCamera; // 메인 카메라
 
     [SerializeField]
@@ -23,16 +24,10 @@ public class StairsEvent : MonoBehaviour
 
     public void PlayEvent()
     {
-        // Player currentPlayer = triggerArea.GetInteractingPlayer();
-
-        // if (currentPlayer)
-        // {
-        //     mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        //     if (mainCamera && !isPlaying)
-        //     {
-        //         StartCoroutine(PlayEventFlow());
-        //     }
-        // }
+        if (mainCamera && !isPlaying)
+        {
+            StartCoroutine(PlayEventFlow());
+        }
     }
 
     IEnumerator PlayEventFlow()

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class DestructibleRock : NetworkBehaviour
+public class DestructibleRock : MonoBehaviour
 {
     // 활성화 여부
-    [Networked] public NetworkBool isAlive { get; set; }
+    bool isAlive;
 
     [SerializeField]
     List<GameObject> cells; // 조각들
@@ -26,21 +26,13 @@ public class DestructibleRock : NetworkBehaviour
     [SerializeField]
     float cellDestroyTime = 3f;
 
-    public override void Spawned() {
+    void Start() {
         // 원래 돌은 활성화
         isAlive = true;
 
         // 조각들은 비활성화
         foreach(GameObject cell in cells) {
             cell.SetActive(false);
-        }
-    }
-    
-    public override void FixedUpdateNetwork()
-    {
-        if (!isAlive && Object.HasStateAuthority)
-        {
-            Runner.Despawn(Object);
         }
     }
 
@@ -70,5 +62,6 @@ public class DestructibleRock : NetworkBehaviour
         }
 
         isAlive = false;
+        Destroy(gameObject);
     }
 }

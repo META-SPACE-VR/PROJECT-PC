@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class Stairs : NetworkBehaviour
+public class Stairs : MonoBehaviour
 {
     [SerializeField]
     Transform startTransform; // 처음 위치
@@ -17,22 +17,22 @@ public class Stairs : NetworkBehaviour
     [SerializeField]
     AudioSource moveSound;
 
-    [Networked] float currentTime { get; set; } = 0f; // 움직이는데 소요한 시간
+    float currentTime = 0f; // 움직이는데 소요한 시간
 
-    [Networked] bool isUsed { get; set; } = false; // 사용 여부
+    bool isUsed = false; // 사용 여부
 
     private void Awake() {
         // 계단을 처음 위치로 이동시킨다.
         gameObject.transform.position = startTransform.position;
     }
 
-    public override void FixedUpdateNetwork() {
+    void Update() {
         if(isUsed && currentTime < movingTime) {
             if(currentTime == 0f) {
                 moveSound.Play();
             }
 
-            currentTime += Runner.DeltaTime;
+            currentTime += Time.deltaTime;
             if(currentTime >= movingTime) currentTime = movingTime;
 
             Vector3 nextPosition = Vector3.Lerp(startTransform.position, targetTransform.position, currentTime / movingTime);

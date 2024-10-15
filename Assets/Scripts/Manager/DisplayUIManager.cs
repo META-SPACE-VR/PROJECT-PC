@@ -13,9 +13,9 @@ public class UIData {
     }
 }
 
-public class DisplayUIManager : NetworkBehaviour
+public class DisplayUIManager : MonoBehaviour
 {
-    [Networked] DisplayUIType CurrentType { get; set; } = DisplayUIType.Main; // 현재 UI 타입
+    DisplayUIType CurrentType { get; set; } = DisplayUIType.Main; // 현재 UI 타입
     
     [SerializeField]
     List<UIData> uiDatas; // UI 목록 (List)
@@ -30,7 +30,7 @@ public class DisplayUIManager : NetworkBehaviour
         }
     }
 
-    public override void Spawned() {
+    void Start() {
         ChangeUI(CurrentType);
     }
     
