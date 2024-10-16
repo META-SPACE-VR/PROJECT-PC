@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: ba5c6b3376e254243859238fa44b4a8d, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.031163083, g: 0.009459269, b: 0.013044128, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -710,6 +710,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335118847}
   m_CullTransparentMesh: 1
+--- !u!114 &341111153 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+  m_PrefabInstance: {fileID: 1057117664}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8258db6f215c314cb4b8f5a0e93c9f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &421674572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2530,11 +2541,11 @@ PrefabInstance:
     - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: guideText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7721322329714615531}
     - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: inventoryManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1393567711}
     - target: {fileID: 6239918330384693157, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: m_Name
       value: Character
@@ -3635,12 +3646,12 @@ MonoBehaviour:
   - {fileID: 1503416235}
   - {fileID: 1308497507}
   pickedItemIndex: -1
-  pickedItemPosition: {fileID: 0}
+  pickedItemPosition: {fileID: 2135678055}
   isItemZoomed: 0
-  zoomedItemPosition: {fileID: 0}
-  originalCameraPosition: {fileID: 0}
-  mainCamera: {fileID: 0}
-  player: {fileID: 0}
+  zoomedItemPosition: {fileID: 1518199885}
+  originalCameraPosition: {fileID: 1771158008}
+  mainCamera: {fileID: 1813214445}
+  player: {fileID: 341111153}
 --- !u!114 &1393567712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4442,6 +4453,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &1518199885 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3654647467415883555, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+  m_PrefabInstance: {fileID: 1057117664}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1527723540
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,6 +5323,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1766769299}
   m_CullTransparentMesh: 1
+--- !u!4 &1771158008 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7726513429686656737, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+  m_PrefabInstance: {fileID: 1057117664}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &1813214445 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 446657230227193731, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+  m_PrefabInstance: {fileID: 1057117664}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1956863964
 GameObject:
   m_ObjectHideFlags: 0
@@ -6053,6 +6079,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2088997043}
   m_CullTransparentMesh: 1
+--- !u!1 &2135678055 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5918351641181578870, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+  m_PrefabInstance: {fileID: 1057117664}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1031902534286614107
 RectTransform:
   m_ObjectHideFlags: 0
