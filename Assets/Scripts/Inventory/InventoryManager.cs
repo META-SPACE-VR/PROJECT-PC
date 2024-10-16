@@ -28,7 +28,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
 
     [Header("Network Variables")]
-    public Player player;
+    public PlayerController player;
 
     private void Awake()
     {
@@ -44,7 +44,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void AssignProperties(Player player)
+    void Start() {
+        AssignProperties(player);
+    }
+
+    public void AssignProperties(PlayerController player)
     {
         pickedItemPosition = player.transform.Find("PickedItemPosition").gameObject;
         zoomedItemPosition = player.transform.Find("ZoomedItemPosition");
@@ -58,6 +62,7 @@ public class InventoryManager : MonoBehaviour
             Image itemImage = slots[i].transform.Find("Item").GetComponent<Image>();
             if (i < initialItems.Count)
             {
+                Debug.Log(i);
                 Collectable item = initialItems[i];
                 itemImage.sprite = item.Icon;
                 itemImage.enabled = true;

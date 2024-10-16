@@ -40029,6 +40029,157 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016810666}
   m_Mesh: {fileID: 4300000, guid: 318fc5659f68549feb9d55d15a12de2a, type: 3}
+--- !u!1 &1021404219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1021404225}
+  - component: {fileID: 1021404224}
+  - component: {fileID: 1021404223}
+  - component: {fileID: 1021404222}
+  - component: {fileID: 1021404221}
+  - component: {fileID: 1021404220}
+  m_Layer: 0
+  m_Name: E.EngineerCard (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1021404220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021404219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a1b577fdd190544d8d955705097ffa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1021404219}
+  Name: "\uC804\uAE30\uACF5\uD559\uC790 \uCE74\uB4DC"
+  Icon: {fileID: 21300000, guid: 173f0da7b773d5941bacf3d0aa328eb5, type: 3}
+  guideText: {fileID: 1629153227}
+  InventoryManager: {fileID: 1392154087}
+--- !u!65 &1021404221
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021404219}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.000762013, y: 0.05368037, z: 0.08560058}
+  m_Center: {x: 3.7834988e-10, y: 9.0205634e-17, z: 0}
+--- !u!54 &1021404222
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021404219}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!23 &1021404223
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021404219}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 07fdeb7331e124f2ba937d8e0e046ffb, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1021404224
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021404219}
+  m_Mesh: {fileID: 873619559589032154, guid: 8ce8e42a6c54846429d6fa558fc5237a, type: 3}
+--- !u!4 &1021404225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021404219}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.19846143, y: -0.19846143, z: -0.67868483, w: 0.67868483}
+  m_LocalPosition: {x: -48.489742, y: 1.8851, z: -45.367657}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 270}
 --- !u!1 &1023026984
 GameObject:
   m_ObjectHideFlags: 0
@@ -55006,6 +55157,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1629153227}
     - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: curCollectable
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: inventoryManager
       value: 
       objectReference: {fileID: 1392154087}
@@ -55053,7 +55208,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4734981221779785472, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -58597,7 +58753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3340152bb2c07e6439cafc19a5dce815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialItems: []
+  initialItems:
+  - {fileID: 1021404220}
   slots:
   - {fileID: 1477379917}
   - {fileID: 1794821100}
@@ -58613,7 +58770,7 @@ MonoBehaviour:
   zoomedItemPosition: {fileID: 1335763077}
   originalCameraPosition: {fileID: 1335763076}
   mainCamera: {fileID: 1335763075}
-  player: {fileID: 0}
+  player: {fileID: 1335763080}
 --- !u!224 &1392154088
 RectTransform:
   m_ObjectHideFlags: 0
@@ -91482,3 +91639,4 @@ SceneRoots:
   - {fileID: 1132604055}
   - {fileID: 1301257140}
   - {fileID: 2078320635}
+  - {fileID: 1021404225}
