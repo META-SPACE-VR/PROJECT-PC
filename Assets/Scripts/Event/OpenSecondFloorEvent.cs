@@ -39,10 +39,18 @@ public class OpenSecondFloorEvent : MonoBehaviour
 
     float currentTime = 0f;
 
+    [SerializeField] GameObject clearPanel; // 클리어 판넬
+
     void Awake() {
         onPos = laserPointer.transform.position;
         offPos = laserPointer.transform.position + Vector3.up * laserMoveLength;
         initRot = laserPointer.transform.rotation;
+    }
+
+    void Update() {
+        if(CheckStageClear()) {
+            StageClear();
+        }
     }
 
     public void PlayEvent() {
@@ -184,5 +192,20 @@ public class OpenSecondFloorEvent : MonoBehaviour
         yield return fadePanel.FadeIn();
 
         isPlaying = false;
+    }
+
+    void StageClear() {
+        clearPanel.SetActive(true);
+        Time.timeScale = 0.0f;
+    }
+
+    bool CheckStageClear() {
+        foreach(GameObject targetObj in targetObjects) {
+            if(!(!targetObj || targetObj.IsDestroyed() || !targetObj.activeSelf)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

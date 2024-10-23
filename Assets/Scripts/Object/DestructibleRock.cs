@@ -46,6 +46,7 @@ public class DestructibleRock : MonoBehaviour
         foreach(GameObject cell in cells) {
             cell.SetActive(true);
             Destroy(cell, cellDestroyTime);
+            Destroy(gameObject.transform.parent.gameObject, cellDestroyTime);
         }
 
         // 조각들 폭발
@@ -62,6 +63,7 @@ public class DestructibleRock : MonoBehaviour
         }
 
         isAlive = false;
-        Destroy(gameObject);
+
+        gameObject.SetActive(false);
     }
 }

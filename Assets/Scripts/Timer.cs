@@ -45,6 +45,7 @@ public class Timer : MonoBehaviour
         {
             mainCanvas.SetActive(false); // 메인 캔버스 비활성화
             gameOverCanvas.SetActive(true); // 게임 오버 캔버스 표시
+            Time.timeScale = 0.0f; // 게임 중지
         }
     }
 
