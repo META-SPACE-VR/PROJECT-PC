@@ -39,7 +39,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
 
     float currentTime = 0f;
 
-    [SerializeField] GameObject clearPanel; // 클리어 판넬
+    [SerializeField] ClearController clearController; // Clear Controller
 
     void Awake() {
         onPos = laserPointer.transform.position;
@@ -49,7 +49,7 @@ public class OpenSecondFloorEvent : MonoBehaviour
 
     void Update() {
         if(CheckStageClear()) {
-            StageClear();
+            clearController.Clear();
         }
     }
 
@@ -192,11 +192,6 @@ public class OpenSecondFloorEvent : MonoBehaviour
         yield return fadePanel.FadeIn();
 
         isPlaying = false;
-    }
-
-    void StageClear() {
-        clearPanel.SetActive(true);
-        Time.timeScale = 0.0f;
     }
 
     bool CheckStageClear() {

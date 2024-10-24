@@ -4,7 +4,7 @@ public class Timer : MonoBehaviour
 {
     public float limitTime = 60f; // 제한 시간 (초)
     public GameObject mainCanvas;
-    public GameObject gameOverCanvas; // GameOverCanvas 오브젝트
+    public CanvasGroup gameOverCanvas; // GameOverCanvas 오브젝트
 
     private float elapsedTime = 0f; // 경과 시간
     private bool isGameOver = false; // 게임 오버 상태
@@ -16,7 +16,9 @@ public class Timer : MonoBehaviour
         isGameOver = false;
         if (gameOverCanvas != null)
         {
-            gameOverCanvas.SetActive(false); // 게임 오버 캔버스 숨기기
+            gameOverCanvas.alpha = 0f;
+            gameOverCanvas.interactable = false;
+            gameOverCanvas.blocksRaycasts = false;
         }
     }
 
@@ -43,9 +45,9 @@ public class Timer : MonoBehaviour
         isGameOver = true;
         if (gameOverCanvas != null)
         {
-            mainCanvas.SetActive(false); // 메인 캔버스 비활성화
-            gameOverCanvas.SetActive(true); // 게임 오버 캔버스 표시
-            Time.timeScale = 0.0f; // 게임 중지
+            gameOverCanvas.alpha = 1.0f;
+            gameOverCanvas.interactable = true;
+            gameOverCanvas.blocksRaycasts = true;
         }
     }
 
