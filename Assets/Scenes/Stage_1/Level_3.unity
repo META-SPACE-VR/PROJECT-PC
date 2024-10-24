@@ -27755,30 +27755,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: runSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: walkSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: lookSensitivity
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4734981221779785472, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: SortKey
       value: 2092819991
       objectReference: {fileID: 0}
-    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: guideText
-      value: 
-      objectReference: {fileID: 1968866476}
-    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: inventoryManager
-      value: 
-      objectReference: {fileID: 2002243754}
     - target: {fileID: 6239918330384693157, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: m_Name
       value: Character

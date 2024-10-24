@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: ba5c6b3376e254243859238fa44b4a8d, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.031163083, g: 0.009459269, b: 0.013044128, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2518,34 +2518,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: runSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: jumpForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: walkSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: lookSensitivity
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4734981221779785472, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: SortKey
       value: 373733067
       objectReference: {fileID: 0}
-    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: guideText
-      value: 
-      objectReference: {fileID: 7721322329714615531}
-    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: inventoryManager
-      value: 
-      objectReference: {fileID: 1393567711}
     - target: {fileID: 6239918330384693157, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: m_Name
       value: Character
