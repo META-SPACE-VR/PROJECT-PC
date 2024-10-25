@@ -359,9 +359,17 @@ PrefabInstance:
       propertyPath: SortKey
       value: 1788970044
       objectReference: {fileID: 0}
+    - target: {fileID: 1210892042563427663, guid: 626b2c0c33feb72469ce7ba0e907886b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1287036493588105382, guid: 626b2c0c33feb72469ce7ba0e907886b, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1299706547263180355, guid: 626b2c0c33feb72469ce7ba0e907886b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1422980115992359255, guid: 626b2c0c33feb72469ce7ba0e907886b, type: 3}
       propertyPath: SortKey
@@ -379,6 +387,10 @@ PrefabInstance:
       propertyPath: _TargetConnector
       value: 
       objectReference: {fileID: 1986546123}
+    - target: {fileID: 1874823344479900187, guid: 626b2c0c33feb72469ce7ba0e907886b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2325212561289083167, guid: 626b2c0c33feb72469ce7ba0e907886b, type: 3}
       propertyPath: SortKey
       value: 54864588
