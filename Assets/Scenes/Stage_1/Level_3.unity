@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 051228791a6084e9ab196344daa51eaf, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1793,7 +1793,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81277475}
   serializedVersion: 4
-  m_Mass: 10.61
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1828,8 +1828,9 @@ MonoBehaviour:
   playerCamera: {fileID: 1795084395}
   player: {fileID: 632684482}
   wheelchair: {fileID: 81277475}
+  wheelchair_child: {fileID: 81277477}
   interactionText: {fileID: 1998294134}
-  offsetZ: 1
+  offsetZ: 1.5
 --- !u!65 &81277482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6130,8 +6131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenCanvas: {fileID: 337551142}
   otherCanvases:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 449373838}
 --- !u!114 &337551146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6623,12 +6623,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8228828845219109476, guid: 3780b7b06e0a4004f942fbff9682c1fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1794898260}
-    - targetCorrespondingSourceObject: {fileID: 8228828845219109476, guid: 3780b7b06e0a4004f942fbff9682c1fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1794898262}
-    - targetCorrespondingSourceObject: {fileID: 8228828845219109476, guid: 3780b7b06e0a4004f942fbff9682c1fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1794898261}
   m_SourcePrefab: {fileID: 100100000, guid: 3780b7b06e0a4004f942fbff9682c1fe, type: 3}
 --- !u!1 &357112198 stripped
 GameObject:
@@ -27713,40 +27707,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1794898261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357112198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3707478003
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1794898262}
---- !u!114 &1794898262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357112198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncScale: 0
-  SyncParent: 0
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
 --- !u!1001 &1795084388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27755,10 +27715,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: runSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: walkSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4734981221779785472, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: SortKey
       value: 2092819991
       objectReference: {fileID: 0}
+    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: guideText
+      value: 
+      objectReference: {fileID: 1968866476}
+    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 2002243754}
     - target: {fileID: 6239918330384693157, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: m_Name
       value: Character
@@ -32759,7 +32735,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1

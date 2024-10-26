@@ -7,8 +7,9 @@ public class WheelchairController : MonoBehaviour
     public Transform playerCamera;
     public GameObject player;
     public GameObject wheelchair;
+    public GameObject wheelchair_child;
     public TMP_Text interactionText; // 상호작용 텍스트 UI
-    public float offsetZ = 0.5f; // 휠체어를 플레이어의 앞에 배치할 오프셋
+    public float offsetZ = 1.5f; // 휠체어를 플레이어의 앞에 배치할 오프셋
 
     private bool isInteracting = false;
     private bool isPlayerInRange = false;
@@ -43,7 +44,7 @@ public class WheelchairController : MonoBehaviour
         originalParent = wheelchair.transform.parent; // 휠체어의 원래 부모 객체 저장
     }
 
-    void Update()
+    private void Update()
     {
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.R))
         {
@@ -59,13 +60,11 @@ public class WheelchairController : MonoBehaviour
 
         if (isInteracting)
         {
-            // 플레이어의 입력에 따라 휠체어를 이동시킴
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-
-            Vector3 movement = playerCamera.forward * moveVertical + playerCamera.right * moveHorizontal;
-            movement.y = 0; // 휠체어가 수직으로 이동하지 않도록
-            wheelchair.transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+            // 휠체어가 항상 플레이어 앞에 위치하도록 업데이트
+            Vector3 newPosition = player.transform.position + player.transform.forward * offsetZ;
+            newPosition.y = wheelchair.transform.position.y; // 휠체어의 y 좌표는 유지
+            wheelchair.transform.position = newPosition;
+            wheelchair.transform.rotation = player.transform.rotation; // 휠체어가 플레이어 방향과 일치하게 회전
         }
     }
 
@@ -92,11 +91,6 @@ public class WheelchairController : MonoBehaviour
         isInteracting = true;
         Debug.Log("상호작용 시작");
 
-        if (wheelchairRigidbody != null)
-        {
-            wheelchairRigidbody.isKinematic = false; // 휠체어를 상호작용 중에도 kinematic 상태로 유지
-        }
-
         // 휠체어를 플레이어의 자식으로 설정하여 함께 이동하도록 함
         wheelchair.transform.SetParent(player.transform);
 
@@ -104,7 +98,7 @@ public class WheelchairController : MonoBehaviour
         wheelchair.transform.rotation = player.transform.rotation;
 
         // 휠체어를 x축으로 -90도 회전
-        wheelchair.transform.Rotate(-90f, 0f, 0f);
+        wheelchair_child.transform.Rotate(270f, 0f, 0f);
 
         // 휠체어를 플레이어의 앞쪽으로 배치
         Vector3 newPosition = player.transform.position + player.transform.forward * offsetZ;
