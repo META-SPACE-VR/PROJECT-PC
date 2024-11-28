@@ -2217,7 +2217,6 @@ GameObject:
   - component: {fileID: 2210518536747482264}
   - component: {fileID: 7834458226366689945}
   - component: {fileID: 5946370901806378782}
-  - component: {fileID: 4734981221779785472}
   m_Layer: 3
   m_Name: animation_rigged
   m_TagString: Player
@@ -2329,10 +2328,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8258db6f215c314cb4b8f5a0e93c9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
-  runSpeed: 20
-  sitSpeed: 1.5
-  jumpForce: 3
+  walkSpeed: 30
+  runSpeed: 60
+  sitSpeed: 15
+  jumpForce: 5
   originPosY: 0
   lookSensitivity: 2
   cameraRotationLimit: 45
@@ -2378,23 +2377,6 @@ MonoBehaviour:
   range: 5
   curCollectable: {fileID: 0}
   curPutable: {fileID: 0}
---- !u!114 &4734981221779785472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6239918330384693157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 1842940149
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours: []
 --- !u!1 &6256650364883609204
 GameObject:
   m_ObjectHideFlags: 0

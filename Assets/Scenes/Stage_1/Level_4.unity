@@ -56635,34 +56635,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: runSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: jumpForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: walkSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 2210518536747482264, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: lookSensitivity
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4734981221779785472, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: SortKey
-      value: 1012468398
-      objectReference: {fileID: 0}
     - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: guideText
       value: 
       objectReference: {fileID: 1629153227}
-    - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
-      propertyPath: curCollectable
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5946370901806378782, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
       propertyPath: inventoryManager
       value: 
@@ -56711,8 +56687,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4734981221779785472, guid: b1288d00f9fe84a4d900079cc3a1996b, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

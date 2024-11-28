@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static HPhysic.Connector;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -32,6 +35,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     // public properties
     Vector3 defaultScale;
 
+    #if UNITY_EDITOR
     // 커스텀 인스펙터
     [CustomEditor(typeof(BtnType))]
     public class CustoEditor: Editor
@@ -124,6 +128,7 @@ public class BtnType : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             serializedObject.ApplyModifiedProperties();
         }
     }
+    #endif
 
     public void Start()
     {
